@@ -1,0 +1,8 @@
+{
+  "name": "opentaiwan-api",
+  "version": "1.0.0",
+  "description": "OpenTaiwan API Service - Install dependencies with: npm install next react react-dom @supabase/supabase-js stripe",
+  "scripts": {
+    "dev": "next dev -p 3001"
+  }
+}
