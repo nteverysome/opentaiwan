@@ -4,5 +4,10 @@
   "description": "OpenTaiwan API Service - Install dependencies with: npm install next react react-dom @supabase/supabase-js stripe",
   "scripts": {
     "dev": "next dev -p 3001"
+  },
+  "devDependencies": {
+    "@types/node": "24.0.3",
+    "@types/react": "19.1.8",
+    "typescript": "5.8.3"
   }
 }
