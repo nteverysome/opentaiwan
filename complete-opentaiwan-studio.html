@@ -1,0 +1,1110 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OpenTaiwan Dev Studio - Complete</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+            background: #0f172a;
+            color: #f8fafc;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        .studio-container {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* 頂部標題欄 */
+        .header {
+            background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
+            padding: 12px 24px;
+            border-bottom: 1px solid #475569;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+
+        .header h1 {
+            font-size: 18px;
+            font-weight: 600;
+            color: #f1f5f9;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .status-bar {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+            font-size: 12px;
+        }
+
+        .status-indicator {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            padding: 4px 8px;
+            background: #1e40af;
+            border-radius: 12px;
+        }
+
+        .status-dot {
+            width: 6px;
+            height: 6px;
+            background: #10b981;
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+
+        /* 主要內容區域 */
+        .main-content {
+            flex: 1;
+            display: grid;
+            grid-template-columns: 35% 65%;
+            gap: 0;
+        }
+
+        /* 左側對話面板 */
+        .chat-panel {
+            background: #1e293b;
+            border-right: 1px solid #475569;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .chat-header {
+            background: #334155;
+            padding: 12px 16px;
+            border-bottom: 1px solid #475569;
+            font-weight: 600;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .chat-history {
+            flex: 1;
+            padding: 16px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            min-height: 0; /* 重要：允許 flex 子元素縮小 */
+        }
+
+        .message {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .message.user {
+            align-items: flex-end;
+        }
+
+        .message.assistant {
+            align-items: flex-start;
+        }
+
+        .message-content {
+            max-width: 85%;
+            padding: 12px 16px;
+            border-radius: 12px;
+            font-size: 14px;
+            line-height: 1.5;
+            word-wrap: break-word;
+        }
+
+        .user .message-content {
+            background: #3b82f6;
+            color: white;
+        }
+
+        .assistant .message-content {
+            background: #374151;
+            color: #f3f4f6;
+        }
+
+        .code-block {
+            background: #111827;
+            border-radius: 8px;
+            margin: 8px 0;
+            overflow: hidden;
+        }
+
+        .code-header {
+            background: #1f2937;
+            padding: 8px 12px;
+            border-bottom: 1px solid #374151;
+            font-size: 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .code-content {
+            padding: 12px;
+            font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+            font-size: 13px;
+            overflow-x: auto;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+
+        .code-actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        .action-btn {
+            padding: 4px 8px;
+            background: #374151;
+            border: none;
+            border-radius: 4px;
+            color: #d1d5db;
+            font-size: 11px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        .action-btn:hover {
+            background: #4b5563;
+        }
+
+        .action-btn.apply { background: #059669; }
+        .action-btn.apply:hover { background: #047857; }
+
+        /* 輸入區域 */
+        .input-section {
+            border-top: 1px solid #475569;
+            padding: 16px;
+            flex-shrink: 0; /* 防止輸入區域被壓縮 */
+        }
+
+        .input-box {
+            background: #374151;
+            border-radius: 8px;
+            padding: 12px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .input-textarea {
+            background: transparent;
+            border: none;
+            color: #f3f4f6;
+            resize: none;
+            outline: none;
+            min-height: 80px; /* 增加最小高度 */
+            max-height: 200px; /* 限制最大高度 */
+            font-size: 14px;
+            font-family: inherit;
+            overflow-y: auto;
+        }
+
+        .input-actions {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .input-tools {
+            display: flex;
+            gap: 8px;
+        }
+
+        .tool-btn {
+            background: none;
+            border: none;
+            color: #9ca3af;
+            cursor: pointer;
+            padding: 4px;
+            border-radius: 4px;
+            transition: background-color 0.2s;
+        }
+
+        .tool-btn:hover {
+            background: #4b5563;
+            color: #d1d5db;
+        }
+
+        .send-btn {
+            background: #3b82f6;
+            border: none;
+            color: white;
+            padding: 8px 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: background-color 0.2s;
+        }
+
+        .send-btn:hover {
+            background: #2563eb;
+        }
+
+        /* 右側工作區 */
+        .workspace-panel {
+            background: #0f172a;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .workspace-tabs {
+            background: #1e293b;
+            display: flex;
+            border-bottom: 1px solid #475569;
+        }
+
+        .tab {
+            padding: 12px 20px;
+            background: transparent;
+            border: none;
+            color: #64748b;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size: 13px;
+            font-weight: 500;
+            border-bottom: 2px solid transparent;
+        }
+
+        .tab:hover {
+            color: #e2e8f0;
+            background: #334155;
+        }
+
+        .tab.active {
+            color: #60a5fa;
+            border-bottom-color: #60a5fa;
+            background: #1e293b;
+        }
+
+        .workspace-content {
+            flex: 1;
+            position: relative;
+        }
+
+        .tab-content {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            display: none;
+            flex-direction: column;
+        }
+
+        .tab-content.active {
+            display: flex;
+        }
+
+        /* Planner Tab */
+        .planner-content {
+            padding: 20px;
+            overflow-y: auto;
+        }
+
+        .current-task {
+            background: #1e293b;
+            border-radius: 8px;
+            padding: 16px;
+            margin-bottom: 20px;
+            border-left: 4px solid #60a5fa;
+        }
+
+        .task-status {
+            color: #60a5fa;
+            font-size: 12px;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .task-name {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 12px;
+        }
+
+        .task-progress {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .progress-bar {
+            flex: 1;
+            height: 6px;
+            background: #374151;
+            border-radius: 3px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: #60a5fa;
+            transition: width 0.3s ease;
+        }
+
+        .task-list {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .task-item {
+            padding: 12px 16px;
+            background: #1e293b;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 14px;
+        }
+
+        /* Browser Tab */
+        .browser-content {
+            background: #1e293b;
+        }
+
+        .browser-header {
+            background: #334155;
+            padding: 12px 16px;
+            border-bottom: 1px solid #475569;
+            display: flex;
+            gap: 12px;
+            align-items: center;
+        }
+
+        .url-bar {
+            flex: 1;
+            background: #1e293b;
+            border: 1px solid #475569;
+            border-radius: 6px;
+            padding: 8px 12px;
+            color: #e2e8f0;
+            font-size: 14px;
+        }
+
+        .browser-frame {
+            width: 100%;
+            height: calc(100% - 60px);
+            border: none;
+        }
+
+        /* Terminal Tab */
+        .terminal-content {
+            background: #111827;
+            color: #10b981;
+            font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+        }
+
+        .terminal-header {
+            background: #1f2937;
+            padding: 12px 16px;
+            border-bottom: 1px solid #374151;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 14px;
+        }
+
+        .terminal-output {
+            flex: 1;
+            padding: 16px;
+            overflow-y: auto;
+        }
+
+        .terminal-line {
+            margin-bottom: 4px;
+            font-size: 13px;
+        }
+
+        .terminal-line.cursor::after {
+            content: '';
+            background: #10b981;
+            width: 8px;
+            height: 16px;
+            display: inline-block;
+            animation: blink 1s infinite;
+        }
+
+        @keyframes blink {
+            0%, 50% { opacity: 1; }
+            51%, 100% { opacity: 0; }
+        }
+
+        /* Files Tab */
+        .files-content {
+            display: grid;
+            grid-template-columns: 300px 1fr;
+        }
+
+        .file-tree {
+            background: #1e293b;
+            border-right: 1px solid #475569;
+            padding: 16px;
+            overflow-y: auto;
+        }
+
+        .folder, .file {
+            padding: 6px 8px;
+            cursor: pointer;
+            border-radius: 4px;
+            font-size: 14px;
+            margin-bottom: 2px;
+        }
+
+        .folder:hover, .file:hover {
+            background: #334155;
+        }
+
+        .file.active {
+            background: #3b82f6;
+            color: white;
+        }
+
+        .file-editor {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .editor-header {
+            background: #1e293b;
+            padding: 12px 16px;
+            border-bottom: 1px solid #475569;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .code-editor {
+            flex: 1;
+            background: #111827;
+            padding: 16px;
+            overflow: auto;
+            font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        /* Settings Tab */
+        .settings-content {
+            padding: 20px;
+            overflow-y: auto;
+        }
+
+        .setting-group {
+            background: #1e293b;
+            border-radius: 8px;
+            padding: 16px;
+            margin-bottom: 16px;
+        }
+
+        .setting-group h4 {
+            margin-bottom: 12px;
+            color: #e2e8f0;
+        }
+
+        .setting-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+
+        .setting-item input,
+        .setting-item select {
+            background: #374151;
+            border: 1px solid #4b5563;
+            border-radius: 4px;
+            color: #e2e8f0;
+            padding: 6px 8px;
+        }
+
+        /* 響應式設計 */
+        @media (max-width: 768px) {
+            .main-content {
+                grid-template-columns: 1fr;
+                grid-template-rows: 1fr 1fr;
+            }
+
+            .files-content {
+                grid-template-columns: 1fr;
+                grid-template-rows: 200px 1fr;
+            }
+        }
+
+        /* 動畫效果 */
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        .loading {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100px;
+            color: #64748b;
+        }
+
+        /* 滾動條樣式 */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #1e293b;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #475569;
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #64748b;
+        }
+    </style>
+</head>
+<body>
+    <div class="studio-container">
+        <!-- 頂部標題欄 -->
+        <header class="header">
+            <h1>🚀 OpenTaiwan Dev Studio</h1>
+            <div class="status-bar">
+                <div class="status-indicator">
+                    <div class="status-dot"></div>
+                    API Ready
+                </div>
+                <div class="status-indicator">
+                    ⚡ Online
+                </div>
+            </div>
+        </header>
+
+        <!-- 主要內容 -->
+        <main class="main-content">
+            <!-- 左側對話面板 -->
+            <div class="chat-panel">
+                <div class="chat-header">
+                    🤖 OpenHands AI Assistant
+                </div>
+
+                <div class="chat-history" id="chat-history">
+                    <!-- 示例對話 -->
+                    <div class="message user">
+                        <div class="message-content">
+                            優化 OpenTaiwan 的 UI 界面，讓它看起來更專業
+                        </div>
+                    </div>
+
+                    <div class="message assistant">
+                        <div class="message-content">
+                            我來幫你優化 OpenTaiwan 的界面設計。我會修改 opentaiwan.tsx 文件，添加現代化的樣式和動畫效果。
+
+                            <div class="code-block">
+                                <div class="code-header">
+                                    <span>📄 opentaiwan.tsx</span>
+                                    <div class="code-actions">
+                                        <button class="action-btn">📋 Copy</button>
+                                        <button class="action-btn apply">▶️ Apply</button>
+                                        <button class="action-btn">💾 Save</button>
+                                    </div>
+                                </div>
+                                <div class="code-content">
+<pre>export default function OpenTaiwan() {
+  return (
+    &lt;div className="min-h-screen bg-gradient-to-br
+                   from-blue-900 via-purple-900 to-indigo-900"&gt;
+      &lt;div className="container mx-auto px-6 py-12"&gt;
+        &lt;h1 className="text-4xl font-bold text-white mb-8
+                      text-center animate-fade-in"&gt;
+          OpenTaiwan
+        &lt;/h1&gt;
+
+        &lt;div className="grid grid-cols-1 md:grid-cols-3 gap-6"&gt;
+          &lt;div className="bg-white/10 backdrop-blur-md rounded-xl
+                         p-6 border border-white/20 hover:bg-white/20
+                         transition-all duration-300"&gt;
+            &lt;h3 className="text-xl font-semibold text-white mb-4"&gt;
+              配額狀態
+            &lt;/h3&gt;
+            &lt;div className="space-y-2"&gt;
+              &lt;div className="flex justify-between text-gray-200"&gt;
+                &lt;span&gt;已使用&lt;/span&gt;
+                &lt;span&gt;3/10&lt;/span&gt;
+              &lt;/div&gt;
+              &lt;div className="w-full bg-gray-600 rounded-full h-2"&gt;
+                &lt;div className="bg-blue-400 h-2 rounded-full w-3/10"&gt;&lt;/div&gt;
+              &lt;/div&gt;
+            &lt;/div&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  );
+}</pre>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 輸入區域 -->
+                <div class="input-section">
+                    <div class="input-box">
+                        <textarea
+                            class="input-textarea"
+                            placeholder="描述你想要的功能或改進..."
+                            id="user-input"></textarea>
+                        <div class="input-actions">
+                            <div class="input-tools">
+                                <button class="tool-btn" title="上傳文件">📎</button>
+                                <button class="tool-btn" title="語音輸入">🎤</button>
+                                <button class="tool-btn" title="截圖">📷</button>
+                            </div>
+                            <button class="send-btn" onclick="sendMessage()">發送 ➤</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 右側工作區 -->
+            <div class="workspace-panel">
+                <!-- 工作區標籤 -->
+                <div class="workspace-tabs">
+                    <button class="tab active" onclick="switchTab('planner')">📋 Planner</button>
+                    <button class="tab" onclick="switchTab('browser')">🌐 Browser</button>
+                    <button class="tab" onclick="switchTab('terminal')">💻 Terminal</button>
+                    <button class="tab" onclick="switchTab('files')">📁 Files</button>
+                    <button class="tab" onclick="switchTab('settings')">⚙️ Settings</button>
+                </div>
+
+                <!-- 工作區內容 -->
+                <div class="workspace-content">
+                    <!-- Planner Tab -->
+                    <div id="planner-tab" class="tab-content active">
+                        <div class="planner-content">
+                            <div class="current-task">
+                                <div class="task-status">🔄 進行中</div>
+                                <div class="task-name">OpenTaiwan UI 界面優化</div>
+                                <div class="task-progress">
+                                    <div class="progress-bar">
+                                        <div class="progress-fill" style="width: 60%"></div>
+                                    </div>
+                                    <span>60%</span>
+                                </div>
+                            </div>
+
+                            <h3 style="margin-bottom: 16px; color: #e2e8f0;">開發任務列表</h3>
+                            <div class="task-list">
+                                <div class="task-item">✅ 創建 API 服務架構</div>
+                                <div class="task-item">✅ 設置前端路由系統</div>
+                                <div class="task-item">✅ 實現基礎功能邏輯</div>
+                                <div class="task-item">🔄 優化 UI 界面設計</div>
+                                <div class="task-item">⏳ 添加動畫和互動效果</div>
+                                <div class="task-item">⏳ 實現響應式設計</div>
+                                <div class="task-item">⏳ 性能優化和測試</div>
+                                <div class="task-item">⏳ 部署到生產環境</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Browser Tab -->
+                    <div id="browser-tab" class="tab-content">
+                        <div class="browser-content">
+                            <div class="browser-header">
+                                <input type="text"
+                                       class="url-bar"
+                                       value="http://localhost:3002/opentaiwan"
+                                       id="url-input">
+                                <button class="action-btn" onclick="refreshBrowser()">🔄 刷新</button>
+                                <button class="action-btn" onclick="openDevTools()">🔧 DevTools</button>
+                            </div>
+                            <iframe
+                                class="browser-frame"
+                                src="http://localhost:3002/opentaiwan"
+                                id="browser-frame"></iframe>
+                        </div>
+                    </div>
+
+                    <!-- Terminal Tab -->
+                    <div id="terminal-tab" class="tab-content">
+                        <div class="terminal-content">
+                            <div class="terminal-header">
+                                <span>💻 OpenTaiwan Terminal</span>
+                                <div>
+                                    <button class="action-btn" onclick="clearTerminal()">Clear</button>
+                                    <button class="action-btn" onclick="newTerminal()">New Tab</button>
+                                </div>
+                            </div>
+                            <div class="terminal-output" id="terminal-output">
+                                <div class="terminal-line">$ cd /workspace/opentaiwan</div>
+                                <div class="terminal-line">$ npm run dev</div>
+                                <div class="terminal-line">✓ OpenTaiwan API server started on localhost:3002</div>
+                                <div class="terminal-line">✓ Frontend development server ready</div>
+                                <div class="terminal-line">✓ All services running normally</div>
+                                <div class="terminal-line">$ curl localhost:3002/api/health</div>
+                                <div class="terminal-line">{"status":"healthy","service":"OpenTaiwan API"}</div>
+                                <div class="terminal-line">$ curl localhost:3002/api/quota</div>
+                                <div class="terminal-line">{"status":"success","quota":{"used":3,"total":10}}</div>
+                                <div class="terminal-line cursor">$ </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Files Tab -->
+                    <div id="files-tab" class="tab-content">
+                        <div class="files-content">
+                            <div class="file-tree">
+                                <h4 style="margin-bottom: 12px; color: #e2e8f0;">項目文件</h4>
+                                <div class="folder">📁 opentaiwan/</div>
+                                <div class="folder" style="margin-left: 16px;">📁 frontend/</div>
+                                <div class="folder" style="margin-left: 32px;">📁 src/routes/</div>
+                                <div class="file active" style="margin-left: 48px;">📄 opentaiwan.tsx</div>
+                                <div class="file" style="margin-left: 32px;">📄 package.json</div>
+                                <div class="folder" style="margin-left: 16px;">📁 opentaiwan-api/</div>
+                                <div class="folder" style="margin-left: 32px;">📁 pages/api/</div>
+                                <div class="file" style="margin-left: 48px;">📄 health.js</div>
+                                <div class="file" style="margin-left: 48px;">📄 quota.js</div>
+                                <div class="file" style="margin-left: 48px;">📄 status.js</div>
+                                <div class="file" style="margin-left: 16px;">📄 .env.opentaiwan</div>
+                                <div class="file" style="margin-left: 16px;">📄 README.md</div>
+                            </div>
+
+                            <div class="file-editor">
+                                <div class="editor-header">
+                                    <span>📄 opentaiwan.tsx</span>
+                                    <div>
+                                        <button class="action-btn">💾 保存</button>
+                                        <button class="action-btn">🔄 重載</button>
+                                        <button class="action-btn">📋 複製</button>
+                                    </div>
+                                </div>
+                                <div class="code-editor">
+<pre><code>import React, { useState, useEffect } from 'react';
+
+export default function OpenTaiwan() {
+  const [apiData, setApiData] = useState({
+    health: null,
+    status: null,
+    quota: null
+  });
+
+  useEffect(() => {
+    fetchApiData();
+  }, []);
+
+  const fetchApiData = async () => {
+    try {
+      const [healthRes, statusRes, quotaRes] = await Promise.all([
+        fetch('http://localhost:3002/api/health'),
+        fetch('http://localhost:3002/api/status'),
+        fetch('http://localhost:3002/api/quota')
+      ]);
+
+      setApiData({
+        health: await healthRes.json(),
+        status: await statusRes.json(),
+        quota: await quotaRes.json()
+      });
+    } catch (error) {
+      console.error('API 調用失敗:', error);
+    }
+  };
+
+  return (
+    &lt;div className="min-h-screen bg-gradient-to-br
+                   from-blue-900 via-purple-900 to-indigo-900"&gt;
+      &lt;div className="container mx-auto px-6 py-12"&gt;
+        &lt;h1 className="text-4xl font-bold text-white mb-8
+                      text-center animate-fade-in"&gt;
+          OpenTaiwan
+        &lt;/h1&gt;
+
+        &lt;div className="grid grid-cols-1 md:grid-cols-3 gap-6"&gt;
+          {/* 配額狀態卡片 */}
+          &lt;div className="bg-white/10 backdrop-blur-md rounded-xl
+                         p-6 border border-white/20 hover:bg-white/20
+                         transition-all duration-300"&gt;
+            &lt;h3 className="text-xl font-semibold text-white mb-4"&gt;
+              配額狀態
+            &lt;/h3&gt;
+            &lt;div className="space-y-2"&gt;
+              &lt;div className="flex justify-between text-gray-200"&gt;
+                &lt;span&gt;已使用&lt;/span&gt;
+                &lt;span&gt;{apiData.quota?.quota?.used || 0}/
+                      {apiData.quota?.quota?.total || 10}&lt;/span&gt;
+              &lt;/div&gt;
+              &lt;div className="w-full bg-gray-600 rounded-full h-2"&gt;
+                &lt;div className="bg-blue-400 h-2 rounded-full"
+                     style={{width: `${((apiData.quota?.quota?.used || 0) /
+                            (apiData.quota?.quota?.total || 10)) * 100}%`}}&gt;
+                &lt;/div&gt;
+              &lt;/div&gt;
+            &lt;/div&gt;
+          &lt;/div&gt;
+
+          {/* 系統狀態卡片 */}
+          &lt;div className="bg-white/10 backdrop-blur-md rounded-xl
+                         p-6 border border-white/20 hover:bg-white/20
+                         transition-all duration-300"&gt;
+            &lt;h3 className="text-xl font-semibold text-white mb-4"&gt;
+              系統狀態
+            &lt;/h3&gt;
+            &lt;div className="space-y-2"&gt;
+              &lt;div className="flex items-center gap-2"&gt;
+                &lt;div className="w-3 h-3 bg-green-400 rounded-full"&gt;&lt;/div&gt;
+                &lt;span className="text-gray-200"&gt;
+                  {apiData.status?.status || 'Loading...'}
+                &lt;/span&gt;
+              &lt;/div&gt;
+              &lt;div className="text-sm text-gray-300"&gt;
+                運行時間: {Math.floor(apiData.status?.uptime || 0)}s
+              &lt;/div&gt;
+            &lt;/div&gt;
+          &lt;/div&gt;
+
+          {/* API 健康狀態卡片 */}
+          &lt;div className="bg-white/10 backdrop-blur-md rounded-xl
+                         p-6 border border-white/20 hover:bg-white/20
+                         transition-all duration-300"&gt;
+            &lt;h3 className="text-xl font-semibold text-white mb-4"&gt;
+              API 健康
+            &lt;/h3&gt;
+            &lt;div className="space-y-2"&gt;
+              &lt;div className="flex items-center gap-2"&gt;
+                &lt;div className="w-3 h-3 bg-green-400 rounded-full"&gt;&lt;/div&gt;
+                &lt;span className="text-gray-200"&gt;
+                  {apiData.health?.status || 'Checking...'}
+                &lt;/span&gt;
+              &lt;/div&gt;
+              &lt;button
+                onClick={fetchApiData}
+                className="text-blue-400 hover:text-blue-300 text-sm"&gt;
+                🔄 刷新狀態
+              &lt;/button&gt;
+            &lt;/div&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  );
+}</code></pre>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Settings Tab -->
+                    <div id="settings-tab" class="tab-content">
+                        <div class="settings-content">
+                            <div class="setting-group">
+                                <h4>🔧 API 配置</h4>
+                                <div class="setting-item">
+                                    <label>API 基礎 URL:</label>
+                                    <input type="text" value="http://localhost:3002">
+                                </div>
+                                <div class="setting-item">
+                                    <label>API 端口:</label>
+                                    <input type="number" value="3002">
+                                </div>
+                                <div class="setting-item">
+                                    <label>環境模式:</label>
+                                    <select>
+                                        <option>Development</option>
+                                        <option>Staging</option>
+                                        <option>Production</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="setting-group">
+                                <h4>🎨 界面設置</h4>
+                                <div class="setting-item">
+                                    <label>主題風格:</label>
+                                    <select>
+                                        <option>Devin Dark (當前)</option>
+                                        <option>OpenHands Classic</option>
+                                        <option>Light Mode</option>
+                                    </select>
+                                </div>
+                                <div class="setting-item">
+                                    <label>字體大小:</label>
+                                    <select>
+                                        <option>小</option>
+                                        <option selected>中</option>
+                                        <option>大</option>
+                                    </select>
+                                </div>
+                                <div class="setting-item">
+                                    <label>動畫效果:</label>
+                                    <input type="checkbox" checked>
+                                </div>
+                            </div>
+
+                            <div class="setting-group">
+                                <h4>🚀 開發工具</h4>
+                                <div class="setting-item">
+                                    <label>自動刷新:</label>
+                                    <input type="checkbox" checked>
+                                </div>
+                                <div class="setting-item">
+                                    <label>錯誤追蹤:</label>
+                                    <input type="checkbox" checked>
+                                </div>
+                                <div class="setting-item">
+                                    <label>性能監控:</label>
+                                    <input type="checkbox">
+                                </div>
+                            </div>
+
+                            <div class="setting-group">
+                                <h4>💾 數據管理</h4>
+                                <button class="action-btn" style="margin-right: 8px;">💾 導出配置</button>
+                                <button class="action-btn" style="margin-right: 8px;">📥 導入配置</button>
+                                <button class="action-btn">🔄 重置設置</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        // 標籤切換功能
+        function switchTab(tabName) {
+            // 移除所有 active 類
+            document.querySelectorAll('.tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            document.querySelectorAll('.tab-content').forEach(content => {
+                content.classList.remove('active');
+            });
+
+            // 添加 active 類到當前標籤
+            event.target.classList.add('active');
+            document.getElementById(tabName + '-tab').classList.add('active');
+        }
+
+        // 發送消息功能
+        function sendMessage() {
+            const input = document.getElementById('user-input');
+            const message = input.value.trim();
+            if (!message) return;
+
+            // 添加用戶消息到聊天歷史
+            const chatHistory = document.getElementById('chat-history');
+            const userMessage = document.createElement('div');
+            userMessage.className = 'message user';
+            userMessage.innerHTML = `<div class="message-content">${message}</div>`;
+            chatHistory.appendChild(userMessage);
+
+            // 清空輸入框
+            input.value = '';
+
+            // 模擬 AI 回應
+            setTimeout(() => {
+                const aiMessage = document.createElement('div');
+                aiMessage.className = 'message assistant';
+                aiMessage.innerHTML = `
+                    <div class="message-content">
+                        我正在處理您的請求：「${message}」
+                        <div class="code-block">
+                            <div class="code-header">
+                                <span>📄 處理結果</span>
+                                <div class="code-actions">
+                                    <button class="action-btn">📋 Copy</button>
+                                    <button class="action-btn apply">▶️ Apply</button>
+                                </div>
+                            </div>
+                            <div class="code-content">
+                                // 處理中...
+                                console.log('正在執行您的指令');
+                            </div>
+                        </div>
+                    </div>
+                `;
+                chatHistory.appendChild(aiMessage);
+                chatHistory.scrollTop = chatHistory.scrollHeight;
+            }, 1000);
+
+            chatHistory.scrollTop = chatHistory.scrollHeight;
+        }
+
+        // 刷新瀏覽器
+        function refreshBrowser() {
+            const iframe = document.getElementById('browser-frame');
+            iframe.src = iframe.src;
+        }
+
+        // 開啟開發者工具
+        function openDevTools() {
+            alert('在實際瀏覽器中，這會開啟開發者工具');
+        }
+
+        // 清除終端
+        function clearTerminal() {
+            document.getElementById('terminal-output').innerHTML =
+                '<div class="terminal-line cursor">$ </div>';
+        }
+
+        // 新終端標籤
+        function newTerminal() {
+            alert('創建新的終端標籤');
+        }
+
+        // 回車發送消息
+        document.getElementById('user-input').addEventListener('keydown', function(e) {
+            if (e.key === 'Enter' && !e.shiftKey) {
+                e.preventDefault();
+                sendMessage();
+            }
+        });
+
+        // 檢查服務狀態
+        async function checkServices() {
+            try {
+                const response = await fetch('http://localhost:3002/api/health');
+                const statusDot = document.querySelector('.status-dot');
+                if (response.ok) {
+                    statusDot.style.background = '#10b981';
+                } else {
+                    statusDot.style.background = '#ef4444';
+                }
+            } catch (error) {
+                document.querySelector('.status-dot').style.background = '#ef4444';
+            }
+        }
+
+        // 初始化
+        document.addEventListener('DOMContentLoaded', function() {
+            checkServices();
+            setInterval(checkServices, 30000); // 每30秒檢查一次
+        });
+
+        // 自動調整輸入框高度
+        document.getElementById('user-input').addEventListener('input', function() {
+            this.style.height = 'auto';
+            this.style.height = Math.min(this.scrollHeight, 200) + 'px';
+        });
+    </script>
+</body>
+</html>
