@@ -205,9 +205,9 @@ export default function MainApp() {
         id="root-outlet"
         className="h-[calc(100%-50px)] md:h-full w-full relative overflow-auto"
       >
-        <EmailVerificationGuard>
+        <div>
           <Outlet />
-        </EmailVerificationGuard>
+        </div>
       </div>
 
       {renderAuthModal && (
