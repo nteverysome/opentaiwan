@@ -1,9 +1,9 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef } from "react";
 
 interface FileItem {
   id: string;
   name: string;
-  type: 'file' | 'folder';
+  type: "file" | "folder";
   path: string;
   language?: string;
   children?: FileItem[];
@@ -30,68 +30,36 @@ const EnhancedWorkspace: React.FC<EnhancedWorkspaceProps> = ({
   onTabSwitch,
   fileTree = [],
   gitStatus,
-  terminalOutput = []
+  terminalOutput = [],
 }) => {
-  const [openFiles, setOpenFiles] = useState<string[]>(['UserProfile.tsx']);
-  const [activeFile, setActiveFile] = useState('UserProfile.tsx');
-  const [terminalInput, setTerminalInput] = useState('');
+  const [openFiles, setOpenFiles] = useState<string[]>(["UserProfile.tsx"]);
+  const [activeFile, setActiveFile] = useState("UserProfile.tsx");
+  const [terminalInput, setTerminalInput] = useState("");
   const [codeContent, setCodeContent] = useState(defaultCodeContent);
 
   const terminalRef = useRef<HTMLDivElement>(null);
 
   // 模擬的文件樹數據
-  const mockFileTree: FileItem[] = [
-    {
-      id: '1',
-      name: 'src',
-      type: 'folder',
-      path: 'src',
-      children: [
-        {
-          id: '2',
-          name: 'components',
-          type: 'folder',
-          path: 'src/components',
-          children: [
-            { id: '3', name: 'UserProfile.tsx', type: 'file', path: 'src/components/UserProfile.tsx', language: 'typescript' },
-            { id: '4', name: 'App.tsx', type: 'file', path: 'src/components/App.tsx', language: 'typescript' }
-          ]
-        },
-        {
-          id: '5',
-          name: 'types',
-          type: 'folder',
-          path: 'src/types',
-          children: [
-            { id: '6', name: 'user.ts', type: 'file', path: 'src/types/user.ts', language: 'typescript' }
-          ]
-        }
-      ]
-    },
-    { id: '7', name: 'package.json', type: 'file', path: 'package.json', language: 'json' },
-    { id: '8', name: 'README.md', type: 'file', path: 'README.md', language: 'markdown' }
-  ];
 
-  const displayFileTree = fileTree.length > 0 ? fileTree : mockFileTree;
+  const displayFileTree = fileTree || [];
 
   // 模擬的 Git 狀態
-  const mockGitStatus: GitStatus = {
-    branch: 'main',
-    staged: [],
-    modified: ['src/components/UserProfile.tsx', 'package.json'],
-    untracked: ['src/types/user.ts']
-  };
 
-  const displayGitStatus = gitStatus || mockGitStatus;
+  const displayGitStatus = gitStatus || {
+    branch: "",
+    staged: [],
+    modified: [],
+    untracked: [],
+  };
 
   // 標籤配置
   const tabs = [
-    { id: 'changes', name: 'Changes', icon: '🔄' },
-    { id: 'vscode', name: 'VS Code', icon: '💻' },
-    { id: 'terminal', name: 'Terminal', icon: '🖥️' },
-    { id: 'jupyter', name: 'Jupyter', icon: '📓' },
-    { id: 'app', name: 'App', icon: '📱' },
-    { id: 'browser', name: 'Browser', icon: '🌐' }
+    { id: "changes", name: "Changes", icon: "🔄" },
+    { id: "vscode", name: "VS Code", icon: "💻" },
+    { id: "terminal", name: "Terminal", icon: "🖥️" },
+    { id: "jupyter", name: "Jupyter", icon: "📓" },
+    { id: "app", name: "App", icon: "📱" },
+    { id: "browser", name: "Browser", icon: "🌐" },
   ];
 
   // 文件操作
@@ -102,11 +70,11 @@ const EnhancedWorkspace: React.FC<EnhancedWorkspaceProps> = ({
     setActiveFile(fileName);
 
     // 這裡應該調用 OpenHands 的文件讀取 API
-    console.log('Opening file:', filePath);
+    console.log("Opening file:", filePath);
   };
 
   const closeFile = (fileName: string) => {
-    const newOpenFiles = openFiles.filter(f => f !== fileName);
+    const newOpenFiles = openFiles.filter((f) => f !== fileName);
     setOpenFiles(newOpenFiles);
 
     if (activeFile === fileName && newOpenFiles.length > 0) {
@@ -116,51 +84,55 @@ const EnhancedWorkspace: React.FC<EnhancedWorkspaceProps> = ({
 
   // 終端操作
   const handleTerminalCommand = (e: React.KeyboardEvent) => {
-    if (e.key === 'Enter') {
+    if (e.key === "Enter") {
       const command = terminalInput;
-      setTerminalInput('');
+      setTerminalInput("");
 
       // 這裡應該調用 OpenHands 的命令執行 API
-      console.log('Executing command:', command);
+      console.log("Executing command:", command);
     }
   };
 
   // Git 操作
-  const gitCommit = () => console.log('Git commit');
-  const gitPush = () => console.log('Git push');
-  const gitPull = () => console.log('Git pull');
-  const gitReset = () => console.log('Git reset');
+  const gitCommit = () => console.log("Git commit");
+  const gitPush = () => console.log("Git push");
+  const gitPull = () => console.log("Git pull");
+  const gitReset = () => console.log("Git reset");
 
   // 匯出功能
   const exportConversation = (format: string) => {
-    console.log('Exporting as:', format);
+    console.log("Exporting as:", format);
   };
 
   // 渲染文件樹
-  const renderFileTree = (items: FileItem[], level = 0) => {
-    return items.map(item => (
+  const renderFileTree = (items: FileItem[], level = 0) =>
+    items.map((item) => (
       <div key={item.id}>
         <div
-          className={`file-tree-item ${item.type} ${activeFile === item.name ? 'active' : ''}`}
+          className={`file-tree-item ${item.type} ${activeFile === item.name ? "active" : ""}`}
           style={{ marginLeft: `${level * 16}px` }}
-          onClick={() => item.type === 'file' && openFile(item.name, item.path)}
+          onClick={() => item.type === "file" && openFile(item.name, item.path)}
         >
-          {item.type === 'folder' ? '📁' : getFileIcon(item.language)}
+          {item.type === "folder" ? "📁" : getFileIcon(item.language)}
           {item.name}
         </div>
         {item.children && renderFileTree(item.children, level + 1)}
       </div>
     ));
-  };
 
   // 獲取文件圖標
   const getFileIcon = (language?: string) => {
     switch (language) {
-      case 'typescript': return '🟦';
-      case 'javascript': return '🟨';
-      case 'json': return '📋';
-      case 'markdown': return '📝';
-      default: return '📄';
+      case "typescript":
+        return "🟦";
+      case "javascript":
+        return "🟨";
+      case "json":
+        return "📋";
+      case "markdown":
+        return "📝";
+      default:
+        return "📄";
     }
   };
 
@@ -168,10 +140,10 @@ const EnhancedWorkspace: React.FC<EnhancedWorkspaceProps> = ({
     <div className="workspace-panel">
       {/* 工作區標籤 */}
       <div className="workspace-tabs">
-        {tabs.map(tab => (
+        {tabs.map((tab) => (
           <button
             key={tab.id}
-            className={`tab ${activeTab === tab.id ? 'active' : ''}`}
+            className={`tab ${activeTab === tab.id ? "active" : ""}`}
             onClick={() => onTabSwitch(tab.id)}
           >
             {tab.icon} {tab.name}
@@ -182,29 +154,65 @@ const EnhancedWorkspace: React.FC<EnhancedWorkspaceProps> = ({
       {/* 工作區內容 */}
       <div className="workspace-content">
         {/* Changes 標籤 */}
-        <div className={`tab-content ${activeTab === 'changes' ? 'active' : ''}`}>
+        <div
+          className={`tab-content ${activeTab === "changes" ? "active" : ""}`}
+        >
           <div className="changes-content">
             <div className="git-status">
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '12px' }}>
-                <div style={{ color: '#f59e0b', fontSize: '12px', fontWeight: 600 }}>📝 Git 狀態</div>
-                <div style={{ color: '#10b981', fontSize: '10px' }}>🟢 運行中</div>
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  alignItems: "center",
+                  marginBottom: "12px",
+                }}
+              >
+                <div
+                  style={{
+                    color: "#f59e0b",
+                    fontSize: "12px",
+                    fontWeight: 600,
+                  }}
+                >
+                  📝 Git 狀態
+                </div>
+                <div style={{ color: "#10b981", fontSize: "10px" }}>
+                  🟢 運行中
+                </div>
               </div>
-              <div style={{ fontWeight: 600, marginBottom: '8px', color: '#e2e8f0' }}>
+              <div
+                style={{
+                  fontWeight: 600,
+                  marginBottom: "8px",
+                  color: "#e2e8f0",
+                }}
+              >
                 當前分支: {displayGitStatus.branch}
               </div>
-              <div style={{ color: '#94a3b8', fontSize: '14px' }}>
-                待提交: {displayGitStatus.modified.length + displayGitStatus.untracked.length} 個文件
+              <div style={{ color: "#94a3b8", fontSize: "14px" }}>
+                待提交:{" "}
+                {displayGitStatus.modified.length +
+                  displayGitStatus.untracked.length}{" "}
+                個文件
               </div>
 
               <div className="git-actions">
-                <button className="git-btn" onClick={gitCommit}>📤 Commit</button>
-                <button className="git-btn" onClick={gitPush}>🚀 Push</button>
-                <button className="git-btn" onClick={gitPull}>⬇️ Pull</button>
-                <button className="git-btn danger" onClick={gitReset}>🔄 Reset</button>
+                <button className="git-btn" onClick={gitCommit}>
+                  📤 Commit
+                </button>
+                <button className="git-btn" onClick={gitPush}>
+                  🚀 Push
+                </button>
+                <button className="git-btn" onClick={gitPull}>
+                  ⬇️ Pull
+                </button>
+                <button className="git-btn danger" onClick={gitReset}>
+                  🔄 Reset
+                </button>
               </div>
             </div>
 
-            <h3 style={{ marginBottom: '16px', color: '#e2e8f0' }}>變更文件</h3>
+            <h3 style={{ marginBottom: "16px", color: "#e2e8f0" }}>變更文件</h3>
             <div className="file-list">
               {displayGitStatus.modified.map((file, index) => (
                 <div key={index} className="file-item">
@@ -222,18 +230,32 @@ const EnhancedWorkspace: React.FC<EnhancedWorkspaceProps> = ({
 
             {/* 匯出功能 */}
             <div className="export-section">
-              <h4 style={{ color: '#e2e8f0', marginBottom: '12px' }}>📤 匯出功能</h4>
+              <h4 style={{ color: "#e2e8f0", marginBottom: "12px" }}>
+                📤 匯出功能
+              </h4>
               <div className="export-options">
-                <button className="export-btn" onClick={() => exportConversation('markdown')}>
+                <button
+                  className="export-btn"
+                  onClick={() => exportConversation("markdown")}
+                >
                   📝 Markdown
                 </button>
-                <button className="export-btn" onClick={() => exportConversation('pdf')}>
+                <button
+                  className="export-btn"
+                  onClick={() => exportConversation("pdf")}
+                >
                   📄 PDF
                 </button>
-                <button className="export-btn" onClick={() => exportConversation('json')}>
+                <button
+                  className="export-btn"
+                  onClick={() => exportConversation("json")}
+                >
                   📋 JSON
                 </button>
-                <button className="export-btn" onClick={() => exportConversation('zip')}>
+                <button
+                  className="export-btn"
+                  onClick={() => exportConversation("zip")}
+                >
                   📦 ZIP
                 </button>
               </div>
@@ -242,23 +264,25 @@ const EnhancedWorkspace: React.FC<EnhancedWorkspaceProps> = ({
         </div>
 
         {/* VS Code 標籤 */}
-        <div className={`tab-content ${activeTab === 'vscode' ? 'active' : ''}`}>
+        <div
+          className={`tab-content ${activeTab === "vscode" ? "active" : ""}`}
+        >
           <div className="vscode-content">
             <div className="file-explorer">
               <div className="explorer-header">Explorer</div>
               <div className="explorer-content">
-                <div style={{ marginBottom: '12px' }}>
+                <div style={{ marginBottom: "12px" }}>
                   <input
                     type="text"
                     placeholder="🔍 Search files..."
                     style={{
-                      width: '100%',
-                      background: '#334155',
-                      border: '1px solid #475569',
-                      borderRadius: '4px',
-                      padding: '6px 8px',
-                      color: '#e2e8f0',
-                      fontSize: '12px'
+                      width: "100%",
+                      background: "#334155",
+                      border: "1px solid #475569",
+                      borderRadius: "4px",
+                      padding: "6px 8px",
+                      color: "#e2e8f0",
+                      fontSize: "12px",
                     }}
                   />
                 </div>
@@ -268,14 +292,19 @@ const EnhancedWorkspace: React.FC<EnhancedWorkspaceProps> = ({
 
             <div className="editor-area">
               <div className="editor-tabs">
-                {openFiles.map(fileName => (
+                {openFiles.map((fileName) => (
                   <div
                     key={fileName}
-                    className={`editor-tab ${activeFile === fileName ? 'active' : ''}`}
+                    className={`editor-tab ${activeFile === fileName ? "active" : ""}`}
                     onClick={() => setActiveFile(fileName)}
                   >
                     <span>📄 {fileName}</span>
-                    <span className="close-btn" onClick={() => closeFile(fileName)}>✕</span>
+                    <span
+                      className="close-btn"
+                      onClick={() => closeFile(fileName)}
+                    >
+                      ✕
+                    </span>
                   </div>
                 ))}
               </div>
@@ -298,7 +327,9 @@ const EnhancedWorkspace: React.FC<EnhancedWorkspaceProps> = ({
         </div>
 
         {/* Terminal 標籤 */}
-        <div className={`tab-content ${activeTab === 'terminal' ? 'active' : ''}`}>
+        <div
+          className={`tab-content ${activeTab === "terminal" ? "active" : ""}`}
+        >
           <div className="terminal-content">
             <div className="terminal-header">
               <div className="terminal-tabs">
@@ -311,18 +342,7 @@ const EnhancedWorkspace: React.FC<EnhancedWorkspaceProps> = ({
               </div>
             </div>
 
-            <div className="terminal-output" ref={terminalRef}>
-              <div className="terminal-line">$ cd /workspace/openhands-project</div>
-              <div className="terminal-line">$ npm install</div>
-              <div className="terminal-line">✓ Dependencies installed successfully</div>
-              <div className="terminal-line">$ npm run dev</div>
-              <div className="terminal-line">✓ Development server started on localhost:3000</div>
-              <div className="terminal-line">$ git status</div>
-              <div className="terminal-line">On branch main</div>
-              <div className="terminal-line">Changes to be committed:</div>
-              <div className="terminal-line">  modified:   src/components/UserProfile.tsx</div>
-              <div className="terminal-line">  new file:   src/types/user.ts</div>
-            </div>
+            <div className="terminal-output" ref={terminalRef} />
 
             <div className="terminal-input">
               <span className="terminal-prompt">$</span>
@@ -338,9 +358,13 @@ const EnhancedWorkspace: React.FC<EnhancedWorkspaceProps> = ({
         </div>
 
         {/* Jupyter 標籤 */}
-        <div className={`tab-content ${activeTab === 'jupyter' ? 'active' : ''}`}>
+        <div
+          className={`tab-content ${activeTab === "jupyter" ? "active" : ""}`}
+        >
           <div className="jupyter-content">
-            <h3 style={{ marginBottom: '16px', color: '#e2e8f0' }}>🪐 Jupyter Notebook</h3>
+            <h3 style={{ marginBottom: "16px", color: "#e2e8f0" }}>
+              🪐 Jupyter Notebook
+            </h3>
 
             <div className="notebook-cell">
               <div className="cell-header">
@@ -384,14 +408,37 @@ max    35.000000  95.000000`}</pre>
         </div>
 
         {/* App 標籤 */}
-        <div className={`tab-content ${activeTab === 'app' ? 'active' : ''}`}>
+        <div className={`tab-content ${activeTab === "app" ? "active" : ""}`}>
           <div className="app-content">
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
-              <h3 style={{ color: '#e2e8f0' }}>📱 應用管理中心</h3>
-              <span style={{ background: '#f59e0b', color: '#000', padding: '2px 6px', borderRadius: '4px', fontSize: '10px' }}>BETA</span>
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "center",
+                marginBottom: "20px",
+              }}
+            >
+              <h3 style={{ color: "#e2e8f0" }}>📱 應用管理中心</h3>
+              <span
+                style={{
+                  background: "#f59e0b",
+                  color: "#000",
+                  padding: "2px 6px",
+                  borderRadius: "4px",
+                  fontSize: "10px",
+                }}
+              >
+                BETA
+              </span>
             </div>
 
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))', gap: '16px' }}>
+            <div
+              style={{
+                display: "grid",
+                gridTemplateColumns: "repeat(auto-fill, minmax(200px, 1fr))",
+                gap: "16px",
+              }}
+            >
               <div className="app-card">
                 <div className="app-icon">⚛️</div>
                 <div className="app-title">React App</div>
@@ -410,8 +457,12 @@ max    35.000000  95.000000`}</pre>
         </div>
 
         {/* Browser 標籤 */}
-        <div className={`tab-content ${activeTab === 'browser' ? 'active' : ''}`}>
-          <div style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
+        <div
+          className={`tab-content ${activeTab === "browser" ? "active" : ""}`}
+        >
+          <div
+            style={{ display: "flex", flexDirection: "column", height: "100%" }}
+          >
             <div className="browser-toolbar">
               <button className="browser-nav-btn">⬅️</button>
               <button className="browser-nav-btn">➡️</button>
@@ -426,8 +477,9 @@ max    35.000000  95.000000`}</pre>
             <div className="browser-preview">
               <div>
                 🌐 實時預覽區域
-                <br /><br />
-                <div style={{ fontSize: '14px', opacity: 0.8 }}>
+                <br />
+                <br />
+                <div style={{ fontSize: "14px", opacity: 0.8 }}>
                   您的應用程序將在這裡顯示
                   <br />
                   支持熱重載和實時調試

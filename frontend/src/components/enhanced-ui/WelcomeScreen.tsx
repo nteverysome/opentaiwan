@@ -1,4 +1,8 @@
 import React, { useState } from 'react';
+import { useUserRepositories } from "#/hooks/query/use-user-repositories";
+import { useSearchRepositories } from "#/hooks/query/use-search-repositories";
+import { useCreateConversation } from "#/hooks/query/use-create-conversation";
+import { generateAuthUrl } from "#/utils/generate-auth-url";
 
 interface User {
   id: string;
@@ -25,6 +29,9 @@ const WelcomeScreen: React.FC<WelcomeScreenProps> = ({
   onLaunchFromScratch,
   repositories = []
 }) => {
+const { data: userRepositories, isLoading: isAuthLoading } = useUserRepositories();
+const { data: searchRepositories, refetch: searchRepos } = useSearchRepositories();
+const createConversation = useCreateConversation();
   const [showAuthModal, setShowAuthModal] = useState(false);
   const [selectedRepo, setSelectedRepo] = useState('');
   const [selectedBranch, setSelectedBranch] = useState('');
@@ -46,60 +53,67 @@ const WelcomeScreen: React.FC<WelcomeScreenProps> = ({
     }
   ];
 
-  const availableRepos = repositories.length > 0 ? repositories : mockRepositories;
+  const availableRepos = userRepositories || [];
   const currentRepo = availableRepos.find(repo => repo.fullName === selectedRepo);
 
   // 處理 GitHub 登入
   const handleGitHubLogin = async () => {
     setIsLoading(true);
 
-    // 模擬登入過程 (實際應該調用 OpenHands 的認證 API)
     try {
-      await new Promise(resolve => setTimeout(resolve, 1500));
-
-      const mockUser: User = {
-        id: 'user_123',
-        name: 'John Doe',
-        email: 'john@example.com',
-        avatar: '👤'
-      };
-
-      onLogin(mockUser);
-      setShowAuthModal(false);
+      const authUrl = generateAuthUrl('github', new URL(window.location.href));
+      window.location.href = authUrl;
     } catch (error) {
-      console.error('Login failed:', error);
+      console.error('Failed to redirect to GitHub OAuth:', error);
     } finally {
       setIsLoading(false);
     }
   };
 
   // 處理從頭開始
-  const handleLaunchFromScratch = () => {
-    setIsLoading(true);
-    showDaytonaSetup('正在設置您的雲端開發環境...', () => {
-      onLaunchFromScratch();
+  const handleLaunchFromScratch = async () => {
+  setIsLoading(true);
+  try {
+    const conversation = await createConversation.mutateAsync({
+      // 傳入空的倉庫配置，表示從頭開始
     });
+    // 導航到新建的對話
+    onLaunchFromScratch(conversation);
+  } catch (error) {
+    console.error('Failed to create conversation:', error);
+  } finally {
+    setIsLoading(false);
+  }
+};
   };
 
   // 處理倉庫啟動
-  const handleLaunchRepo = () => {
-    if (!selectedRepo || !selectedBranch) {
-      alert('請選擇倉庫和分支');
-      return;
-    }
+  const handleLaunchRepo = async () => {
+  if (!selectedRepo) return;
 
-    setIsLoading(true);
-    showDaytonaSetup(`正在連接到 ${selectedRepo} (${selectedBranch})...`, () => {
-      onLaunchFromScratch();
+  setIsLoading(true);
+  try {
+    const conversation = await createConversation.mutateAsync({
+      repository: selectedRepo,
+      branch: selectedBranch
     });
-  };
+    onLaunchFromScratch(conversation);
+  } catch (error) {
+    console.error('Failed to launch repository:', error);
+  } finally {
+    setIsLoading(false);
+  }
+};
 
   // 顯示 Daytona 設置進度
-  const showDaytonaSetup = (message: string, callback: () => void) => {
-    // 這裡可以顯示進度條或載入動畫
-    console.log(message);
-    setTimeout(callback, 2500);
-  };
+
+if (isAuthLoading) {
+    return <div>Loading authentication status...</div>;
+  }
+
+  if (!userRepositories) {
+    return <div>Please log in to access your repositories.</div>;
+  }
 
   return (
     <div className="welcome-screen">

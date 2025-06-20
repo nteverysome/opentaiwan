@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 
 interface User {
   id: string;
@@ -24,7 +24,7 @@ const EnhancedHeader: React.FC<EnhancedHeaderProps> = ({
   queueCount,
   onShowSettings,
   onShowBilling,
-  onLogout
+  onLogout,
 }) => {
   const quotaPercentage = (quotaUsed / quotaTotal) * 100;
   const showQueue = quotaUsed >= 10; // 免費用戶超過10次顯示排隊
@@ -45,14 +45,20 @@ const EnhancedHeader: React.FC<EnhancedHeaderProps> = ({
 
         {/* 配額顯示 */}
         <div className="quota-display" onClick={onShowBilling}>
-          <span>{quotaUsed}/{quotaTotal}</span>
+          <span>
+            {quotaUsed}/{quotaTotal}
+          </span>
           <div className="quota-bar">
             <div
               className="quota-fill"
               style={{
                 width: `${quotaPercentage}%`,
-                background: quotaPercentage > 80 ? '#ef4444' :
-                           quotaPercentage > 60 ? '#f59e0b' : '#10b981'
+                background:
+                  quotaPercentage > 80
+                    ? "#ef4444"
+                    : quotaPercentage > 60
+                      ? "#f59e0b"
+                      : "#10b981",
               }}
             />
           </div>
@@ -61,7 +67,7 @@ const EnhancedHeader: React.FC<EnhancedHeaderProps> = ({
         {/* 狀態指示器 */}
         <div className="status-bar">
           <div className="status-indicator">
-            <div className="status-dot"></div>
+            <div className="status-dot" />
             API Ready
           </div>
         </div>
@@ -73,7 +79,7 @@ const EnhancedHeader: React.FC<EnhancedHeaderProps> = ({
             onClick={onShowBilling}
             title="User Profile & Billing"
           >
-            {user?.avatar || '👤'}
+            {user?.avatar || "👤"}
           </div>
 
           {/* 用戶下拉選單 */}
@@ -84,7 +90,7 @@ const EnhancedHeader: React.FC<EnhancedHeaderProps> = ({
             <div className="dropdown-item" onClick={onShowBilling}>
               💰 Billing
             </div>
-            <div className="dropdown-separator"></div>
+            <div className="dropdown-separator" />
             <div className="dropdown-item" onClick={onLogout}>
               🚪 Logout
             </div>

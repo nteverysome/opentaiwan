@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from 'react';
+import { WebSocketProvider } from "#/context/ws-client-provider";
+import { useCreateConversation } from "#/hooks/query/use-create-conversation";
 import WelcomeScreen from './WelcomeScreen';
 import EnhancedHeader from './EnhancedHeader';
 import EnhancedLeftPanel from './EnhancedLeftPanel';
@@ -87,7 +89,8 @@ const EnhancedLayout: React.FC<EnhancedLayoutProps> = ({ className, children }) 
   };
 
   return (
-    <div className={`enhanced-ui ${className || ''}`}>
+    <WebSocketProvider>
+      <div className={`enhanced-ui ${className || ''}`}>
       {/* 歡迎頁面 */}
       {state.showWelcome && (
         <WelcomeScreen
