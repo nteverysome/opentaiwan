@@ -10,9 +10,7 @@
     "categories": [
         "Other"
     ],
-    "activationEvents": [
-        "onCommand:openhands-hello-world.helloWorld"
-    ],
+
     "main": "./extension.js",
     "contributes": {
         "commands": [{

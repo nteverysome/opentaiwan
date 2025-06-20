@@ -15,10 +15,7 @@
       "es2022"
     ],
     "target": "es2022",
-    "types": [
-      "@react-router/node",
-      "vite/client",
-    ],
+    "types": [],
     "rootDirs": [
       ".",
       "./.react-router/types"

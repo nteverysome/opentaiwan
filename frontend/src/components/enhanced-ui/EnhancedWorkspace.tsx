@@ -1,6 +1,6 @@
 import React, { useState, useRef } from "react";
-import { CodeEditor } from "#/components/features/code-editor";
-import { FileTree } from "#/components/features/file-tree";
+// 整合 OpenHands 真實組件
+import Terminal from "#/components/features/terminal/terminal";
 
 interface FileItem {
   id: string;
@@ -41,18 +41,79 @@ const EnhancedWorkspace: React.FC<EnhancedWorkspaceProps> = ({
 
   const terminalRef = useRef<HTMLDivElement>(null);
 
-  // 模擬的文件樹數據
+  // 模擬的文件樹數據 - 將來可以替換為真實的 OpenHands 文件樹 API
+  const mockFileTree: FileItem[] = [
+    {
+      id: "1",
+      name: "src",
+      type: "folder",
+      path: "/src",
+      children: [
+        {
+          id: "2",
+          name: "components",
+          type: "folder",
+          path: "/src/components",
+          children: [
+            {
+              id: "3",
+              name: "UserProfile.tsx",
+              type: "file",
+              path: "/src/components/UserProfile.tsx",
+              language: "typescript",
+            },
+            {
+              id: "4",
+              name: "Button.tsx",
+              type: "file",
+              path: "/src/components/Button.tsx",
+              language: "typescript",
+            },
+          ],
+        },
+        {
+          id: "5",
+          name: "App.tsx",
+          type: "file",
+          path: "/src/App.tsx",
+          language: "typescript",
+        },
+        {
+          id: "6",
+          name: "index.tsx",
+          type: "file",
+          path: "/src/index.tsx",
+          language: "typescript",
+        },
+      ],
+    },
+    {
+      id: "7",
+      name: "package.json",
+      type: "file",
+      path: "/package.json",
+      language: "json",
+    },
+    {
+      id: "8",
+      name: "README.md",
+      type: "file",
+      path: "/README.md",
+      language: "markdown",
+    },
+  ];
 
-  const displayFileTree = fileTree || [];
+  const displayFileTree = fileTree.length > 0 ? fileTree : mockFileTree;
 
-  // 模擬的 Git 狀態
-
-  const displayGitStatus = gitStatus || {
-    branch: "",
+  // 模擬的 Git 狀態 - 將來可以替換為真實的 OpenHands Git API
+  const mockGitStatus = {
+    branch: "main",
     staged: [],
-    modified: [],
-    untracked: [],
+    modified: ["src/components/UserProfile.tsx", "src/App.tsx"],
+    untracked: ["src/components/NewComponent.tsx"],
   };
+
+  const displayGitStatus = gitStatus || mockGitStatus;
 
   // 標籤配置
   const tabs = [
@@ -64,19 +125,19 @@ const EnhancedWorkspace: React.FC<EnhancedWorkspaceProps> = ({
     { id: "browser", name: "Browser", icon: "🌐" },
   ];
 
-  // 文件操作
+  // 文件操作 - 將來可以整合 OpenHands 的文件 API
   const openFile = (fileName: string, filePath: string) => {
     if (!openFiles.includes(fileName)) {
       setOpenFiles([...openFiles, fileName]);
     }
     setActiveFile(fileName);
 
-    // 這裡應該調用 OpenHands 的文件讀取 API
+    // TODO: 調用 OpenHands 的文件讀取 API
     console.log("Opening file:", filePath);
   };
 
   const closeFile = (fileName: string) => {
-    const newOpenFiles = openFiles.filter((f) => f !== fileName);
+    const newOpenFiles = openFiles.filter((f: string) => f !== fileName);
     setOpenFiles(newOpenFiles);
 
     if (activeFile === fileName && newOpenFiles.length > 0) {
@@ -84,25 +145,27 @@ const EnhancedWorkspace: React.FC<EnhancedWorkspaceProps> = ({
     }
   };
 
-  // 終端操作
-  const handleTerminalCommand = (e: React.KeyboardEvent) => {
-    if (e.key === "Enter") {
-      const command = terminalInput;
-      setTerminalInput("");
-
-      // 這裡應該調用 OpenHands 的命令執行 API
-      console.log("Executing command:", command);
-    }
+  // Git 操作 - 將來可以整合 OpenHands 的 Git API
+  const gitCommit = () => {
+    // TODO: 調用 OpenHands 的 Git commit API
+    console.log("Git commit");
+  };
+  const gitPush = () => {
+    // TODO: 調用 OpenHands 的 Git push API
+    console.log("Git push");
+  };
+  const gitPull = () => {
+    // TODO: 調用 OpenHands 的 Git pull API
+    console.log("Git pull");
+  };
+  const gitReset = () => {
+    // TODO: 調用 OpenHands 的 Git reset API
+    console.log("Git reset");
   };
 
-  // Git 操作
-  const gitCommit = () => console.log("Git commit");
-  const gitPush = () => console.log("Git push");
-  const gitPull = () => console.log("Git pull");
-  const gitReset = () => console.log("Git reset");
-
-  // 匯出功能
+  // 匯出功能 - 將來可以整合 OpenHands 的匯出 API
   const exportConversation = (format: string) => {
+    // TODO: 調用 OpenHands 的匯出 API
     console.log("Exporting as:", format);
   };
 
@@ -176,10 +239,10 @@ const EnhancedWorkspace: React.FC<EnhancedWorkspaceProps> = ({
                     fontWeight: 600,
                   }}
                 >
-                  📝 Git 狀態
+                  📝 Git Status
                 </div>
                 <div style={{ color: "#10b981", fontSize: "10px" }}>
-                  🟢 運行中
+                  🟢 Active
                 </div>
               </div>
               <div
@@ -189,13 +252,13 @@ const EnhancedWorkspace: React.FC<EnhancedWorkspaceProps> = ({
                   color: "#e2e8f0",
                 }}
               >
-                當前分支: {displayGitStatus.branch}
+                Current branch: {displayGitStatus.branch}
               </div>
               <div style={{ color: "#94a3b8", fontSize: "14px" }}>
-                待提交:{" "}
+                Pending:{" "}
                 {displayGitStatus.modified.length +
                   displayGitStatus.untracked.length}{" "}
-                個文件
+                files
               </div>
 
               <div className="git-actions">
@@ -214,15 +277,15 @@ const EnhancedWorkspace: React.FC<EnhancedWorkspaceProps> = ({
               </div>
             </div>
 
-            <h3 style={{ marginBottom: "16px", color: "#e2e8f0" }}>變更文件</h3>
+            <h3 style={{ marginBottom: "16px", color: "#e2e8f0" }}>Changed Files</h3>
             <div className="file-list">
-              {displayGitStatus.modified.map((file, index) => (
+              {displayGitStatus.modified.map((file: string, index: number) => (
                 <div key={index} className="file-item">
                   <div className="file-status modified">M</div>
                   <span>{file}</span>
                 </div>
               ))}
-              {displayGitStatus.untracked.map((file, index) => (
+              {displayGitStatus.untracked.map((file: string, index: number) => (
                 <div key={index} className="file-item">
                   <div className="file-status added">A</div>
                   <span>{file}</span>
@@ -233,7 +296,7 @@ const EnhancedWorkspace: React.FC<EnhancedWorkspaceProps> = ({
             {/* 匯出功能 */}
             <div className="export-section">
               <h4 style={{ color: "#e2e8f0", marginBottom: "12px" }}>
-                📤 匯出功能
+                📤 Export Options
               </h4>
               <div className="export-options">
                 <button
@@ -265,7 +328,7 @@ const EnhancedWorkspace: React.FC<EnhancedWorkspaceProps> = ({
           </div>
         </div>
 
-        {/* VS Code 標籤 */}
+        {/* VS Code 標籤 - 保留現有實現，直到找到更好的編輯器組件 */}
         <div
           className={`tab-content ${activeTab === "vscode" ? "active" : ""}`}
         >
@@ -294,7 +357,7 @@ const EnhancedWorkspace: React.FC<EnhancedWorkspaceProps> = ({
 
             <div className="editor-area">
               <div className="editor-tabs">
-                {openFiles.map((fileName) => (
+                {openFiles.map((fileName: string) => (
                   <div
                     key={fileName}
                     className={`editor-tab ${activeFile === fileName ? "active" : ""}`}
@@ -303,7 +366,10 @@ const EnhancedWorkspace: React.FC<EnhancedWorkspaceProps> = ({
                     <span>📄 {fileName}</span>
                     <span
                       className="close-btn"
-                      onClick={() => closeFile(fileName)}
+                      onClick={(e: React.MouseEvent) => {
+                        e.stopPropagation();
+                        closeFile(fileName);
+                      }}
                     >
                       ✕
                     </span>
@@ -320,7 +386,7 @@ const EnhancedWorkspace: React.FC<EnhancedWorkspaceProps> = ({
                 <textarea
                   className="code-editor"
                   value={codeContent}
-                  onChange={(e) => setCodeContent(e.target.value)}
+                  onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => setCodeContent(e.target.value)}
                   spellCheck={false}
                 />
               </div>
@@ -328,34 +394,12 @@ const EnhancedWorkspace: React.FC<EnhancedWorkspaceProps> = ({
           </div>
         </div>
 
-        {/* Terminal 標籤 */}
+        {/* Terminal 標籤 - 使用真實的 OpenHands 終端組件 */}
         <div
           className={`tab-content ${activeTab === "terminal" ? "active" : ""}`}
         >
-          <div className="terminal-content">
-            <div className="terminal-header">
-              <div className="terminal-tabs">
-                <div className="terminal-tab active">bash</div>
-                <div className="terminal-tab">+</div>
-              </div>
-              <div>
-                <button className="action-btn">Clear</button>
-                <button className="action-btn">Split</button>
-              </div>
-            </div>
-
-            <div className="terminal-output" ref={terminalRef} />
-
-            <div className="terminal-input">
-              <span className="terminal-prompt">$</span>
-              <input
-                type="text"
-                value={terminalInput}
-                onChange={(e) => setTerminalInput(e.target.value)}
-                onKeyDown={handleTerminalCommand}
-                placeholder="輸入命令..."
-              />
-            </div>
+          <div className="terminal-content h-full">
+            <Terminal />
           </div>
         </div>
 
@@ -381,7 +425,7 @@ const EnhancedWorkspace: React.FC<EnhancedWorkspaceProps> = ({
 import numpy as np
 import matplotlib.pyplot as plt
 
-# 分析用戶數據
+# Analyze user data
 users_data = {
     'name': ['Alice', 'Bob', 'Charlie', 'Diana', 'Eve'],
     'age': [25, 30, 35, 28, 32],
@@ -390,11 +434,11 @@ users_data = {
 }
 
 df = pd.DataFrame(users_data)
-print("用戶數據統計:")
+print("User Data Statistics:")
 print(df.describe())`}</pre>
               </div>
               <div className="cell-output">
-                <pre>{`用戶數據統計:
+                <pre>{`User Data Statistics:
              age      score
 count   5.000000   5.000000
 mean   30.000000  87.600000
@@ -420,7 +464,7 @@ max    35.000000  95.000000`}</pre>
                 marginBottom: "20px",
               }}
             >
-              <h3 style={{ color: "#e2e8f0" }}>📱 應用管理中心</h3>
+              <h3 style={{ color: "#e2e8f0" }}>📱 App Management Center</h3>
               <span
                 style={{
                   background: "#f59e0b",
@@ -444,21 +488,21 @@ max    35.000000  95.000000`}</pre>
               <div className="app-card">
                 <div className="app-icon">⚛️</div>
                 <div className="app-title">React App</div>
-                <div className="app-description">現代化前端應用</div>
+                <div className="app-description">Modern Frontend Application</div>
                 <div className="app-status running">🟢 Port 3000</div>
               </div>
 
               <div className="app-card">
                 <div className="app-icon">🌐</div>
                 <div className="app-title">Express API</div>
-                <div className="app-description">後端 API 服務</div>
-                <div className="app-status stopped">⚫ 停止</div>
+                <div className="app-description">Backend API Service</div>
+                <div className="app-status stopped">⚫ Stopped</div>
               </div>
             </div>
           </div>
         </div>
 
-        {/* Browser 標籤 */}
+        {/* Browser 標籤 - 保留現有實現，直到找到正確的組件 */}
         <div
           className={`tab-content ${activeTab === "browser" ? "active" : ""}`}
         >
@@ -478,13 +522,13 @@ max    35.000000  95.000000`}</pre>
             </div>
             <div className="browser-preview">
               <div>
-                🌐 實時預覽區域
+                🌐 Live Preview Area
                 <br />
                 <br />
                 <div style={{ fontSize: "14px", opacity: 0.8 }}>
-                  您的應用程序將在這裡顯示
+                  Your application will display here
                   <br />
-                  支持熱重載和實時調試
+                  Supports hot reload and live debugging
                 </div>
               </div>
             </div>
