@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
-import { WebSocketProvider } from "#/context/ws-client-provider";
-import { useCreateConversation } from "#/hooks/query/use-create-conversation";
+import React, { useState } from 'react';
+// import { WebSocketProvider } from "#/context/ws-client-provider";
+// import { useCreateConversation } from "#/hooks/query/use-create-conversation";
 import WelcomeScreen from './WelcomeScreen';
 import EnhancedHeader from './EnhancedHeader';
 import EnhancedLeftPanel from './EnhancedLeftPanel';
@@ -17,7 +17,6 @@ interface User {
 }
 
 interface EnhancedLayoutProps {
-  // 可以接收 OpenHands 現有的 props
   className?: string;
   children?: React.ReactNode;
 }
@@ -49,7 +48,6 @@ const EnhancedLayout: React.FC<EnhancedLayoutProps> = ({ className, children }) 
     queueCount: 347
   });
 
-  // 處理登入狀態變化
   const handleLogin = (user: User) => {
     setState(prev => ({
       ...prev,
@@ -59,7 +57,6 @@ const EnhancedLayout: React.FC<EnhancedLayoutProps> = ({ className, children }) 
     }));
   };
 
-  // 處理登出
   const handleLogout = () => {
     setState(prev => ({
       ...prev,
@@ -69,7 +66,6 @@ const EnhancedLayout: React.FC<EnhancedLayoutProps> = ({ className, children }) 
     }));
   };
 
-  // 切換模態框
   const toggleModal = (modalType: 'settings' | 'billing') => {
     setState(prev => ({
       ...prev,
@@ -78,19 +74,16 @@ const EnhancedLayout: React.FC<EnhancedLayoutProps> = ({ className, children }) 
     }));
   };
 
-  // 更新左側面板寬度
   const updateLeftPanelWidth = (width: number) => {
     setState(prev => ({ ...prev, leftPanelWidth: width }));
   };
 
-  // 切換工作區標籤
   const switchTab = (tabId: string) => {
     setState(prev => ({ ...prev, activeTab: tabId }));
   };
 
   return (
-    <WebSocketProvider>
-      <div className={`enhanced-ui ${className || ''}`}>
+    <div className={`enhanced-ui ${className || ''}`}>
       {/* 歡迎頁面 */}
       {state.showWelcome && (
         <WelcomeScreen
@@ -117,8 +110,8 @@ const EnhancedLayout: React.FC<EnhancedLayoutProps> = ({ className, children }) 
           <main className="main-content">
             {/* 左側面板 */}
             <EnhancedLeftPanel
-              width={state.leftPanelWidth}
-              onWidthChange={updateLeftPanelWidth}
+              onLogin={handleLogin}
+              onLaunchFromScratch={() => setState(prev => ({ ...prev, showWelcome: false }))}
             />
 
             {/* 右側工作區 */}
@@ -141,13 +134,8 @@ const EnhancedLayout: React.FC<EnhancedLayoutProps> = ({ className, children }) 
       {/* 付費模態框 */}
       {state.showBilling && (
         <BillingModal
-          quotaUsed={state.quotaUsed}
-          quotaTotal={state.quotaTotal}
+          user={state.currentUser}
           onClose={() => toggleModal('billing')}
-          onUpgrade={(plan) => {
-            console.log('Upgrade to:', plan);
-            toggleModal('billing');
-          }}
         />
       )}
     </div>

@@ -1,4 +1,6 @@
 import React, { useState, useRef } from "react";
+import { CodeEditor } from "#/components/features/code-editor";
+import { FileTree } from "#/components/features/file-tree";
 
 interface FileItem {
   id: string;
