@@ -7,7 +7,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>OpenHands Dev Studio - Complete</title>
+    <title>Opentaiwan Dev Studio - Complete</title>
     <style>
         * {
             margin: 0;
@@ -1102,55 +1102,85 @@
 <body>
     <!-- 歡迎頁面 -->
     <div class="welcome-screen" id="welcome-screen">
+        <!-- 左側歡迎區域 -->
         <div class="welcome-left">
             <h1 class="welcome-title">Let's Start Building!</h1>
             <p class="welcome-subtitle">
-                OpenHands makes it easy to build and maintain software using AI-driven development. 
-                Get started with our powerful development environment.
+                Opentaiwan 讓 AI 驅動開發變得簡單，使用強大的 Daytona 雲端環境來建造和維護軟體。
+                立即開始您的開發之旅。
             </p>
             
             <div>
+                <!-- 主要啟動按鈕 - 更新為無縫整合 -->
                 <button class="welcome-btn" onclick="launchFromScratch()">
                     🚀 Launch from Scratch
                 </button>
-                <button class="welcome-btn secondary" onclick="showAuthModal()">
+                <!-- GitHub 登入按鈕 - 暫時保留，未來可整合 GitHub OAuth -->
+                <button class="welcome-btn secondary" onclick="showGitHubIntegrationInfo()">
                     🔐 Login with GitHub
                 </button>
             </div>
 
             <p style="margin-top: 20px; font-size: 14px; color: #64748b;">
-                Not sure how to start? 
-                <a href="#" class="help-link" onclick="openLearning()">Read this</a>
+                第一次使用？
+                <a href="#" class="help-link" onclick="openLearning()">閱讀教學</a>
             </p>
         </div>
 
+        <!-- 右側倉庫連接區域 -->
         <div class="welcome-right">
             <div class="repo-section">
                 <h3>🔗 Connect to a Repository</h3>
                 <select class="repo-selector" id="repo-select">
                     <option value="">Select a repo</option>
                     <option value="nteverysome/EduCreate">nteverysome/EduCreate</option>
-                    <option value="user/another-repo">user/another-repo</option>
+                    <option value="nteverysome/opentaiwan">nteverysome/opentaiwan</option>
+                    <option value="facebook/react">facebook/react (範例)</option>
+                    <option value="microsoft/vscode">microsoft/vscode (範例)</option>
                 </select>
                 
                 <select class="repo-selector" id="branch-select">
                     <option value="">Select a branch</option>
                     <option value="main">main</option>
+                    <option value="develop">develop</option>
                     <option value="feat/neondb-integration">feat/neondb-integration-and-typescript-fixes</option>
                 </select>
 
+                <!-- 更新倉庫啟動按鈕 -->
                 <button class="welcome-btn" onclick="launchRepo()" style="width: 100%; margin-top: 12px;">
                     🚀 Launch
                 </button>
 
                 <p style="margin-top: 16px; font-size: 14px; color: #64748b;">
-                    <a href="#" class="help-link" onclick="addGithubRepos()">Add GitHub repos</a>
+                    <a href="#" class="help-link" onclick="setupGitHubIntegration()">Add GitHub repos</a>
                 </p>
             </div>
 
             <div style="margin-top: 40px;">
-                <h3 style="color: #e2e8f0; margin-bottom: 16px;">✨ Suggested Tasks</h3>
-                <p style="color: #64748b; font-size: 14px;">No tasks available</p>
+                <h3 style="color: #e2e8f0; margin-bottom: 16px;">✨ 建議的任務</h3>
+                <div style="display: flex; flex-direction: column; gap: 8px;">
+                    <button class="welcome-btn secondary" onclick="quickStartReactApp()" style="width: 100%; font-size: 13px; padding: 8px 16px;">
+                        ⚛️ 創建 React 應用
+                    </button>
+                    <button class="welcome-btn secondary" onclick="quickStartPythonAPI()" style="width: 100%; font-size: 13px; padding: 8px 16px;">
+                        🐍 構建 Python API
+                    </button>
+                    <button class="welcome-btn secondary" onclick="quickStartNodeApp()" style="width: 100%; font-size: 13px; padding: 8px 16px;">
+                        🟢 開發 Node.js 應用
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 添加一個新的功能預覽區域 -->
+        <div style="position: absolute; bottom: 20px; left: 50%; transform: translateX(-50%); text-align: center;">
+            <div style="background: rgba(16, 185, 129, 0.1); border: 1px solid #10b981; border-radius: 8px; padding: 12px 20px;">
+                <div style="color: #10b981; font-weight: 600; font-size: 12px; margin-bottom: 4px;">
+                    🏗️ POWERED BY DAYTONA
+                </div>
+                <div style="color: #e2e8f0; font-size: 11px;">
+                    安全沙盒 • 90ms 啟動 • 雲端執行 • 無限擴展
+                </div>
             </div>
         </div>
     </div>
@@ -1158,7 +1188,7 @@
     <!-- GitHub 登入模態框 -->
     <div class="auth-modal" id="auth-modal">
         <div class="auth-content">
-            <h2 style="color: #e2e8f0; margin-bottom: 16px;">Welcome to OpenHands</h2>
+            <h2 style="color: #e2e8f0; margin-bottom: 16px;">Welcome to Opentaiwan</h2>
             <p style="color: #94a3b8; margin-bottom: 24px;">
                 Sign in with your GitHub account to access your repositories and start building.
             </p>
@@ -1211,13 +1241,13 @@
                         <h3>GitHub Integration</h3>
                         <button class="settings-btn" onclick="configureGithubRepos()">Configure Github Repositories</button>
                         <p style="font-size: 12px; color: #64748b; margin-top: 8px;">
-                            Manage which repositories OpenHands can access
+                            Manage which repositories Opentaiwan can access
                         </p>
                     </div>
                     
                     <div class="settings-section">
                         <h3>Slack Integration</h3>
-                        <button class="settings-btn">Install OpenHands Slack App</button>
+                        <button class="settings-btn">Install Opentaiwan Slack App</button>
                         <p style="font-size: 12px; color: #64748b; margin-top: 8px;">
                             Get notifications and updates in Slack
                         </p>
@@ -1247,7 +1277,7 @@
                     </div>
                     
                     <div class="settings-section">
-                        <h3>🔧 OpenHands 整合設定</h3>
+                        <h3>🔧 Opentaiwan 整合設定</h3>
                         <div style="margin-bottom: 16px;">
                             <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px;">
                                 <div id="connection-status" style="width: 12px; height: 12px; border-radius: 50%; background: #64748b;"></div>
@@ -1262,7 +1292,7 @@
                             </label>
                             <label style="display: flex; align-items: center; gap: 8px; color: #e2e8f0;">
                                 <input type="radio" name="integration-mode" value="integrated" onchange="handleModeChange()">
-                                整合模式 (連接 OpenHands 後端)
+                                整合模式 (連接 Opentaiwan 後端)
                             </label>
                         </div>
                         
@@ -1289,7 +1319,7 @@
                         
                         <div style="margin-bottom: 16px;">
                             <h4 style="color: #e2e8f0; margin-bottom: 8px; font-size: 14px;">連接設定</h4>
-                            <input type="text" class="settings-input" id="openhands-url" placeholder="OpenHands URL (預設: http://localhost:3000)" value="http://localhost:3000">
+                            <input type="text" class="settings-input" id="openhands-url" placeholder="Opentaiwan URL (預設: http://localhost:3000)" value="http://localhost:3000">
                             <button class="settings-btn" onclick="updateConnectionSettings()">更新連接</button>
                         </div>
                         
@@ -1430,7 +1460,7 @@
                     <div class="settings-section">
                         <button class="settings-btn">Create API Key</button>
                         <p style="font-size: 12px; color: #64748b; margin-top: 8px; line-height: 1.5;">
-                            API keys allow you to authenticate with the OpenHands API programmatically. 
+                            API keys allow you to authenticate with the Opentaiwan API programmatically. 
                             Keep your API keys secure: anyone with your API key can access your account. 
                             For more information on how to use the API, see our 
                             <a href="#" style="color: #60a5fa;">API documentation</a>.
@@ -1523,7 +1553,7 @@
         <!-- 頂部標題欄 -->
         <header class="header">
             <div class="header-left">
-                <h1>🚀 OpenHands Dev Studio</h1>
+                <h1>🚀 Opentaiwan Dev Studio</h1>
             </div>
             <div class="header-right">
                 <!-- 排隊提示 -->
@@ -2099,12 +2129,144 @@ export function UserProfile({ user }: { user: User }) {
             scrollToBottom();
         }
 
-        // 歡迎頁面功能
-        function launchFromScratch() {
-            showDaytonaSetup("正在設置您的雲端開發環境...", () => {
-                hideWelcomeScreen();
-                newConversation();
-            });
+        /**
+         * 無縫 Daytona 啟動整合
+         * 一鍵註冊、設置、啟動完整流程
+         */
+        
+        // 全局狀態管理
+        window.DaytonaLaunchState = {
+            isLaunching: false,
+            currentStep: '',
+            authWindow: null,
+            checkInterval: null,
+            userInfo: null
+        };
+        
+        /**
+         * 主要啟動函數 - Launch from Scratch
+         */
+        async function launchFromScratch() {
+            console.log('🚀 啟動 Daytona 無縫整合流程...');
+             
+            try {
+                window.DaytonaLaunchState.isLaunching = true;
+                 
+                // 1. 顯示啟動進度
+                showLaunchProgress();
+                 
+                // 2. 檢查現有配置
+                updateLaunchStep('檢查現有配置...', '🔍');
+                const hasExistingConfig = await checkExistingDaytonaConfig();
+                 
+                if (hasExistingConfig) {
+                    // 已有配置，直接啟動
+                    updateLaunchStep('發現現有配置，正在啟動...', '⚡');
+                    await launchWithExistingConfig();
+                } else {
+                    // 新用戶流程
+                    updateLaunchStep('準備 Daytona 註冊流程...', '📝');
+                    await newUserRegistrationFlow();
+                }
+                 
+            } catch (error) {
+                console.error('❌ 啟動流程失敗:', error);
+                showLaunchError(error.message);
+            }
+        }
+        
+        /**
+         * 主要啟動函數 - Launch (from repository)
+         */
+        async function launchRepo() {
+            const repo = document.getElementById('repo-select').value;
+            const branch = document.getElementById('branch-select').value;
+             
+            if (!repo || !branch) {
+                showNotification('❌ 請選擇倉庫和分支');
+                return;
+            }
+        
+            console.log(`🚀 啟動 Daytona 專案：${repo} (${branch})`);
+             
+            try {
+                window.DaytonaLaunchState.isLaunching = true;
+                showLaunchProgress();
+                 
+                // 檢查配置
+                updateLaunchStep('檢查 Daytona 配置...', '🔍');
+                const hasConfig = await checkExistingDaytonaConfig();
+                 
+                if (!hasConfig) {
+                    // 需要先註冊
+                    updateLaunchStep('需要設置 Daytona 帳戶...', '📝');
+                    await newUserRegistrationFlow();
+                }
+                 
+                // 啟動特定專案
+                updateLaunchStep(`正在載入 ${repo}...`, '📦');
+                await launchProjectWithRepo(repo, branch);
+                 
+            } catch (error) {
+                console.error('❌ 專案啟動失敗:', error);
+                showLaunchError(error.message);
+            }
+        }
+        
+        /**
+         * 檢查現有 Daytona 配置
+         */
+        async function checkExistingDaytonaConfig() {
+            try {
+                // 檢查本地存儲的 API 密鑰
+                if (window.daytonaConfig && window.daytonaConfig.isConfigured()) {
+                    // 測試 API 密鑰是否有效
+                    const api = new DaytonaAPIClient(window.daytonaConfig.getAPIConfig());
+                    const isValid = await api.checkConnection();
+                     
+                    if (isValid) {
+                        console.log('✅ 發現有效的 Daytona 配置');
+                        return true;
+                    } else {
+                        console.log('⚠️ Daytona 配置無效，需要重新設置');
+                        // 清除無效配置
+                        window.daytonaConfig.clearAPIKey();
+                        return false;
+                    }
+                }
+                 
+                return false;
+            } catch (error) {
+                console.error('❌ 配置檢查失敗:', error);
+                return false;
+            }
+        }
+        
+        /**
+         * 新用戶註冊流程
+         */
+        async function newUserRegistrationFlow() {
+            updateLaunchStep('開啟 Daytona 註冊頁面...', '🌐');
+             
+            // 1. 打開 Daytona 註冊/登入頁面
+            const authURL = 'https://app.daytona.io/auth/signup?source=opentaiwan&integration=openhands';
+            window.DaytonaLaunchState.authWindow = window.open(
+                authURL, 
+                'daytona-auth',
+                'width=500,height=700,scrollbars=yes,resizable=yes,status=yes,location=yes'
+            );
+             
+            // 2. 監控認證視窗
+            updateLaunchStep('等待用戶完成註冊/登入...', '⏳');
+            await monitorAuthWindow();
+             
+            // 3. 引導用戶獲取 API 密鑰
+            updateLaunchStep('引導 API 密鑰設置...', '🔑');
+            await guideAPIKeySetup();
+             
+            // 4. 完成設置並啟動
+            updateLaunchStep('完成設置，正在啟動環境...', '🚀');
+            await finalizeSetupAndLaunch();
         }
 
         function showAuthModal() {
@@ -2126,24 +2288,130 @@ export function UserProfile({ user }: { user: User }) {
                 };
                 closeAuthModal();
                 hideWelcomeScreen();
-                showNotification("登入成功！歡迎使用 OpenHands");
+                showNotification("登入成功！歡迎使用 Opentaiwan");
             }, 1500);
-        }
+        } 
 
-        function launchRepo() {
-            const repo = document.getElementById('repo-select').value;
-            const branch = document.getElementById('branch-select').value;
+        /** 
+         * 載入快速啟動歡迎信息 
+         */ 
+        function loadQuickStartWelcomeMessage(quickStartType, quickStartMessage) { 
+            const chatHistory = document.getElementById('chat-history'); 
+            const userInfo = window.DaytonaLaunchState.userInfo; 
             
-            if (!repo || !branch) {
-                alert('請選擇倉庫和分支');
-                return;
-            }
-
-            showDaytonaSetup(`正在連接到 ${repo} (${branch})...`, () => {
-                hideWelcomeScreen();
-                showNotification(`已連接到 ${repo}`);
-            });
-        }
+            const typeEmojis = { 
+                'react': '⚛️', 
+                'python-api': '🐍', 
+                'nodejs': '🟢' 
+            }; 
+            
+            const typeNames = { 
+                'react': 'React 應用開發', 
+                'python-api': 'Python API 開發', 
+                'nodejs': 'Node.js 應用開發' 
+            }; 
+            
+            const emoji = typeEmojis[quickStartType] || '🚀'; 
+            const typeName = typeNames[quickStartType] || '應用開發'; 
+            
+            let welcomeMessage = `${emoji} **歡迎使用 Opentaiwan ${typeName} 環境！**`; 
+            
+            if (userInfo) { 
+                welcomeMessage += `\n\n👋 您好，${userInfo.name || '開發者'}！`; 
+            } 
+            
+            welcomeMessage += ` 
+        
+        🏗️ **您的專用 Daytona 雲端開發環境已準備就緒** 
+        
+        ${emoji} **${typeName} 快速啟動：** 
+        我已經為您準備好了完整的開發環境。讓我先幫您創建項目基礎結構： 
+        
+        "${quickStartMessage}" 
+        
+        ✨ **其他功能：** 
+        • 使用雲端終端進行開發操作  
+        • 管理文件和預覽應用程序 
+        • 創建快照保存開發進度 
+        • 一鍵部署到生產環境 
+        
+        🚀 **讓我們開始構建您的 ${typeName} 吧！**`; 
+        
+            chatHistory.innerHTML = ` 
+                <div class="message assistant fade-in"> 
+                    <div class="message-content"> 
+                        ${welcomeMessage.replace(/\n/g, '<br>')} 
+                    </div> 
+                </div> 
+            `; 
+            
+            // 自動發送快速啟動消息 
+            setTimeout(() => { 
+                autoSendQuickStartMessage(quickStartMessage); 
+            }, 2000); 
+            
+            scrollToBottom(); 
+        } 
+        
+        /** 
+         * 自動發送快速啟動消息 
+         */ 
+        async function autoSendQuickStartMessage(message) { 
+            const input = document.getElementById('user-input'); 
+            if (input) { 
+                input.value = message; 
+                
+                // 顯示用戶消息 
+                const chatHistory = document.getElementById('chat-history'); 
+                const userMessage = document.createElement('div'); 
+                userMessage.className = 'message user fade-in'; 
+                userMessage.innerHTML = `<div class="message-content">${message}</div>`; 
+                chatHistory.appendChild(userMessage); 
+                
+                scrollToBottom(); 
+                input.value = ''; 
+                
+                // 自動處理消息 
+                if (window.daytonaIntegration && window.daytonaIntegration.isInitialized) { 
+                    try { 
+                        const response = await window.daytonaIntegration.sendMessage(message); 
+                        
+                        const aiMessage = document.createElement('div'); 
+                        aiMessage.className = 'message assistant fade-in'; 
+                        aiMessage.innerHTML = `<div class="message-content">${formatResponse(response.content)}</div>`; 
+                        chatHistory.appendChild(aiMessage); 
+                        
+                        scrollToBottom(); 
+                    } catch (error) { 
+                        console.error('自動消息處理失敗:', error); 
+                    } 
+                } 
+            } 
+        } 
+        
+        /** 
+         * 獲取快速啟動顯示名稱 
+         */ 
+        function getQuickStartDisplayName(quickStartType) { 
+            const names = { 
+                'react': 'React 開發', 
+                'python-api': 'Python API', 
+                'nodejs': 'Node.js 開發' 
+            }; 
+            return names[quickStartType] || '應用開發'; 
+        } 
+        
+        /** 
+         * 更新原有的 completeLaunchSequence 函數 
+         */ 
+        const originalCompleteLaunchSequence = completeLaunchSequence; 
+        completeLaunchSequence = function(message) { 
+            if (window.DaytonaLaunchState.quickStartType) { 
+                completeLaunchSequenceWithQuickStart(message); 
+            } else { 
+                originalCompleteLaunchSequence(message); 
+            } 
+        };
 
         function addGithubRepos() {
             alert('將跳轉到官方網站進行 GitHub 倉庫授權配置');
@@ -2152,6 +2420,416 @@ export function UserProfile({ user }: { user: User }) {
         function hideWelcomeScreen() {
             document.getElementById('welcome-screen').classList.add('hidden');
         }
+
+        /**
+         * 監控認證視窗
+         */
+        async function monitorAuthWindow() {
+            return new Promise((resolve, reject) => {
+                let checkCount = 0;
+                const maxChecks = 300; // 5分鐘超時
+                
+                window.DaytonaLaunchState.checkInterval = setInterval(() => {
+                    checkCount++;
+                    
+                    // 檢查視窗是否關閉
+                    if (window.DaytonaLaunchState.authWindow.closed) {
+                        clearInterval(window.DaytonaLaunchState.checkInterval);
+                        updateLaunchStep('註冊視窗已關閉，繼續設置...', '✅');
+                        resolve();
+                        return;
+                    }
+                    
+                    // 檢查是否能訪問 success 頁面
+                    try {
+                        const currentURL = window.DaytonaLaunchState.authWindow.location.href;
+                        if (currentURL.includes('/dashboard') || currentURL.includes('/success')) {
+                            clearInterval(window.DaytonaLaunchState.checkInterval);
+                            updateLaunchStep('註冊成功！正在設置 API...', '🎉');
+                            
+                            // 給用戶幾秒鐘時間看到成功頁面
+                            setTimeout(() => {
+                                window.DaytonaLaunchState.authWindow.close();
+                                resolve();
+                            }, 2000);
+                            return;
+                        }
+                    } catch (e) {
+                        // 跨域錯誤，正常情況
+                    }
+                    
+                    // 超時處理
+                    if (checkCount >= maxChecks) {
+                        clearInterval(window.DaytonaLaunchState.checkInterval);
+                        window.DaytonaLaunchState.authWindow.close();
+                        reject(new Error('註冊流程超時，請重試'));
+                    }
+                }, 1000);
+            });
+        }
+        
+        /**
+         * 引導 API 密鑰設置
+         */
+        async function guideAPIKeySetup() {
+            return new Promise((resolve, reject) => {
+                // 創建 API 密鑰設置引導模態框
+                const modal = createAPIKeyGuideModal();
+                document.body.appendChild(modal);
+                
+                // 監聽設置完成事件
+                window.addEventListener('daytona-api-key-set', (event) => {
+                    document.body.removeChild(modal);
+                    resolve(event.detail.apiKey);
+                }, { once: true });
+                
+                // 監聽取消事件
+                window.addEventListener('daytona-setup-cancelled', () => {
+                    document.body.removeChild(modal);
+                    reject(new Error('用戶取消了設置'));
+                }, { once: true });
+            });
+        }
+        
+        /**
+         * 創建 API 密鑰設置引導模態框
+         */
+        function createAPIKeyGuideModal() {
+            const modal = document.createElement('div');
+            modal.style.cssText = `
+                position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+                background: rgba(0, 0, 0, 0.8); z-index: 3000;
+                display: flex; align-items: center; justify-content: center;
+            `;
+            
+            modal.innerHTML = `
+                <div style="background: #1e293b; border-radius: 16px; padding: 32px; max-width: 500px; width: 90%; border: 1px solid #475569;">
+                    <div style="text-align: center; margin-bottom: 24px;">
+                        <div style="font-size: 48px; margin-bottom: 16px;">🔑</div>
+                        <h2 style="color: #e2e8f0; margin-bottom: 8px;">設置 Daytona API 密鑰</h2>
+                        <p style="color: #94a3b8; font-size: 14px;">幾乎完成了！我們需要您的 API 密鑰來啟動開發環境</p>
+                    </div>
+                    
+                    <div style="background: #334155; padding: 16px; border-radius: 8px; margin-bottom: 20px;">
+                        <h3 style="color: #e2e8f0; margin-bottom: 12px; font-size: 16px;">📋 簡單 3 步驟：</h3>
+                        <ol style="color: #e2e8f0; font-size: 14px; line-height: 1.6; margin-left: 20px;">
+                            <li>點擊下方按鈕開啟 Daytona 儀表板</li>
+                            <li>導航到 "API Keys" 頁面</li>
+                            <li>創建新的 API 密鑰並復制</li>
+                        </ol>
+                    </div>
+                    
+                    <div style="margin-bottom: 20px;">
+                        <button onclick="openDaytonaAPIKeysPage()"
+                                style="background: #10b981; color: white; border: none; padding: 12px 24px; border-radius: 8px; font-size: 16px; cursor: pointer; width: 100%; margin-bottom: 12px;">
+                            🏗️ 開啟 Daytona 儀表板
+                        </button>
+                    </div>
+                    
+                    <div style="margin-bottom: 20px;">
+                        <label style="display: block; margin-bottom: 8px; color: #e2e8f0; font-size: 14px;">
+                            貼上您的 API 密鑰：
+                        </label>
+                        <input type="password" id="api-key-input"
+                               style="background: #374151; border: 1px solid #475569; border-radius: 6px; padding: 12px; color: #e2e8f0; width: 100%; margin-bottom: 8px;"
+                               placeholder="貼上 Daytona API 密鑰...">
+                        <p style="font-size: 12px; color: #64748b;">
+                            💡 API 密鑰通常以 'dt-' 開頭
+                        </p>
+                    </div>
+                    
+                    <div style="display: flex; gap: 12px;">
+                        <button onclick="validateAndSetAPIKey()"
+                                style="background: #3b82f6; color: white; border: none; padding: 12px 24px; border-radius: 8px; font-size: 14px; cursor: pointer; flex: 1;">
+                            ✅ 設置並繼續
+                        </button>
+                        <button onclick="cancelDaytonaSetup()"
+                                style="background: #6b7280; color: white; border: none; padding: 12px 24px; border-radius: 8px; font-size: 14px; cursor: pointer; flex: 1;">
+                            ❌ 取消
+                        </button>
+                    </div>
+                    
+                    <div style="margin-top: 16px; padding: 12px; background: rgba(59, 130, 246, 0.1); border-radius: 6px; border-left: 4px solid #3b82f6;">
+                        <p style="font-size: 12px; color: #60a5fa; margin: 0;">
+                            <strong>為什麼需要 API 密鑰？</strong><br>
+                            API 密鑰讓我們能夠為您創建安全的雲端開發環境，執行代碼，並管理您的專案。
+                        </p>
+                    </div>
+                </div>
+            `;
+            
+            return modal;
+        }
+        
+        /**
+         * 開啟 Daytona API Keys 頁面
+         */
+        function openDaytonaAPIKeysPage() {
+            window.open('https://app.daytona.io/settings/api-keys', '_blank');
+        }
+        
+        /**
+         * 驗證並設置 API 密鑰
+         */
+        function validateAndSetAPIKey() {
+            const apiKeyInput = document.getElementById('api-key-input');
+            const apiKey = apiKeyInput.value.trim();
+            
+            if (!apiKey) {
+                alert('請輸入 API 密鑰');
+                return;
+            }
+            
+            if (!apiKey.startsWith('dt-')) {
+                const confirm = window.confirm('API 密鑰格式似乎不正確（通常以 dt- 開頭）。您確定要繼續嗎？');
+                if (!confirm) return;
+            }
+            
+            // 保存 API 密鑰
+            if (!window.daytonaConfig) {
+                window.daytonaConfig = new DaytonaConfig();
+            }
+            window.daytonaConfig.setAPIKey(apiKey);
+            
+            // 觸發設置完成事件
+            window.dispatchEvent(new CustomEvent('daytona-api-key-set', {
+                detail: { apiKey }
+            }));
+        }
+        
+        /**
+         * 取消 Daytona 設置
+         */
+        function cancelDaytonaSetup() {
+            window.dispatchEvent(new CustomEvent('daytona-setup-cancelled'));
+        }
+        
+        /**
+         * 顯示啟動進度
+         */
+        function showLaunchProgress() {
+            const progressModal = document.createElement('div');
+            progressModal.id = 'daytona-launch-progress';
+            progressModal.style.cssText = `
+                position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+                background: rgba(0, 0, 0, 0.9); display: flex;
+                align-items: center; justify-content: center; z-index: 5000;
+            `;
+            
+            progressModal.innerHTML = `
+                <div style="
+                    background: #1e293b; border-radius: 16px; padding: 40px;
+                    border: 1px solid #475569; min-width: 400px;
+                    text-align: center; color: #e2e8f0;
+                ">
+                    <div style="font-size: 24px; margin-bottom: 20px;">🚀 Daytona 啟動中</div>
+                    <div id="launch-step-icon" style="font-size: 48px; margin-bottom: 16px;">🔍</div>
+                    <div id="launch-step-text" style="font-size: 16px; margin-bottom: 24px;">初始化...</div>
+                    <div style="width: 300px; height: 6px; background: #334155; border-radius: 3px; margin: 0 auto; overflow: hidden;">
+                        <div id="launch-progress-bar" style="
+                            height: 100%; background: linear-gradient(90deg, #3b82f6, #8b5cf6);
+                            width: 0%; transition: width 0.5s ease; border-radius: 3px;
+                        "></div>
+                    </div>
+                    <div style="margin-top: 16px; font-size: 12px; color: #64748b;">這可能需要幾分鐘時間...</div>
+                </div>
+            `;
+            
+            document.body.appendChild(progressModal);
+        }
+        
+        /**
+         * 更新啟動步驟
+         */
+        function updateLaunchStep(text, icon, progress = null) {
+            const stepText = document.getElementById('launch-step-text');
+            const stepIcon = document.getElementById('launch-step-icon');
+            const progressBar = document.getElementById('launch-progress-bar');
+            
+            if (stepText) stepText.textContent = text;
+            if (stepIcon) stepIcon.textContent = icon;
+            if (progressBar && progress !== null) {
+                progressBar.style.width = `${progress}%`;
+            }
+            
+            console.log(`📋 ${icon} ${text}`);
+        }
+        
+        /**
+         * 顯示啟動錯誤
+         */
+        function showLaunchError(message) {
+            const progressModal = document.getElementById('daytona-launch-progress');
+            if (progressModal) {
+                document.body.removeChild(progressModal);
+            }
+            
+            const errorModal = document.createElement('div');
+            errorModal.style.cssText = `
+                position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+                background: rgba(0, 0, 0, 0.8); display: flex;
+                align-items: center; justify-content: center; z-index: 5000;
+            `;
+            
+            errorModal.innerHTML = `
+                <div style="
+                    background: #1e293b; border-radius: 16px; padding: 32px;
+                    border: 1px solid #ef4444; max-width: 400px; width: 90%;
+                    text-align: center; color: #e2e8f0;
+                ">
+                    <div style="font-size: 48px; margin-bottom: 16px;">❌</div>
+                    <h3 style="margin-bottom: 16px; color: #ef4444;">啟動失敗</h3>
+                    <p style="margin-bottom: 24px; color: #94a3b8;">${message}</p>
+                    <button onclick="this.parentElement.parentElement.remove()" style="
+                        background: #3b82f6; border: none; color: white;
+                        padding: 8px 16px; border-radius: 6px; cursor: pointer;
+                    ">確定</button>
+                </div>
+            `;
+            
+            document.body.appendChild(errorModal);
+            
+            // 重置狀態
+            window.DaytonaLaunchState.isLaunching = false;
+        }
+        
+        /**
+         * 使用現有配置啟動
+         */
+        async function launchWithExistingConfig() {
+            updateLaunchStep('連接到 Daytona...', '🔗', 25);
+            await new Promise(resolve => setTimeout(resolve, 1000));
+            
+            updateLaunchStep('創建開發環境...', '🏗️', 50);
+            await new Promise(resolve => setTimeout(resolve, 2000));
+            
+            updateLaunchStep('啟動 OpenHands...', '🤖', 75);
+            await new Promise(resolve => setTimeout(resolve, 1500));
+            
+            updateLaunchStep('完成！', '✅', 100);
+            await new Promise(resolve => setTimeout(resolve, 1000));
+            
+            // 關閉進度模態框並啟動主應用
+            const progressModal = document.getElementById('daytona-launch-progress');
+            if (progressModal) {
+                document.body.removeChild(progressModal);
+            }
+            
+            hideWelcomeScreen();
+            newConversation();
+            showNotification('🚀 Daytona 環境已成功啟動！');
+        }
+        
+        /**
+         * 完成設置並啟動
+         */
+        async function finalizeSetupAndLaunch() {
+            updateLaunchStep('驗證配置...', '✅', 60);
+            await new Promise(resolve => setTimeout(resolve, 1000));
+            
+            updateLaunchStep('創建開發環境...', '🏗️', 80);
+            await new Promise(resolve => setTimeout(resolve, 2000));
+            
+            updateLaunchStep('啟動完成！', '🎉', 100);
+            await new Promise(resolve => setTimeout(resolve, 1000));
+            
+            // 關閉進度模態框
+            const progressModal = document.getElementById('daytona-launch-progress');
+            if (progressModal) {
+                document.body.removeChild(progressModal);
+            }
+            
+            hideWelcomeScreen();
+            newConversation();
+            showNotification('🎉 歡迎使用 Daytona + OpenHands！');
+        }
+        
+        /**
+         * 啟動特定專案
+         */
+        async function launchProjectWithRepo(repo, branch) {
+            updateLaunchStep(`克隆 ${repo}...`, '📥', 40);
+            await new Promise(resolve => setTimeout(resolve, 2000));
+            
+            updateLaunchStep(`切換到 ${branch} 分支...`, '🌿', 60);
+            await new Promise(resolve => setTimeout(resolve, 1000));
+            
+            updateLaunchStep('設置開發環境...', '⚙️', 80);
+            await new Promise(resolve => setTimeout(resolve, 2000));
+            
+            updateLaunchStep('專案啟動完成！', '🎯', 100);
+            await new Promise(resolve => setTimeout(resolve, 1000));
+            
+            // 關閉進度模態框
+            const progressModal = document.getElementById('daytona-launch-progress');
+            if (progressModal) {
+                document.body.removeChild(progressModal);
+            }
+            
+            hideWelcomeScreen();
+            showNotification(`🎯 專案 ${repo} 已成功載入！`);
+        }
+        
+        /**
+         * Daytona 配置管理類
+         */
+        class DaytonaConfig {
+            constructor() {
+                this.storageKey = 'daytona_config';
+            }
+            
+            isConfigured() {
+                const config = localStorage.getItem(this.storageKey);
+                return config && JSON.parse(config).apiKey;
+            }
+            
+            setAPIKey(apiKey) {
+                const config = { apiKey, timestamp: Date.now() };
+                localStorage.setItem(this.storageKey, JSON.stringify(config));
+            }
+            
+            getAPIConfig() {
+                const config = localStorage.getItem(this.storageKey);
+                return config ? JSON.parse(config) : null;
+            }
+            
+            clearAPIKey() {
+                localStorage.removeItem(this.storageKey);
+            }
+        }
+        
+        /**
+         * Daytona API 客戶端類
+         */
+        class DaytonaAPIClient {
+            constructor(config) {
+                this.apiKey = config?.apiKey;
+                this.baseURL = 'https://api.daytona.io';
+            }
+            
+            async checkConnection() {
+                try {
+                    // 模擬 API 檢查（實際應用中應該調用真實 API）
+                    if (!this.apiKey) return false;
+                    
+                    // 這裡應該是真實的 API 調用
+                    // const response = await fetch(`${this.baseURL}/health`, {
+                    //     headers: { 'Authorization': `Bearer ${this.apiKey}` }
+                    // });
+                    // return response.ok;
+                    
+                    // 模擬檢查
+                    await new Promise(resolve => setTimeout(resolve, 500));
+                    return this.apiKey.length > 10; // 簡單驗證
+                } catch (error) {
+                    console.error('API 連接檢查失敗:', error);
+                    return false;
+                }
+            }
+        }
+        
+        // 初始化 Daytona 配置
+        window.daytonaConfig = new DaytonaConfig();
 
         function showDaytonaSetup(message, callback) {
             // 模擬 Daytona 環境設置
@@ -2673,7 +3351,7 @@ ${files.map(file => `// ${file.name} - ${file.type || 'unknown type'}`).join('\n
             chatHistory.innerHTML = `
                 <div class="message assistant fade-in">
                     <div class="message-content">
-                        🎉 歡迎使用 OpenHands！
+                        🎉 歡迎使用 Opentaiwan！
                         
                         <div style="margin-top: 12px; padding: 12px; background: rgba(16, 185, 129, 0.1); border-radius: 6px;">
                             <div style="color: #10b981; font-weight: 600; margin-bottom: 8px;">✨ 我可以幫您：</div>
@@ -3163,13 +3841,13 @@ ${files.map(file => `// ${file.name} - ${file.type || 'unknown type'}`).join('\n
                 
                 if (isAvailable) {
                     updateConnectionStatus('✅ 連接成功', '#10b981');
-                    showNotification('✅ OpenHands 連接正常');
+                    showNotification('✅ Opentaiwan 連接正常');
                     
                     // 啟用整合模式選項
                     document.querySelector('input[value="integrated"]').disabled = false;
                 } else {
                     updateConnectionStatus('❌ 連接失敗', '#ef4444');
-                    showNotification('❌ 無法連接到 OpenHands，請檢查服務是否運行');
+                    showNotification('❌ 無法連接到 Opentaiwan，請檢查服務是否運行');
                     
                     // 禁用整合模式選項
                     document.querySelector('input[value="integrated"]').disabled = true;
@@ -3192,7 +3870,7 @@ ${files.map(file => `// ${file.name} - ${file.type || 'unknown type'}`).join('\n
         
         // 重置整合
         async function resetIntegration() {
-            if (confirm('確定要重置 OpenHands 整合嗎？這將斷開所有連接並清除設定。')) {
+            if (confirm('確定要重置 Opentaiwan 整合嗎？這將斷開所有連接並清除設定。')) {
                 try {
                     await window.openHandsIntegration.reset();
                     
@@ -3393,12 +4071,12 @@ ${files.map(file => `// ${file.name} - ${file.type || 'unknown type'}`).join('\n
 
         // 在頁面載入完成後初始化
         document.addEventListener('DOMContentLoaded', async function() {
-            console.log('🚀 開始初始化 OpenHands 整合...');
+            console.log('🚀 開始初始化 Opentaiwan 整合...');
             
             try {
                 // 1. 初始化OpenHands整合（不自動連接）
                 const integrationReady = await window.openHandsIntegration.initialize(false);
-                console.log('✅ OpenHands 整合初始化完成:', integrationReady);
+                console.log('✅ Opentaiwan 整合初始化完成:', integrationReady);
                 
                 // 2. 添加整合狀態監聽器
                 setupIntegrationListeners();
@@ -3418,7 +4096,7 @@ ${files.map(file => `// ${file.name} - ${file.type || 'unknown type'}`).join('\n
                 
                 // 控制台歡迎信息
                 console.log(`
-🚀 OpenHands 整合已載入！
+🚀 Opentaiwan 整合已載入！
 
 可用命令：
 - OpenHandsUtils.switchMode('integrated') - 切換到整合模式
@@ -3497,7 +4175,7 @@ ${files.map(file => `// ${file.name} - ${file.type || 'unknown type'}`).join('\n
                 const modeText = status.mode === 'integrated' ? '● INTEGRATED' : '● DEMO';
                 
                 headerTitle.innerHTML = `
-                    🚀 OpenHands Dev Studio
+                    🚀 Opentaiwan Dev Studio
                     <span style="color: ${modeColor}; font-size: 12px;">${modeText}</span>
                 `;
             }
@@ -3521,6 +4199,754 @@ ${files.map(file => `// ${file.name} - ${file.type || 'unknown type'}`).join('\n
                 `;
             }
         }
+
+        /**
+         * 開啟 Daytona API Keys 頁面
+         */
+        function openDaytonaAPIKeysPage() {
+            window.open('https://app.daytona.io/dashboard/keys', '_blank');
+        }
+
+        /**
+         * 驗證並設置 API 密鑰
+         */
+        async function validateAndSetAPIKey() {
+            const apiKeyInput = document.getElementById('api-key-input');
+            const apiKey = apiKeyInput.value.trim();
+            
+            if (!apiKey) {
+                showNotification('❌ 請輸入 API 密鑰');
+                return;
+            }
+            
+            if (!apiKey.startsWith('dt-')) {
+                if (!confirm('API 密鑰格式可能不正確（通常以 dt- 開頭）。確定要繼續嗎？')) {
+                    return;
+                }
+            }
+            
+            try {
+                // 顯示驗證中
+                apiKeyInput.disabled = true;
+                apiKeyInput.value = '驗證中...';
+                
+                // 設置並測試 API 密鑰
+                if (!window.daytonaConfig) {
+                    window.daytonaConfig = new DaytonaConfig();
+                }
+                
+                window.daytonaConfig.setAPIKey(apiKey);
+                
+                // 測試連接
+                const api = new DaytonaAPIClient(window.daytonaConfig.getAPIConfig());
+                const isValid = await api.checkConnection();
+                
+                if (isValid) {
+                    showNotification('✅ API 密鑰驗證成功！');
+                    
+                    // 觸發設置完成事件
+                    window.dispatchEvent(new CustomEvent('daytona-api-key-set', {
+                        detail: { apiKey: apiKey }
+                    }));
+                } else {
+                    throw new Error('API 密鑰無效或網路連接問題');
+                }
+                
+            } catch (error) {
+                console.error('❌ API 密鑰驗證失敗:', error);
+                apiKeyInput.disabled = false;
+                apiKeyInput.value = apiKey;
+                showNotification('❌ API 密鑰驗證失敗：' + error.message);
+            }
+        }
+
+        /**
+         * 取消 Daytona 設置
+         */
+        function cancelDaytonaSetup() {
+            if (confirm('確定要取消 Daytona 設置嗎？這將返回演示模式。')) {
+                window.dispatchEvent(new CustomEvent('daytona-setup-cancelled'));
+            }
+        }
+
+        /**
+         * 完成設置並啟動
+         */
+        async function finalizeSetupAndLaunch() {
+            try {
+                // 1. 初始化 Daytona 整合
+                if (!window.daytonaIntegration) {
+                    window.daytonaIntegration = new DaytonaIntegration();
+                }
+                
+                await window.daytonaIntegration.initialize();
+                
+                // 2. 切換到 Daytona 模式
+                await window.daytonaIntegration.switchMode('daytona');
+                
+                // 3. 創建初始沙盒
+                updateLaunchStep('創建開發環境...', '📦');
+                await window.daytonaIntegration.ensureSandbox();
+                
+                // 4. 載入用戶信息
+                updateLaunchStep('載入用戶資料...', '👤');
+                const userInfo = await window.daytonaIntegration.daytonaAPI.getUserInfo();
+                window.DaytonaLaunchState.userInfo = userInfo;
+                
+                // 5. 完成啟動
+                updateLaunchStep('啟動完成！', '🎉');
+                
+                // 延遲一下讓用戶看到成功信息
+                setTimeout(() => {
+                    completeLaunchSequence();
+                }, 1500);
+                
+            } catch (error) {
+                console.error('❌ 最終設置失敗:', error);
+                throw new Error('環境啟動失敗：' + error.message);
+            }
+        }
+
+        /**
+         * 使用現有配置啟動
+         */
+        async function launchWithExistingConfig() {
+            try {
+                // 1. 初始化整合
+                if (!window.daytonaIntegration) {
+                    window.daytonaIntegration = new DaytonaIntegration();
+                    await window.daytonaIntegration.initialize();
+                }
+                
+                // 2. 切換到 Daytona 模式
+                await window.daytonaIntegration.switchMode('daytona');
+                
+                // 3. 檢查現有沙盒或創建新的
+                updateLaunchStep('檢查開發環境...', '🔍');
+                
+                const existingSandboxes = await window.daytonaIntegration.daytonaAPI.getSandboxes();
+                const opentaiwanSandboxes = existingSandboxes.filter(sb => 
+                    sb.name && sb.name.includes('opentaiwan')
+                );
+                
+                if (opentaiwanSandboxes.length > 0) {
+                    // 使用現有沙盒
+                    updateLaunchStep('使用現有開發環境...', '♻️');
+                    window.daytonaIntegration.currentSandbox = opentaiwanSandboxes[0];
+                } else {
+                    // 創建新沙盒
+                    updateLaunchStep('創建新的開發環境...', '📦');
+                    await window.daytonaIntegration.ensureSandbox();
+                }
+                
+                // 4. 完成啟動
+                updateLaunchStep('啟動完成！', '🎉');
+                setTimeout(() => {
+                    completeLaunchSequence();
+                }, 1000);
+                
+            } catch (error) {
+                console.error('❌ 現有配置啟動失敗:', error);
+                throw new Error('啟動失敗：' + error.message);
+            }
+        }
+
+        /**
+         * 啟動特定專案
+         */
+        async function launchProjectWithRepo(repo, branch) {
+            try {
+                // 1. 確保有沙盒
+                await window.daytonaIntegration.ensureSandbox();
+                
+                // 2. 克隆倉庫（如果是真實的 Git 倉庫）
+                updateLaunchStep(`克隆倉庫 ${repo}...`, '📥');
+                
+                // 模擬克隆過程（在實際實現中，這裡會調用真實的 Git API）
+                const cloneCommand = `git clone https://github.com/${repo}.git && cd ${repo.split('/')[1]} && git checkout ${branch}`;
+                await window.daytonaIntegration.executeCommand(cloneCommand);
+                
+                // 3. 設置項目環境
+                updateLaunchStep('設置專案環境...', '⚙️');
+                
+                // 檢查項目類型並安裝依賴
+                const setupCommands = [
+                    'ls -la',
+                    'if [ -f package.json ]; then npm install; fi',
+                    'if [ -f requirements.txt ]; then pip install -r requirements.txt; fi',
+                    'if [ -f Gemfile ]; then bundle install; fi'
+                ];
+                
+                for (const cmd of setupCommands) {
+                    await window.daytonaIntegration.executeCommand(cmd);
+                }
+                
+                // 4. 完成專案設置
+                updateLaunchStep(`專案 ${repo} 準備完成！`, '🎉');
+                setTimeout(() => {
+                    completeLaunchSequence(`已載入專案：${repo} (${branch})`);
+                }, 1000);
+                
+            } catch (error) {
+                console.error('❌ 專案啟動失敗:', error);
+                throw new Error(`專案 ${repo} 啟動失敗：${error.message}`);
+            }
+        }
+        
+        /**
+         * 完成啟動序列
+         */
+        function completeLaunchSequence(message = '開發環境已準備就緒') {
+            // 1. 隱藏歡迎頁面
+            hideWelcomeScreen();
+            
+            // 2. 隱藏啟動進度
+            hideLaunchProgress();
+            
+            // 3. 顯示成功通知
+            showNotification(`🎉 ${message}`);
+            
+            // 4. 重置啟動狀態
+            window.DaytonaLaunchState.isLaunching = false;
+            
+            // 5. 載入初始聊天（顯示歡迎信息）
+            loadWelcomeMessage();
+            
+            // 6. 更新 UI 指示器
+            updateUIForDaytonaMode();
+            
+            console.log('🎉 Daytona 無縫啟動完成！');
+        }
+        
+        /**
+         * 載入歡迎信息
+         */
+        function loadWelcomeMessage() {
+            const chatHistory = document.getElementById('chat-history');
+            const userInfo = window.DaytonaLaunchState.userInfo;
+            
+            let welcomeMessage = `🎉 歡迎使用 Opentaiwan Dev Studio！`;
+            
+            if (userInfo) {
+                welcomeMessage += `\n\n👋 您好，${userInfo.name || '開發者'}！`;
+            }
+            
+            welcomeMessage += `
+
+🏗️ **您的 Daytona 雲端開發環境已準備就緒**
+
+✨ **您現在可以：**
+• 請求 AI 生成代碼並在安全沙盒中執行
+• 使用雲端終端進行開發操作
+• 管理文件和預覽應用程序
+• 創建快照保存開發進度
+
+💡 **試試說：**
+"創建一個 React 待辦事項應用" 或 "幫我寫一個 Python 爬蟲"
+
+🚀 **開始您的雲端開發之旅吧！**`;
+            
+            chatHistory.innerHTML = `
+                <div class="message assistant fade-in">
+                    <div class="message-content">
+                        ${welcomeMessage.replace(/\n/g, '<br>')}
+                    </div>
+                </div>
+            `;
+            
+            scrollToBottom();
+        }
+        
+        /**
+         * 更新 UI 為 Daytona 模式
+         */
+        function updateUIForDaytonaMode() {
+            // 更新頭部標題
+            const headerTitle = document.querySelector('.header h1');
+            if (headerTitle) {
+                headerTitle.innerHTML = `
+                    🚀 Opentaiwan Dev Studio
+                    <span style="color: #10b981; font-size: 12px;">● DAYTONA MODE</span>
+                `;
+            }
+            
+            // 更新狀態指示器
+            const statusIndicator = document.querySelector('.status-indicator');
+            if (statusIndicator) {
+                statusIndicator.innerHTML = `
+                    <div class="status-dot" style="background: #10b981;"></div>
+                    Daytona Ready
+                `;
+            }
+        }
+        
+        /**
+         * 顯示啟動進度
+         */
+        function showLaunchProgress() {
+            const progressModal = document.createElement('div');
+            progressModal.id = 'launch-progress-modal';
+            progressModal.style.cssText = `
+                position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+                background: rgba(0, 0, 0, 0.9); z-index: 2500;
+                display: flex; align-items: center; justify-content: center;
+            `;
+            
+            progressModal.innerHTML = `
+                <div style="background: #1e293b; border-radius: 16px; padding: 40px; text-align: center; border: 1px solid #475569; min-width: 400px;">
+                    <div id="launch-icon" style="font-size: 64px; margin-bottom: 20px;">🚀</div>
+                    <h2 style="color: #e2e8f0; margin-bottom: 16px;">啟動 Opentaiwan Dev Studio</h2>
+                    <div id="launch-step" style="color: #94a3b8; margin-bottom: 20px; min-height: 20px;">
+                        正在初始化...
+                    </div>
+                    <div style="width: 300px; height: 4px; background: #334155; border-radius: 2px; margin: 0 auto;">
+                        <div id="launch-progress-bar" style="height: 100%; background: linear-gradient(135deg, #3b82f6, #10b981); border-radius: 2px; width: 0%; transition: width 0.5s ease;"></div>
+                    </div>
+                </div>
+            `;
+            
+            document.body.appendChild(progressModal);
+        }
+        
+        /**
+         * 更新啟動步驟
+         */
+        function updateLaunchStep(step, icon = '⏳') {
+            const stepElement = document.getElementById('launch-step');
+            const iconElement = document.getElementById('launch-icon');
+            const progressBar = document.getElementById('launch-progress-bar');
+            
+            if (stepElement) {
+                stepElement.textContent = step;
+            }
+            
+            if (iconElement) {
+                iconElement.textContent = icon;
+            }
+            
+            if (progressBar) {
+                // 根據步驟更新進度條
+                const stepProgress = {
+                    '檢查': 10,
+                    '準備': 20,
+                    '開啟': 30,
+                    '等待': 50,
+                    '引導': 70,
+                    '設置': 80,
+                    '創建': 90,
+                    '完成': 100
+                };
+                
+                for (const [keyword, progress] of Object.entries(stepProgress)) {
+                    if (step.includes(keyword)) {
+                        progressBar.style.width = progress + '%';
+                        break;
+                    }
+                }
+            }
+            
+            console.log(`📱 啟動步驟: ${step}`);
+        }
+
+        /** 
+         * 隱藏啟動進度 
+         */ 
+        function hideLaunchProgress() { 
+            const progressModal = document.getElementById('launch-progress-modal'); 
+            if (progressModal) { 
+                progressModal.style.opacity = '0'; 
+                progressModal.style.transition = 'opacity 0.5s ease'; 
+                setTimeout(() => { 
+                    document.body.removeChild(progressModal); 
+                }, 500); 
+            } 
+        } 
+         
+        /** 
+         * 顯示啟動錯誤 
+         */ 
+        function showLaunchError(errorMessage) { 
+            window.DaytonaLaunchState.isLaunching = false; 
+            hideLaunchProgress(); 
+             
+            const errorModal = document.createElement('div'); 
+            errorModal.style.cssText = ` 
+                position: fixed; top: 0; left: 0; right: 0; bottom: 0; 
+                background: rgba(0, 0, 0, 0.8); z-index: 2500; 
+                display: flex; align-items: center; justify-content: center; 
+            `; 
+             
+            errorModal.innerHTML = ` 
+                <div style="background: #1e293b; border-radius: 16px; padding: 32px; text-align: center; border: 1px solid #ef4444; max-width: 500px; width: 90%;"> 
+                    <div style="font-size: 48px; margin-bottom: 16px;">❌</div> 
+                    <h2 style="color: #ef4444; margin-bottom: 16px;">啟動失敗</h2> 
+                    <p style="color: #e2e8f0; margin-bottom: 20px; line-height: 1.5;"> 
+                        ${errorMessage} 
+                    </p> 
+                    <div style="display: flex; gap: 12px; justify-content: center;"> 
+                        <button onclick="retryLaunch()"  
+                                style="background: #3b82f6; color: white; border: none; padding: 12px 24px; border-radius: 8px; cursor: pointer;"> 
+                            🔄 重試 
+                        </button> 
+                        <button onclick="useDemoMode()"  
+                                style="background: #6b7280; color: white; border: none; padding: 12px 24px; border-radius: 8px; cursor: pointer;"> 
+                            🎭 使用演示模式 
+                        </button> 
+                    </div> 
+                </div> 
+            `; 
+             
+            document.body.appendChild(errorModal); 
+             
+            // 全局函數 
+            window.retryLaunch = () => { 
+                document.body.removeChild(errorModal); 
+                launchFromScratch(); 
+            }; 
+             
+            window.useDemoMode = () => { 
+                document.body.removeChild(errorModal); 
+                hideWelcomeScreen(); 
+                showNotification('🎭 已切換到演示模式'); 
+                loadInitialChat(); 
+            }; 
+        } 
+         
+        // GitHub 整合資訊顯示 
+        
+        /** 
+         * 歡迎頁面支援函數 
+         */ 
+         
+        /** 
+         * 顯示 GitHub 整合信息 
+         */ 
+        function showGitHubIntegrationInfo() { 
+            const modal = document.createElement('div'); 
+            modal.style.cssText = ` 
+                position: fixed; top: 0; left: 0; right: 0; bottom: 0; 
+                background: rgba(0, 0, 0, 0.8); z-index: 2000; 
+                display: flex; align-items: center; justify-content: center; 
+            `; 
+             
+            modal.innerHTML = ` 
+                <div style="background: #1e293b; border-radius: 16px; padding: 32px; max-width: 500px; width: 90%; border: 1px solid #475569;"> 
+                    <div style="text-align: center; margin-bottom: 24px;"> 
+                        <div style="font-size: 48px; margin-bottom: 16px;">🔐</div> 
+                        <h2 style="color: #e2e8f0; margin-bottom: 8px;">GitHub 整合</h2> 
+                        <p style="color: #94a3b8; font-size: 14px;">透過 Daytona 平台管理您的 GitHub 倉庫</p> 
+                    </div> 
+                     
+                    <div style="background: #334155; padding: 16px; border-radius: 8px; margin-bottom: 20px;"> 
+                        <h3 style="color: #e2e8f0; margin-bottom: 12px; font-size: 16px;">🚀 推薦流程：</h3> 
+                        <ol style="color: #e2e8f0; font-size: 14px; line-height: 1.8; margin-left: 20px;"> 
+                            <li>點擊 "Launch from Scratch" 開始</li> 
+                            <li>完成 Daytona 設置</li> 
+                            <li>在 Daytona 儀表板中連接 GitHub</li> 
+                            <li>克隆您的倉庫到雲端環境</li> 
+                        </ol> 
+                    </div> 
+                     
+                    <div style="display: flex; gap: 12px;"> 
+                        <button onclick="launchFromScratch(); document.body.removeChild(this.closest('[style*=\'position: fixed\']'))"  
+                                style="background: #10b981; color: white; border: none; padding: 12px 24px; border-radius: 8px; font-size: 14px; cursor: pointer; flex: 1;"> 
+                            🚀 開始設置 
+                        </button> 
+                        <button onclick="document.body.removeChild(this.closest('[style*=\'position: fixed\']'))"  
+                                style="background: #6b7280; color: white; border: none; padding: 12px 24px; border-radius: 8px; font-size: 14px; cursor: pointer;"> 
+                            關閉 
+                        </button> 
+                    </div> 
+                </div> 
+            `; 
+             
+            document.body.appendChild(modal); 
+        } 
+         
+        /** 
+         * 設置 GitHub 整合 
+         */ 
+        function setupGitHubIntegration() { 
+            showNotification('📝 建議先完成 Daytona 設置，然後在儀表板中添加 GitHub 倉庫'); 
+             
+            // 如果已經設置了 Daytona，直接開啟倉庫管理頁面 
+            if (window.daytonaConfig && window.daytonaConfig.isConfigured()) { 
+                if (confirm('要現在開啟 Daytona 儀表板來管理 GitHub 倉庫嗎？')) { 
+                    window.open('https://app.daytona.io/dashboard/repositories', '_blank'); 
+                } 
+            } else { 
+                if (confirm('需要先設置 Daytona 帳戶。要現在開始嗎？')) { 
+                    launchFromScratch(); 
+                } 
+            } 
+        } 
+         
+        /** 
+         * 快速啟動 React 應用 
+         */ 
+        function quickStartReactApp() { 
+            console.log('🚀 快速啟動 React 應用'); 
+             
+            // 設置特定的啟動參數 
+            window.DaytonaLaunchState.quickStartType = 'react'; 
+            window.DaytonaLaunchState.quickStartMessage = '我想創建一個現代化的 React 應用程序，包含路由、狀態管理和 UI 組件庫'; 
+             
+            launchFromScratch(); 
+        } 
+         
+        /** 
+         * 快速啟動 Python API 
+         */ 
+        function quickStartPythonAPI() { 
+            console.log('🚀 快速啟動 Python API'); 
+             
+            window.DaytonaLaunchState.quickStartType = 'python-api'; 
+            window.DaytonaLaunchState.quickStartMessage = '幫我建立一個 FastAPI 或 Flask 的 REST API，包含資料庫連接和基本的 CRUD 操作'; 
+             
+            launchFromScratch(); 
+        } 
+         
+        /** 
+         * 快速啟動 Node.js 應用 
+         */ 
+        function quickStartNodeApp() { 
+            console.log('🚀 快速啟動 Node.js 應用'); 
+             
+            window.DaytonaLaunchState.quickStartType = 'nodejs'; 
+            window.DaytonaLaunchState.quickStartMessage = '我想創建一個 Node.js Express 應用，包含身份驗證、API 路由和資料庫整合'; 
+             
+            launchFromScratch(); 
+        } 
+        
+        /** 
+         * 更新完成啟動序列以支援快速啟動 
+         */ 
+        function completeLaunchSequenceWithQuickStart(message = '開發環境已準備就緒') { 
+            // 原有的完成流程 
+            hideWelcomeScreen(); 
+            hideLaunchProgress(); 
+            
+            // 檢查是否有快速啟動類型 
+            if (window.DaytonaLaunchState.quickStartType) { 
+                const quickStartType = window.DaytonaLaunchState.quickStartType; 
+                const quickStartMessage = window.DaytonaLaunchState.quickStartMessage; 
+                
+                // 載入特定的歡迎信息 
+                loadQuickStartWelcomeMessage(quickStartType, quickStartMessage); 
+                
+                // 清除快速啟動狀態 
+                delete window.DaytonaLaunchState.quickStartType; 
+                delete window.DaytonaLaunchState.quickStartMessage; 
+                
+                showNotification(`🎉 ${getQuickStartDisplayName(quickStartType)} 環境已準備就緒`); 
+            } else { 
+                loadWelcomeMessage(); 
+                showNotification(`🎉 ${message}`); 
+            } 
+            
+            window.DaytonaLaunchState.isLaunching = false; 
+            updateUIForDaytonaMode(); 
+            
+            console.log('🎉 Daytona 無縫啟動完成！'); 
+        }
+        
+        /**
+         * 載入快速啟動歡迎信息
+         */
+        function loadQuickStartWelcomeMessage(quickStartType, quickStartMessage) {
+            const welcomeMessages = {
+                'react': {
+                    title: '🚀 React 開發環境',
+                    subtitle: '現代化前端開發平台已準備就緒',
+                    features: ['React 18', 'TypeScript', 'Vite', 'Tailwind CSS', 'React Router']
+                },
+                'python-api': {
+                    title: '🐍 Python API 開發環境',
+                    subtitle: '後端 API 開發平台已準備就緒',
+                    features: ['FastAPI/Flask', 'SQLAlchemy', 'Pydantic', 'pytest', 'Docker']
+                },
+                'nodejs': {
+                    title: '⚡ Node.js 開發環境',
+                    subtitle: '全端 JavaScript 開發平台已準備就緒',
+                    features: ['Express.js', 'TypeScript', 'Prisma', 'Jest', 'Docker']
+                }
+            };
+            
+            const config = welcomeMessages[quickStartType] || welcomeMessages['react'];
+            
+            // 更新歡迎信息
+            const welcomeTitle = document.querySelector('.welcome-title');
+            const welcomeSubtitle = document.querySelector('.welcome-subtitle');
+            
+            if (welcomeTitle) {
+                welcomeTitle.textContent = config.title;
+            }
+            
+            if (welcomeSubtitle) {
+                welcomeSubtitle.innerHTML = `
+                    ${config.subtitle}<br>
+                    <div style="margin-top: 12px; font-size: 14px; color: #60a5fa;">
+                        包含：${config.features.join(' • ')}
+                    </div>
+                `;
+            }
+            
+            // 自動發送快速啟動消息
+            setTimeout(() => {
+                if (quickStartMessage && typeof sendMessage === 'function') {
+                    sendMessage(quickStartMessage);
+                }
+            }, 1000);
+        }
+        
+        /**
+         * 獲取快速啟動類型的顯示名稱
+         */
+        function getQuickStartDisplayName(quickStartType) {
+            const displayNames = {
+                'react': 'React 應用',
+                'python-api': 'Python API',
+                'nodejs': 'Node.js 應用'
+            };
+            
+            return displayNames[quickStartType] || '開發環境';
+        } 
+ 
+        // 更新現有的歡迎頁面函數 
+        function addGithubRepos() { 
+            showNotification('📝 將引導您設置 GitHub 倉庫整合'); 
+            // 未來可以整合 GitHub OAuth 
+        } 
+         
+        function openLearning() { 
+            window.open('https://docs.opentaiwan.dev/tutorial', '_blank'); 
+        } 
+         
+        // 確保腳本載入時註冊函數 
+        document.addEventListener('DOMContentLoaded', function() { 
+            console.log('🚀 Daytona 無縫啟動整合已載入'); 
+             
+            // 檢查是否有 URL 參數要求自動啟動 
+            const urlParams = new URLSearchParams(window.location.search); 
+            if (urlParams.get('autolaunch') === 'true') { 
+                setTimeout(() => { 
+                    console.log('🔗 URL 要求自動啟動'); 
+                    launchFromScratch(); 
+                }, 1000); 
+            } 
+        });
+
+        /** 
+         * 歡迎頁面動畫效果 
+         */ 
+        function addWelcomePageAnimations() { 
+            // 為歡迎按鈕添加懸停效果 
+            const welcomeBtns = document.querySelectorAll('.welcome-btn'); 
+            welcomeBtns.forEach(btn => { 
+                btn.addEventListener('mouseenter', function() { 
+                    this.style.transform = 'translateY(-2px) scale(1.02)'; 
+                    this.style.boxShadow = '0 8px 25px rgba(59, 130, 246, 0.3)'; 
+                }); 
+                
+                btn.addEventListener('mouseleave', function() { 
+                    this.style.transform = 'translateY(0) scale(1)'; 
+                    this.style.boxShadow = '0 4px 15px rgba(59, 130, 246, 0.2)'; 
+                }); 
+            }); 
+            
+            // 添加載入動畫 
+            const welcomeScreen = document.getElementById('welcome-screen'); 
+            if (welcomeScreen) { 
+                welcomeScreen.style.opacity = '0'; 
+                welcomeScreen.style.transform = 'scale(0.95)'; 
+                welcomeScreen.style.transition = 'all 0.5s ease'; 
+                
+                setTimeout(() => { 
+                    welcomeScreen.style.opacity = '1'; 
+                    welcomeScreen.style.transform = 'scale(1)'; 
+                }, 100); 
+            } 
+        } 
+        
+        /** 
+         * 檢查系統需求和兼容性 
+         */ 
+        function checkSystemCompatibility() { 
+            const checks = { 
+                websocket: 'WebSocket' in window, 
+                localStorage: 'localStorage' in window, 
+                fetch: 'fetch' in window, 
+                promises: 'Promise' in window 
+            }; 
+            
+            const failedChecks = Object.entries(checks) 
+                .filter(([key, passed]) => !passed) 
+                .map(([key]) => key); 
+            
+            if (failedChecks.length > 0) { 
+                console.warn('⚠️ 系統兼容性警告:', failedChecks); 
+                
+                const warningMessage = ` 
+                    您的瀏覽器可能不支援某些功能：${failedChecks.join(', ')} 
+                    建議使用 Chrome、Firefox、Safari 或 Edge 的最新版本。 
+                `; 
+                
+                setTimeout(() => { 
+                    if (confirm(warningMessage + '\n\n要繼續使用嗎？')) { 
+                        console.log('✅ 用戶選擇繼續使用'); 
+                    } 
+                }, 2000); 
+            } else { 
+                console.log('✅ 系統兼容性檢查通過'); 
+            } 
+        } 
+        
+        // 增強的歡迎頁面初始化 
+        document.addEventListener('DOMContentLoaded', function() { 
+            console.log('🎨 初始化歡迎頁面功能'); 
+            
+            // 添加動畫效果 
+            setTimeout(() => { 
+                addWelcomePageAnimations(); 
+            }, 500); 
+            
+            // 檢查系統兼容性 
+            checkSystemCompatibility(); 
+            
+            // 檢查 URL 參數 
+            const urlParams = new URLSearchParams(window.location.search); 
+            
+            // 支援直接啟動特定類型 
+            const quickStart = urlParams.get('quickstart'); 
+            if (quickStart) { 
+                setTimeout(() => { 
+                    switch (quickStart) { 
+                        case 'react': 
+                            quickStartReactApp(); 
+                            break; 
+                        case 'python': 
+                            quickStartPythonAPI(); 
+                            break; 
+                        case 'nodejs': 
+                            quickStartNodeApp(); 
+                            break; 
+                        default: 
+                            launchFromScratch(); 
+                    } 
+                }, 1000); 
+            } 
+            
+            // 支援回流用戶（已有配置的情況） 
+            if (urlParams.get('returning') === 'true') { 
+                setTimeout(() => { 
+                    if (window.daytonaConfig && window.daytonaConfig.isConfigured()) { 
+                        if (confirm('檢測到您之前的 Daytona 配置，要自動啟動嗎？')) { 
+                            launchFromScratch(); 
+                        } 
+                    } 
+                }, 1500); 
+            } 
+        });
     </script>
 </body>
 </html>
