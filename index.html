@@ -1,0 +1,3526 @@
+<script src="js/config.js"></script>
+<script src="js/api-client.js"></script>
+<script src="js/websocket-manager.js"></script>
+<script src="js/openhands-integration.js"></script>
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OpenHands Dev Studio - Complete</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+            background: #0f172a;
+            color: #f8fafc;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        /* 歡迎頁面 */
+        .welcome-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
+            display: flex;
+            z-index: 1000;
+            transition: opacity 0.5s ease;
+        }
+
+        .welcome-screen.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .welcome-left {
+            flex: 1;
+            padding: 60px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .welcome-right {
+            flex: 1;
+            background: #1e293b;
+            padding: 60px;
+            border-left: 1px solid #475569;
+        }
+
+        .welcome-title {
+            font-size: 48px;
+            font-weight: 700;
+            margin-bottom: 20px;
+            background: linear-gradient(135deg, #60a5fa, #a78bfa);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .welcome-subtitle {
+            font-size: 18px;
+            color: #94a3b8;
+            margin-bottom: 40px;
+            line-height: 1.6;
+        }
+
+        .welcome-btn {
+            background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+            color: white;
+            border: none;
+            padding: 16px 32px;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-bottom: 16px;
+            margin-right: 16px;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .welcome-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(59, 130, 246, 0.3);
+        }
+
+        .welcome-btn.secondary {
+            background: transparent;
+            border: 2px solid #475569;
+            color: #e2e8f0;
+        }
+
+        .repo-section {
+            margin-top: 40px;
+        }
+
+        .repo-section h3 {
+            color: #e2e8f0;
+            margin-bottom: 20px;
+            font-size: 20px;
+        }
+
+        .repo-selector {
+            background: #334155;
+            border: 1px solid #475569;
+            border-radius: 8px;
+            padding: 12px;
+            color: #e2e8f0;
+            width: 100%;
+            margin-bottom: 12px;
+            font-size: 14px;
+        }
+
+        .help-link {
+            color: #60a5fa;
+            text-decoration: none;
+            font-size: 14px;
+            margin-top: 20px;
+            display: inline-block;
+        }
+
+        /* GitHub 登入模態框 */
+        .auth-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.8);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+        }
+
+        .auth-modal.show {
+            display: flex;
+        }
+
+        .auth-content {
+            background: #1e293b;
+            border-radius: 16px;
+            padding: 40px;
+            text-align: center;
+            border: 1px solid #475569;
+            max-width: 400px;
+            width: 90%;
+        }
+
+        .github-btn {
+            background: #24292e;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin: 20px auto;
+            transition: background-color 0.2s;
+        }
+
+        .github-btn:hover {
+            background: #333;
+        }
+
+        .studio-container {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* 頂部標題欄 - 更新版 */
+        .header {
+            background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
+            padding: 12px 24px;
+            border-bottom: 1px solid #475569;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .header h1 {
+            font-size: 18px;
+            font-weight: 600;
+            color: #f1f5f9;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .header-right {
+            display: flex;
+            gap: 16px;
+            align-items: center;
+        }
+
+        /* 配額顯示 */
+        .quota-display {
+            background: #3b82f6;
+            color: white;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .quota-bar {
+            width: 60px;
+            height: 4px;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 2px;
+            overflow: hidden;
+        }
+
+        .quota-fill {
+            height: 100%;
+            background: #10b981;
+            width: 75%;
+            transition: width 0.3s ease;
+        }
+
+        /* 排隊提示 */
+        .queue-alert {
+            background: #f59e0b;
+            color: #000;
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-size: 12px;
+            font-weight: 600;
+            display: none;
+            align-items: center;
+            gap: 8px;
+            animation: pulse 2s infinite;
+        }
+
+        .queue-alert.show {
+            display: flex;
+        }
+
+        /* 用戶頭像 */
+        .user-avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: #3b82f6;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .user-avatar:hover {
+            background: #2563eb;
+            transform: scale(1.05);
+        }
+
+        .status-bar {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+            font-size: 12px;
+        }
+
+        .status-indicator {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            padding: 4px 8px;
+            background: #1e40af;
+            border-radius: 12px;
+        }
+
+        .status-dot {
+            width: 6px;
+            height: 6px;
+            background: #10b981;
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+
+        /* 設定頁面模態框 */
+        .settings-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.8);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 1500;
+        }
+
+        .settings-modal.show {
+            display: flex;
+        }
+
+        .settings-content {
+            background: #1e293b;
+            border-radius: 16px;
+            width: 90%;
+            max-width: 800px;
+            height: 600px;
+            display: flex;
+            flex-direction: column;
+            border: 1px solid #475569;
+        }
+
+        .settings-header {
+            padding: 20px 24px;
+            border-bottom: 1px solid #475569;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .settings-tabs {
+            display: flex;
+            border-bottom: 1px solid #475569;
+        }
+
+        .settings-tab {
+            padding: 12px 20px;
+            background: none;
+            border: none;
+            color: #64748b;
+            cursor: pointer;
+            font-size: 14px;
+            border-bottom: 2px solid transparent;
+            transition: all 0.2s;
+        }
+
+        .settings-tab.active {
+            color: #60a5fa;
+            border-bottom-color: #60a5fa;
+        }
+
+        .settings-body {
+            flex: 1;
+            padding: 24px;
+            overflow-y: auto;
+        }
+
+        .settings-section {
+            margin-bottom: 24px;
+        }
+
+        .settings-section h3 {
+            color: #e2e8f0;
+            margin-bottom: 12px;
+            font-size: 16px;
+        }
+
+        .settings-input {
+            background: #334155;
+            border: 1px solid #475569;
+            border-radius: 8px;
+            padding: 12px;
+            color: #e2e8f0;
+            width: 100%;
+            margin-bottom: 12px;
+        }
+
+        .settings-btn {
+            background: #3b82f6;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 500;
+        }
+
+        /* 付費系統模態框 */
+        .billing-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.8);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 1500;
+        }
+
+        .billing-modal.show {
+            display: flex;
+        }
+
+        .billing-content {
+            background: #1e293b;
+            border-radius: 16px;
+            width: 90%;
+            max-width: 600px;
+            max-height: 80vh;
+            overflow-y: auto;
+            border: 1px solid #475569;
+        }
+
+        .billing-header {
+            background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+            color: white;
+            padding: 24px;
+            text-align: center;
+            border-radius: 16px 16px 0 0;
+        }
+
+        .billing-body {
+            padding: 24px;
+        }
+
+        .plan-card {
+            background: #334155;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 16px;
+            border: 2px solid transparent;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+
+        .plan-card:hover {
+            border-color: #3b82f6;
+        }
+
+        .plan-card.active {
+            border-color: #10b981;
+            background: #1e3a3a;
+        }
+
+        .plan-title {
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #e2e8f0;
+        }
+
+        .plan-price {
+            font-size: 32px;
+            font-weight: 700;
+            color: #3b82f6;
+            margin-bottom: 12px;
+        }
+
+        .plan-features {
+            list-style: none;
+            margin-bottom: 16px;
+        }
+
+        .plan-features li {
+            color: #94a3b8;
+            margin-bottom: 4px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .hot-badge {
+            background: #f59e0b;
+            color: #000;
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-size: 10px;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        /* 主要內容 */
+        .main-content {
+            flex: 1;
+            display: flex;
+            position: relative;
+        }
+
+        /* 左側面板 */
+        .left-panel {
+            width: 35%;
+            background: #1e293b;
+            border-right: 1px solid #475569;
+            display: flex;
+            flex-direction: column;
+            min-width: 300px;
+            max-width: 60%;
+        }
+
+        /* 可拖拽分隔器 */
+        .resizer {
+            width: 4px;
+            background: #475569;
+            cursor: col-resize;
+            position: relative;
+            z-index: 10;
+        }
+
+        .resizer:hover {
+            background: #60a5fa;
+        }
+
+        /* 左側頂部工具欄 */
+        .left-toolbar {
+            background: #334155;
+            padding: 8px 12px;
+            border-bottom: 1px solid #475569;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .toolbar-group {
+            display: flex;
+            gap: 4px;
+            align-items: center;
+        }
+
+        .toolbar-btn {
+            background: none;
+            border: none;
+            color: #94a3b8;
+            cursor: pointer;
+            padding: 6px 8px;
+            border-radius: 4px;
+            font-size: 14px;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .toolbar-btn:hover {
+            background: #475569;
+            color: #e2e8f0;
+        }
+
+        .toolbar-separator {
+            width: 1px;
+            height: 20px;
+            background: #475569;
+        }
+
+        /* 對話面板 */
+        .chat-panel {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .chat-history {
+            flex: 1;
+            padding: 16px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            max-height: calc(100vh - 300px);
+            scroll-behavior: smooth;
+        }
+
+        .chat-history::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .chat-history::-webkit-scrollbar-track {
+            background: #1e293b;
+        }
+
+        .chat-history::-webkit-scrollbar-thumb {
+            background: #475569;
+            border-radius: 3px;
+        }
+
+        .message {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .message.user {
+            align-items: flex-end;
+        }
+
+        .message.assistant {
+            align-items: flex-start;
+        }
+
+        .message-content {
+            max-width: 85%;
+            padding: 12px 16px;
+            border-radius: 12px;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        .user .message-content {
+            background: #3b82f6;
+            color: white;
+        }
+
+        .assistant .message-content {
+            background: #374151;
+            color: #f3f4f6;
+        }
+
+        .code-block {
+            background: #111827;
+            border-radius: 8px;
+            margin: 8px 0;
+            overflow: hidden;
+        }
+
+        .code-header {
+            background: #1f2937;
+            padding: 8px 12px;
+            border-bottom: 1px solid #374151;
+            font-size: 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .code-content {
+            padding: 12px;
+            font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+            font-size: 13px;
+            overflow-x: auto;
+        }
+
+        .code-actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        .action-btn {
+            padding: 4px 8px;
+            background: #374151;
+            border: none;
+            border-radius: 4px;
+            color: #d1d5db;
+            font-size: 11px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        .action-btn:hover {
+            background: #4b5563;
+        }
+
+        .action-btn.apply { background: #059669; }
+        .action-btn.apply:hover { background: #047857; }
+
+        /* 右鍵選單 */
+        .context-menu {
+            position: fixed;
+            background: #1e293b;
+            border: 1px solid #475569;
+            border-radius: 8px;
+            padding: 8px 0;
+            min-width: 180px;
+            z-index: 1000;
+            display: none;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+        }
+
+        .context-menu-item {
+            padding: 8px 16px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: #e2e8f0;
+            font-size: 14px;
+            transition: background-color 0.2s;
+        }
+
+        .context-menu-item:hover {
+            background: #334155;
+        }
+
+        /* 輸入區域 */
+        .input-section {
+            border-top: 1px solid #475569;
+            padding: 16px;
+        }
+
+        .input-box {
+            background: #374151;
+            border-radius: 8px;
+            padding: 12px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .input-textarea {
+            background: transparent;
+            border: none;
+            color: #f3f4f6;
+            resize: none;
+            outline: none;
+            min-height: 60px;
+            font-size: 14px;
+            font-family: inherit;
+        }
+
+        .input-actions {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .input-tools {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+
+        .tool-btn {
+            background: none;
+            border: none;
+            color: #9ca3af;
+            cursor: pointer;
+            padding: 4px;
+            border-radius: 4px;
+            transition: background-color 0.2s;
+        }
+
+        .tool-btn:hover {
+            background: #4b5563;
+            color: #d1d5db;
+        }
+
+        /* 暫停按鈕 */
+        .pause-btn {
+            background: #ef4444;
+            color: white;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: 500;
+            display: none;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .pause-btn.show {
+            display: flex;
+        }
+
+        .send-btn {
+            background: #3b82f6;
+            border: none;
+            color: white;
+            padding: 8px 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: background-color 0.2s;
+        }
+
+        .send-btn:hover {
+            background: #2563eb;
+        }
+
+        /* 右側工作區 */
+        .workspace-panel {
+            flex: 1;
+            background: #0f172a;
+            display: flex;
+            flex-direction: column;
+            min-width: 400px;
+        }
+
+        .workspace-tabs {
+            background: #1e293b;
+            display: flex;
+            border-bottom: 1px solid #475569;
+        }
+
+        .tab {
+            padding: 12px 20px;
+            background: transparent;
+            border: none;
+            color: #64748b;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size: 13px;
+            font-weight: 500;
+            border-bottom: 2px solid transparent;
+        }
+
+        .tab:hover {
+            color: #e2e8f0;
+            background: #334155;
+        }
+
+        .tab.active {
+            color: #60a5fa;
+            border-bottom-color: #60a5fa;
+            background: #1e293b;
+        }
+
+        .workspace-content {
+            flex: 1;
+            position: relative;
+        }
+
+        .tab-content {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            display: none;
+            flex-direction: column;
+        }
+
+        .tab-content.active {
+            display: flex;
+        }
+
+        /* 所有其他標籤的樣式保持一致... */
+        .changes-content, .vscode-content, .terminal-content, .jupyter-content, .app-content, .browser-content {
+            height: 100%;
+            overflow-y: auto;
+        }
+
+        /* Git 狀態增強 */
+        .git-status {
+            background: #1e293b;
+            border-radius: 8px;
+            padding: 16px;
+            margin-bottom: 20px;
+            border-left: 4px solid #f59e0b;
+        }
+
+        .git-actions {
+            display: flex;
+            gap: 8px;
+            margin-top: 16px;
+        }
+
+        .git-btn {
+            background: #3b82f6;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 12px;
+            transition: background-color 0.2s;
+        }
+
+        .git-btn:hover {
+            background: #2563eb;
+        }
+
+        .git-btn.danger {
+            background: #ef4444;
+        }
+
+        .git-btn.danger:hover {
+            background: #dc2626;
+        }
+
+        /* 匯出功能 */
+        .export-section {
+            background: #334155;
+            border-radius: 8px;
+            padding: 16px;
+            margin-top: 20px;
+        }
+
+        .export-options {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 8px;
+            margin-top: 12px;
+        }
+
+        .export-btn {
+            background: #10b981;
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 12px;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            justify-content: center;
+        }
+
+        .export-btn:hover {
+            background: #059669;
+        }
+
+        /* 響應式設計 */
+        @media (max-width: 768px) {
+            .main-content {
+                flex-direction: column;
+            }
+            
+            .left-panel {
+                width: 100%;
+                height: 50%;
+            }
+            
+            .workspace-panel {
+                height: 50%;
+            }
+        }
+
+        /* 聊天歷史側邊欄 */
+        .chat-history-sidebar {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 280px;
+            height: 100%;
+            background: #111827;
+            border-right: 1px solid #374151;
+            transform: translateX(-100%);
+            transition: transform 0.3s ease;
+            z-index: 20;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .chat-history-sidebar.open {
+            transform: translateX(0);
+        }
+
+        .chat-history-header {
+            background: #1f2937;
+            padding: 12px 16px;
+            border-bottom: 1px solid #374151;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .chat-history-header h3 {
+            font-size: 14px;
+            font-weight: 600;
+            color: #e2e8f0;
+        }
+
+        .close-sidebar-btn {
+            background: none;
+            border: none;
+            color: #9ca3af;
+            cursor: pointer;
+            padding: 4px;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+
+        .close-sidebar-btn:hover {
+            background: #374151;
+            color: #e2e8f0;
+        }
+
+        .chat-history-list {
+            flex: 1;
+            padding: 8px;
+            overflow-y: auto;
+        }
+
+        .chat-history-item {
+            padding: 12px;
+            margin-bottom: 8px;
+            background: #1f2937;
+            border-radius: 8px;
+            cursor: pointer;
+            border: 1px solid transparent;
+            transition: all 0.2s;
+            position: relative;
+        }
+
+        .chat-history-item:hover {
+            background: #374151;
+            border-color: #4b5563;
+        }
+
+        .chat-history-item.active {
+            background: #3b82f6;
+            border-color: #2563eb;
+        }
+
+        .chat-title {
+            font-size: 13px;
+            font-weight: 500;
+            color: #e2e8f0;
+            margin-bottom: 4px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            padding-right: 20px;
+        }
+
+        .chat-date {
+            font-size: 11px;
+            color: #9ca3af;
+            margin-bottom: 4px;
+        }
+
+        .chat-repo {
+            font-size: 10px;
+            color: #60a5fa;
+            background: rgba(96, 165, 250, 0.1);
+            padding: 2px 6px;
+            border-radius: 4px;
+            display: inline-block;
+        }
+
+        .delete-chat-btn {
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            background: #ef4444;
+            color: white;
+            border: none;
+            width: 24px;
+            height: 24px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 12px;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+            z-index: 10;
+        }
+
+        .delete-chat-btn:hover {
+            background: #dc2626;
+            transform: scale(1.1);
+        }
+
+        .chat-history-item:hover .delete-chat-btn {
+            display: flex;
+        }
+
+        .chat-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 15;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .chat-overlay.open {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .fade-in {
+            animation: fadeIn 0.5s ease-out;
+        }
+    </style>
+</head>
+<body>
+    <!-- 歡迎頁面 -->
+    <div class="welcome-screen" id="welcome-screen">
+        <div class="welcome-left">
+            <h1 class="welcome-title">Let's Start Building!</h1>
+            <p class="welcome-subtitle">
+                OpenHands makes it easy to build and maintain software using AI-driven development. 
+                Get started with our powerful development environment.
+            </p>
+            
+            <div>
+                <button class="welcome-btn" onclick="launchFromScratch()">
+                    🚀 Launch from Scratch
+                </button>
+                <button class="welcome-btn secondary" onclick="showAuthModal()">
+                    🔐 Login with GitHub
+                </button>
+            </div>
+
+            <p style="margin-top: 20px; font-size: 14px; color: #64748b;">
+                Not sure how to start? 
+                <a href="#" class="help-link" onclick="openLearning()">Read this</a>
+            </p>
+        </div>
+
+        <div class="welcome-right">
+            <div class="repo-section">
+                <h3>🔗 Connect to a Repository</h3>
+                <select class="repo-selector" id="repo-select">
+                    <option value="">Select a repo</option>
+                    <option value="nteverysome/EduCreate">nteverysome/EduCreate</option>
+                    <option value="user/another-repo">user/another-repo</option>
+                </select>
+                
+                <select class="repo-selector" id="branch-select">
+                    <option value="">Select a branch</option>
+                    <option value="main">main</option>
+                    <option value="feat/neondb-integration">feat/neondb-integration-and-typescript-fixes</option>
+                </select>
+
+                <button class="welcome-btn" onclick="launchRepo()" style="width: 100%; margin-top: 12px;">
+                    🚀 Launch
+                </button>
+
+                <p style="margin-top: 16px; font-size: 14px; color: #64748b;">
+                    <a href="#" class="help-link" onclick="addGithubRepos()">Add GitHub repos</a>
+                </p>
+            </div>
+
+            <div style="margin-top: 40px;">
+                <h3 style="color: #e2e8f0; margin-bottom: 16px;">✨ Suggested Tasks</h3>
+                <p style="color: #64748b; font-size: 14px;">No tasks available</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- GitHub 登入模態框 -->
+    <div class="auth-modal" id="auth-modal">
+        <div class="auth-content">
+            <h2 style="color: #e2e8f0; margin-bottom: 16px;">Welcome to OpenHands</h2>
+            <p style="color: #94a3b8; margin-bottom: 24px;">
+                Sign in with your GitHub account to access your repositories and start building.
+            </p>
+            
+            <button class="github-btn" onclick="loginWithGithub()">
+                <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.577 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+                </svg>
+                Login with GitHub
+            </button>
+            
+            <p style="font-size: 12px; color: #64748b; margin-top: 16px;">
+                By signing in, you agree to our Terms of Service and Privacy Policy.
+            </p>
+            
+            <button onclick="closeAuthModal()" style="background: none; border: none; color: #64748b; margin-top: 16px; cursor: pointer;">
+                ✕ Close
+            </button>
+        </div>
+    </div>
+
+    <!-- 設定頁面模態框 -->
+    <div class="settings-modal" id="settings-modal">
+        <div class="settings-content">
+            <div class="settings-header">
+                <h2 style="color: #e2e8f0;">⚙️ Settings</h2>
+                <button onclick="closeSettings()" style="background: none; border: none; color: #94a3b8; cursor: pointer; font-size: 20px;">✕</button>
+            </div>
+            
+            <div class="settings-tabs">
+                <button class="settings-tab active" onclick="switchSettingsTab('user')">User</button>
+                <button class="settings-tab" onclick="switchSettingsTab('integrations')">Integrations</button>
+                <button class="settings-tab" onclick="switchSettingsTab('application')">Application</button>
+                <button class="settings-tab" onclick="switchSettingsTab('credits')">Credits</button>
+                <button class="settings-tab" onclick="switchSettingsTab('secrets')">Secrets</button>
+                <button class="settings-tab" onclick="switchSettingsTab('apikeys')">API Keys</button>
+            </div>
+            
+            <div class="settings-body" id="settings-body">
+                <div id="settings-user" class="settings-tab-content">
+                    <div class="settings-section">
+                        <h3>Email</h3>
+                        <input type="email" class="settings-input" value="nteverysome@gmail.com" readonly>
+                        <button class="settings-btn">Save</button>
+                    </div>
+                </div>
+                
+                <div id="settings-integrations" class="settings-tab-content" style="display: none;">
+                    <div class="settings-section">
+                        <h3>GitHub Integration</h3>
+                        <button class="settings-btn" onclick="configureGithubRepos()">Configure Github Repositories</button>
+                        <p style="font-size: 12px; color: #64748b; margin-top: 8px;">
+                            Manage which repositories OpenHands can access
+                        </p>
+                    </div>
+                    
+                    <div class="settings-section">
+                        <h3>Slack Integration</h3>
+                        <button class="settings-btn">Install OpenHands Slack App</button>
+                        <p style="font-size: 12px; color: #64748b; margin-top: 8px;">
+                            Get notifications and updates in Slack
+                        </p>
+                    </div>
+                </div>
+                
+                <div id="settings-application" class="settings-tab-content" style="display: none;">
+                    <div class="settings-section">
+                        <h3>Language</h3>
+                        <select class="settings-input">
+                            <option value="en">English</option>
+                            <option value="zh">繁體中文</option>
+                        </select>
+                    </div>
+                    
+                    <div class="settings-section">
+                        <h3>Preferences</h3>
+                        <label style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px; color: #e2e8f0;">
+                            <input type="checkbox" checked> Enable analytics
+                        </label>
+                        <label style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px; color: #e2e8f0;">
+                            <input type="checkbox"> Sound Notifications
+                        </label>
+                        <label style="display: flex; align-items: center; gap: 8px; color: #e2e8f0;">
+                            <input type="checkbox" checked> Suggest Tasks on GitHub
+                        </label>
+                    </div>
+                    
+                    <div class="settings-section">
+                        <h3>🔧 OpenHands 整合設定</h3>
+                        <div style="margin-bottom: 16px;">
+                            <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px;">
+                                <div id="connection-status" style="width: 12px; height: 12px; border-radius: 50%; background: #64748b;"></div>
+                                <span id="connection-text" style="color: #94a3b8; font-size: 14px;">檢查中...</span>
+                            </div>
+                        </div>
+                        
+                        <div style="margin-bottom: 16px;">
+                            <label style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px; color: #e2e8f0;">
+                                <input type="radio" name="integration-mode" value="demo" checked onchange="handleModeChange()">
+                                演示模式 (離線功能，不需要後端)
+                            </label>
+                            <label style="display: flex; align-items: center; gap: 8px; color: #e2e8f0;">
+                                <input type="radio" name="integration-mode" value="integrated" onchange="handleModeChange()">
+                                整合模式 (連接 OpenHands 後端)
+                            </label>
+                        </div>
+                        
+                        <div style="margin-bottom: 16px;">
+                            <label style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px; color: #e2e8f0;">
+                                <input type="checkbox" id="enable-websocket" onchange="handleFeatureToggle('enableWebSocket', this.checked)">
+                                啟用 WebSocket (實時終端和聊天)
+                            </label>
+                            <label style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px; color: #e2e8f0;">
+                                <input type="checkbox" id="enable-filesync" onchange="handleFeatureToggle('enableFileSync', this.checked)">
+                                啟用文件同步 (自動載入專案文件)
+                            </label>
+                            <label style="display: flex; align-items: center; gap: 8px; color: #e2e8f0;">
+                                <input type="checkbox" id="enable-debug" checked onchange="handleFeatureToggle('debugMode', this.checked)">
+                                調試模式 (顯示詳細日誌)
+                            </label>
+                        </div>
+                        
+                        <div style="display: flex; gap: 8px; margin-bottom: 16px;">
+                            <button class="settings-btn" onclick="testOpenHandsConnection()">🔌 測試連接</button>
+                            <button class="settings-btn" onclick="toggleIntegrationMode()">🔄 切換模式</button>
+                            <button class="settings-btn" onclick="resetIntegration()" style="background: #ef4444;">🔄 重置</button>
+                        </div>
+                        
+                        <div style="margin-bottom: 16px;">
+                            <h4 style="color: #e2e8f0; margin-bottom: 8px; font-size: 14px;">連接設定</h4>
+                            <input type="text" class="settings-input" id="openhands-url" placeholder="OpenHands URL (預設: http://localhost:3000)" value="http://localhost:3000">
+                            <button class="settings-btn" onclick="updateConnectionSettings()">更新連接</button>
+                        </div>
+                        
+                        <div id="integration-status" style="background: #334155; padding: 12px; border-radius: 6px; font-size: 12px; color: #94a3b8;">
+                            <div><strong>狀態：</strong><span id="status-mode">演示模式</span></div>
+                            <div><strong>會話：</strong><span id="status-session">無</span></div>
+                            <div><strong>WebSocket：</strong><span id="status-ws">未連接</span></div>
+                            <div><strong>文件同步：</strong><span id="status-files">未啟用</span></div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div id="settings-credits" class="settings-tab-content" style="display: none;">
+                    <!-- Credits Header -->
+                    <div style="background: linear-gradient(135deg, #3b82f6, #8b5cf6); border-radius: 12px; padding: 20px; margin-bottom: 24px; color: white; text-align: center;">
+                        <h2 style="margin-bottom: 8px;">💎 Choose Your Plan</h2>
+                        <p style="opacity: 0.9; margin: 0;">Unlock the full power of AI development</p>
+                    </div>
+                    
+                    <!-- Plan Cards -->
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 24px;">
+                        <!-- Free Plan -->
+                        <div class="plan-card" onclick="selectPlan('free')" style="background: #334155; border: 2px solid #475569; border-radius: 12px; padding: 20px; cursor: pointer; transition: all 0.3s;">
+                            <div style="display: flex; justify-content: between; align-items: center; margin-bottom: 16px;">
+                                <h3 style="color: #e2e8f0; margin: 0; font-size: 18px;">Free Plan</h3>
+                            </div>
+                            
+                            <div style="font-size: 36px; font-weight: 700; color: #60a5fa; margin-bottom: 16px;">
+                                $0<span style="font-size: 16px; color: #94a3b8;">/month</span>
+                            </div>
+                            
+                            <div>
+                                <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px; color: #e2e8f0; font-size: 14px;">
+                                    <span style="color: #10b981;">✅</span> 10 requests/day with GPT-4o
+                                </div>
+                                <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px; color: #e2e8f0; font-size: 14px;">
+                                    <span style="color: #10b981;">✅</span> 50 requests/month total
+                                </div>
+                                <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px; color: #e2e8f0; font-size: 14px;">
+                                    <span style="color: #94a3b8;">⏱️</span> Queue wait time: 12-15 min
+                                </div>
+                                <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px; color: #e2e8f0; font-size: 14px;">
+                                    <span style="color: #ef4444;">❌</span> No priority support
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Pro Plan -->
+                        <div class="plan-card active" onclick="selectPlan('pro')" style="background: #1e3a3a; border: 2px solid #10b981; border-radius: 12px; padding: 20px; cursor: pointer; transition: all 0.3s; position: relative;">
+                            <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 16px;">
+                                <div>
+                                    <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 4px;">
+                                        <h3 style="color: #e2e8f0; margin: 0; font-size: 18px;">Pro Plan</h3>
+                                        <span style="background: #f59e0b; color: #000; padding: 2px 8px; border-radius: 12px; font-size: 10px; font-weight: 600;">HOT</span>
+                                    </div>
+                                </div>
+                                
+                                <!-- 配額顯示在右邊 -->
+                                <div style="text-align: right;">
+                                    <div style="font-size: 12px; color: #94a3b8; margin-bottom: 4px;">當前配額</div>
+                                    <div style="font-size: 20px; font-weight: 700; color: #10b981;">485/600</div>
+                                    <div style="width: 80px; height: 6px; background: rgba(255, 255, 255, 0.2); border-radius: 3px; margin-top: 4px;">
+                                        <div style="height: 100%; background: #10b981; border-radius: 3px; width: 80%;"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div style="font-size: 36px; font-weight: 700; color: #10b981; margin-bottom: 16px;">
+                                $29<span style="font-size: 16px; color: #94a3b8;">/month</span>
+                            </div>
+                            
+                            <div>
+                                <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px; color: #e2e8f0; font-size: 14px;">
+                                    <span style="color: #f59e0b;">🚀</span> 600 requests/month
+                                </div>
+                                <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px; color: #e2e8f0; font-size: 14px;">
+                                    <span style="color: #f59e0b;">⚡</span> No queue - instant access
+                                </div>
+                                <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px; color: #e2e8f0; font-size: 14px;">
+                                    <span style="color: #f59e0b;">🎯</span> Premium AI models
+                                </div>
+                                <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px; color: #e2e8f0; font-size: 14px;">
+                                    <span style="color: #f59e0b;">📞</span> Priority support
+                                </div>
+                                <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px; color: #e2e8f0; font-size: 14px;">
+                                    <span style="color: #f59e0b;">📤</span> Export conversations
+                                </div>
+                            </div>
+                            
+                            <!-- Annual Billing Promo -->
+                            <div style="background: #1e40af; color: white; padding: 8px 12px; border-radius: 6px; font-size: 12px; text-align: center; margin-top: 12px;">
+                                💰 Save 20% with annual billing - $261/year
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Add-on Quota Packs -->
+                    <div style="margin-top: 24px;">
+                        <h4 style="color: #e2e8f0; margin-bottom: 12px; font-size: 16px;">📦 Add-on Quota Packs</h4>
+                        <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px;">
+                            <div style="background: #334155; padding: 16px; border-radius: 8px; text-align: center; border: 1px solid #475569; transition: all 0.2s; cursor: pointer;" onclick="purchaseQuotaPack(100, 5)">
+                                <div style="font-weight: 600; color: #e2e8f0; margin-bottom: 8px;">100 requests</div>
+                                <div style="font-size: 24px; font-weight: 700; color: #10b981;">$5</div>
+                            </div>
+                            <div style="background: #334155; padding: 16px; border-radius: 8px; text-align: center; border: 2px solid #f59e0b; transition: all 0.2s; cursor: pointer;" onclick="purchaseQuotaPack(300, 12)">
+                                <div style="display: flex; align-items: center; justify-content: center; gap: 4px; margin-bottom: 8px;">
+                                    <span style="font-weight: 600; color: #e2e8f0;">300 requests</span>
+                                    <span style="background: #f59e0b; color: #000; padding: 2px 6px; border-radius: 8px; font-size: 8px; font-weight: 600;">HOT</span>
+                                </div>
+                                <div style="font-size: 24px; font-weight: 700; color: #10b981;">$12</div>
+                            </div>
+                            <div style="background: #334155; padding: 16px; border-radius: 8px; text-align: center; border: 1px solid #475569; transition: all 0.2s; cursor: pointer;" onclick="purchaseQuotaPack(600, 20)">
+                                <div style="font-weight: 600; color: #e2e8f0; margin-bottom: 8px;">600 requests</div>
+                                <div style="font-size: 24px; font-weight: 700; color: #10b981;">$20</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Upgrade Button -->
+                    <div style="margin-top: 24px; text-align: center;">
+                        <button style="background: linear-gradient(135deg, #3b82f6, #8b5cf6); color: white; border: none; padding: 12px 32px; border-radius: 8px; font-size: 16px; font-weight: 600; cursor: pointer; margin-bottom: 8px;" onclick="proceedToPayment()">
+                            💳 Upgrade to Pro - $29/month
+                        </button>
+                        <p style="font-size: 12px; color: #64748b; margin: 0;">
+                            Secure payment powered by <span style="color: #635bff;">Stripe</span>
+                        </p>
+                    </div>
+                </div>
+                
+                <div id="settings-secrets" class="settings-tab-content" style="display: none;">
+                    <div style="text-align: center; padding: 40px; color: #64748b;">
+                        <p>No secrets found</p>
+                        <button class="settings-btn" style="margin-top: 16px;">Add a new secret</button>
+                    </div>
+                </div>
+                
+                <div id="settings-apikeys" class="settings-tab-content" style="display: none;">
+                    <div class="settings-section">
+                        <button class="settings-btn">Create API Key</button>
+                        <p style="font-size: 12px; color: #64748b; margin-top: 8px; line-height: 1.5;">
+                            API keys allow you to authenticate with the OpenHands API programmatically. 
+                            Keep your API keys secure: anyone with your API key can access your account. 
+                            For more information on how to use the API, see our 
+                            <a href="#" style="color: #60a5fa;">API documentation</a>.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 付費系統模態框 -->
+    <div class="billing-modal" id="billing-modal">
+        <div class="billing-content">
+            <div class="billing-header">
+                <h2>💎 Choose Your Plan</h2>
+                <p style="opacity: 0.9; margin-top: 8px;">Unlock the full power of AI development</p>
+            </div>
+            
+            <div class="billing-body">
+                <div class="plan-card" onclick="selectPlan('free')">
+                    <div class="plan-title">Free Plan</div>
+                    <div class="plan-price">$0<span style="font-size: 16px; color: #64748b;">/month</span></div>
+                    <ul class="plan-features">
+                        <li>✅ 10 requests/day with GPT-4o</li>
+                        <li>✅ 50 requests/month total</li>
+                        <li>⏱️ Queue wait time: 12-15 min</li>
+                        <li>❌ No priority support</li>
+                    </ul>
+                </div>
+                
+                <div class="plan-card active" onclick="selectPlan('pro')">
+                    <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px;">
+                        <div class="plan-title">Pro Plan</div>
+                        <span class="hot-badge">HOT</span>
+                    </div>
+                    <div class="plan-price">$29<span style="font-size: 16px; color: #64748b;">/month</span></div>
+                    <ul class="plan-features">
+                        <li>🚀 600 requests/month</li>
+                        <li>⚡ No queue - instant access</li>
+                        <li>🎯 Premium AI models</li>
+                        <li>📞 Priority support</li>
+                        <li>💾 Export conversations</li>
+                    </ul>
+                    <div style="margin-top: 12px;">
+                        <div style="background: #1e40af; color: white; padding: 8px 12px; border-radius: 6px; font-size: 12px; text-align: center;">
+                            💰 Save 20% with annual billing - $261/year
+                        </div>
+                    </div>
+                </div>
+                
+                <div style="margin-top: 24px;">
+                    <h4 style="color: #e2e8f0; margin-bottom: 12px;">📦 Add-on Quota Packs</h4>
+                    <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px;">
+                        <div style="background: #334155; padding: 12px; border-radius: 8px; text-align: center;">
+                            <div style="font-weight: 600; color: #e2e8f0;">100 requests</div>
+                            <div style="font-size: 20px; font-weight: 700; color: #10b981;">$5</div>
+                        </div>
+                        <div style="background: #334155; padding: 12px; border-radius: 8px; text-align: center; border: 2px solid #f59e0b;">
+                            <div style="display: flex; align-items: center; justify-content: center; gap: 4px; margin-bottom: 4px;">
+                                <span style="font-weight: 600; color: #e2e8f0;">300 requests</span>
+                                <span class="hot-badge">HOT</span>
+                            </div>
+                            <div style="font-size: 20px; font-weight: 700; color: #10b981;">$12</div>
+                        </div>
+                        <div style="background: #334155; padding: 12px; border-radius: 8px; text-align: center;">
+                            <div style="font-weight: 600; color: #e2e8f0;">600 requests</div>
+                            <div style="font-size: 20px; font-weight: 700; color: #10b981;">$20</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div style="margin-top: 24px; text-align: center;">
+                    <button class="welcome-btn" onclick="proceedToPayment()">
+                        💳 Upgrade to Pro - $29/month
+                    </button>
+                    <p style="font-size: 12px; color: #64748b; margin-top: 8px;">
+                        Secure payment powered by Stripe
+                    </p>
+                </div>
+                
+                <button onclick="closeBilling()" style="background: none; border: none; color: #64748b; margin-top: 16px; cursor: pointer; width: 100%; text-align: center;">
+                    ✕ Close
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 主應用界面 -->
+    <div class="studio-container">
+        <!-- 頂部標題欄 -->
+        <header class="header">
+            <div class="header-left">
+                <h1>🚀 OpenHands Dev Studio</h1>
+            </div>
+            <div class="header-right">
+                <!-- 排隊提示 -->
+                <div class="queue-alert" id="queue-alert">
+                    ⏳ Queue: <span id="queue-count">347</span> people
+                </div>
+                
+                <!-- 配額顯示 -->
+                <div class="quota-display" onclick="showBilling()">
+                    <span>485/600</span>
+                    <div class="quota-bar">
+                        <div class="quota-fill"></div>
+                    </div>
+                </div>
+                
+                <div class="status-bar">
+                    <div class="status-indicator">
+                        <div class="status-dot"></div>
+                        API Ready
+                    </div>
+                </div>
+                
+                <!-- 用戶頭像 -->
+                <div class="user-avatar" onclick="showBilling()" title="User Profile & Billing">
+                    👤
+                </div>
+            </div>
+        </header>
+
+        <!-- 主要內容 -->
+        <main class="main-content">
+            <!-- 左側面板 -->
+            <div class="left-panel">
+                <!-- 左側頂部工具欄 -->
+                <div class="left-toolbar">
+                    <div class="toolbar-group">
+                        <button class="toolbar-btn" title="新增對話" onclick="newConversation()">
+                            ➕ <span>新增</span>
+                        </button>
+                        <button class="toolbar-btn" title="對話列表" onclick="toggleChatHistory()">
+                            📋 <span>歷史</span>
+                        </button>
+                    </div>
+                    
+                    <div class="toolbar-separator"></div>
+                    
+                    <div class="toolbar-group">
+                        <button class="toolbar-btn" title="設定功能" onclick="openSettings()">
+                            ⚙️ <span>設定</span>
+                        </button>
+                        <button class="toolbar-btn" title="學習功能" onclick="openLearning()">
+                            🎓 <span>學習</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- 對話面板 -->
+                <div class="chat-panel">
+                    <!-- 聊天歷史側邊欄 -->
+                    <div class="chat-history-sidebar" id="chat-history-sidebar">
+                        <div class="chat-history-header">
+                            <h3>對話歷史</h3>
+                            <button class="close-sidebar-btn" onclick="toggleChatHistory()">✕</button>
+                        </div>
+                        <div class="chat-history-list">
+                            <div class="chat-history-item active" onclick="selectConversation(this)">
+                                <div class="chat-title">React 用戶資料組件開發</div>
+                                <div class="chat-date">今天 14:30</div>
+                                <div class="chat-repo">nteverysome/EduCreate</div>
+                                <button class="delete-chat-btn" onclick="deleteConversation(this, event)">🗑️</button>
+                            </div>
+                            <div class="chat-history-item" onclick="selectConversation(this)">
+                                <div class="chat-title">API 接口設計討論</div>
+                                <div class="chat-date">昨天 16:45</div>
+                                <div class="chat-repo">user/api-project</div>
+                                <button class="delete-chat-btn" onclick="deleteConversation(this, event)">🗑️</button>
+                            </div>
+                            <div class="chat-history-item" onclick="selectConversation(this)">
+                                <div class="chat-title">數據庫架構優化</div>
+                                <div class="chat-date">昨天 09:20</div>
+                                <div class="chat-repo">company/database-proj</div>
+                                <button class="delete-chat-btn" onclick="deleteConversation(this, event)">🗑️</button>
+                            </div>
+                            <div class="chat-history-item" onclick="selectConversation(this)">
+                                <div class="chat-title">前端路由配置</div>
+                                <div class="chat-date">3天前</div>
+                                <div class="chat-repo">frontend/router-app</div>
+                                <button class="delete-chat-btn" onclick="deleteConversation(this, event)">🗑️</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 遮罩層 -->
+                    <div class="chat-overlay" id="chat-overlay" onclick="toggleChatHistory()"></div>
+
+                    <div class="chat-history" id="chat-history">
+                        <!-- 示例對話 -->
+                        <div class="message user">
+                            <div class="message-content">
+                                創建一個 React 用戶資料組件，包含頭像、姓名、郵箱顯示
+                            </div>
+                        </div>
+                        
+                        <div class="message assistant">
+                            <div class="message-content">
+                                我來幫你創建一個完整的用戶資料組件：
+                                
+                                <div class="code-block">
+                                    <div class="code-header">
+                                        <span>📄 UserProfile.tsx</span>
+                                        <div class="code-actions">
+                                            <button class="action-btn" onclick="copyCode(this)">📋 Copy</button>
+                                            <button class="action-btn apply" onclick="applyCode(this)">▶️ Apply</button>
+                                            <button class="action-btn" onclick="saveCode(this)">💾 Save</button>
+                                        </div>
+                                    </div>
+                                    <div class="code-content">
+<pre>interface User {
+  id: string;
+  name: string;
+  email: string;
+  avatar?: string;
+}
+
+export function UserProfile({ user }: { user: User }) {
+  return (
+    &lt;div className="user-profile"&gt;
+      &lt;img 
+        src={user.avatar || '/default-avatar.png'} 
+        alt={user.name}
+        className="avatar"
+      /&gt;
+      &lt;h2&gt;{user.name}&lt;/h2&gt;
+      &lt;p&gt;{user.email}&lt;/p&gt;
+    &lt;/div&gt;
+  );
+}</pre>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 輸入區域 -->
+                    <div class="input-section">
+                        <div class="input-box">
+                            <textarea 
+                                class="input-textarea" 
+                                placeholder="描述你想要的功能或改進..."
+                                id="user-input"></textarea>
+                            <div class="input-actions">
+                                <div class="input-tools">
+                                    <!-- 只保留檔案上傳功能 -->
+                                    <button class="tool-btn" title="上傳文件" onclick="uploadFile()">📎</button>
+                                    <!-- 暫停按鈕 -->
+                                    <button class="pause-btn" id="pause-btn" onclick="pauseExecution()">
+                                        ⏸️ 暫停
+                                    </button>
+                                </div>
+                                <button class="send-btn" onclick="sendMessage()">發送 ➤</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 可拖拽分隔器 -->
+            <div class="resizer" id="resizer"></div>
+
+            <!-- 右側工作區 -->
+            <div class="workspace-panel" oncontextmenu="showContextMenu(event)">
+                <!-- 工作區標籤 -->
+                <div class="workspace-tabs">
+                    <button class="tab active" onclick="switchTab('changes')">🔄 Changes</button>
+                    <button class="tab" onclick="switchTab('vscode')">💻 VS Code</button>
+                    <button class="tab" onclick="switchTab('terminal')">🖥️ Terminal</button>
+                    <button class="tab" onclick="switchTab('jupyter')">📓 Jupyter</button>
+                    <button class="tab" onclick="switchTab('app')">📱 App</button>
+                    <button class="tab" onclick="switchTab('browser')">🌐 Browser</button>
+                </div>
+
+                <!-- 工作區內容 -->
+                <div class="workspace-content">
+                    <!-- Changes Tab -->
+                    <div id="changes-tab" class="tab-content active">
+                        <div class="changes-content" style="padding: 20px;">
+                            <div class="git-status">
+                                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+                                    <div style="color: #f59e0b; font-size: 12px; font-weight: 600;">📝 Git 狀態</div>
+                                    <div style="color: #10b981; font-size: 10px;">🟢 運行中</div>
+                                </div>
+                                <div style="font-weight: 600; margin-bottom: 8px; color: #e2e8f0;">當前分支: main</div>
+                                <div style="color: #94a3b8; font-size: 14px;">待提交: 3 個文件</div>
+                                
+                                <div class="git-actions">
+                                    <button class="git-btn" onclick="gitCommit()">📤 Commit</button>
+                                    <button class="git-btn" onclick="gitPush()">🚀 Push</button>
+                                    <button class="git-btn" onclick="gitPull()">⬇️ Pull</button>
+                                    <button class="git-btn danger" onclick="gitReset()">🔄 Reset</button>
+                                </div>
+                            </div>
+                            
+                            <h3 style="margin-bottom: 16px; color: #e2e8f0;">變更文件</h3>
+                            <div style="display: flex; flex-direction: column; gap: 8px;">
+                                <div style="display: flex; align-items: center; gap: 12px; padding: 8px 12px; background: #1e293b; border-radius: 6px; font-size: 14px;">
+                                    <div style="width: 16px; height: 16px; border-radius: 3px; background: #f59e0b; color: #000; display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: bold;">M</div>
+                                    <span>src/components/UserProfile.tsx</span>
+                                </div>
+                                <div style="display: flex; align-items: center; gap: 12px; padding: 8px 12px; background: #1e293b; border-radius: 6px; font-size: 14px;">
+                                    <div style="width: 16px; height: 16px; border-radius: 3px; background: #10b981; color: #000; display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: bold;">A</div>
+                                    <span>src/types/user.ts</span>
+                                </div>
+                                <div style="display: flex; align-items: center; gap: 12px; padding: 8px 12px; background: #1e293b; border-radius: 6px; font-size: 14px;">
+                                    <div style="width: 16px; height: 16px; border-radius: 3px; background: #f59e0b; color: #000; display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: bold;">M</div>
+                                    <span>package.json</span>
+                                </div>
+                            </div>
+                            
+                            <!-- 匯出功能 -->
+                            <div class="export-section">
+                                <h4 style="color: #e2e8f0; margin-bottom: 12px;">📤 匯出功能</h4>
+                                <div class="export-options">
+                                    <button class="export-btn" onclick="exportConversation('markdown')">
+                                        📝 Markdown
+                                    </button>
+                                    <button class="export-btn" onclick="exportConversation('pdf')">
+                                        📄 PDF
+                                    </button>
+                                    <button class="export-btn" onclick="exportConversation('json')">
+                                        📋 JSON
+                                    </button>
+                                    <button class="export-btn" onclick="exportConversation('zip')">
+                                        📦 ZIP
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- VS Code Tab -->
+                    <div id="vscode-tab" class="tab-content">
+                        <div style="display: grid; grid-template-columns: 250px 1fr; height: 100%;">
+                            <div style="background: #1e293b; border-right: 1px solid #475569; display: flex; flex-direction: column;">
+                                <div style="background: #334155; padding: 8px 12px; border-bottom: 1px solid #475569; font-size: 11px; font-weight: 600; color: #e2e8f0; text-transform: uppercase; letter-spacing: 0.5px;">
+                                    Explorer
+                                </div>
+                                <div style="flex: 1; padding: 8px; overflow-y: auto;">
+                                    <!-- 檔案搜尋 -->
+                                    <div style="margin-bottom: 12px;">
+                                        <input type="text" placeholder="🔍 Search files..." style="width: 100%; background: #334155; border: 1px solid #475569; border-radius: 4px; padding: 6px 8px; color: #e2e8f0; font-size: 12px;">
+                                    </div>
+                                    
+                                    <!-- 檔案樹 -->
+                                    <div style="display: flex; align-items: center; padding: 4px 8px; cursor: pointer; border-radius: 4px; font-size: 13px; user-select: none;" oncontextmenu="showFileContextMenu(event, 'folder')" onclick="toggleFolder(this)">
+                                        📁 src
+                                    </div>
+                                    <div style="display: flex; align-items: center; padding: 4px 8px; cursor: pointer; border-radius: 4px; font-size: 13px; user-select: none; margin-left: 16px;" onclick="toggleFolder(this)">
+                                        📁 components
+                                    </div>
+                                    <div style="display: flex; align-items: center; padding: 4px 8px; cursor: pointer; border-radius: 4px; font-size: 13px; user-select: none; margin-left: 32px; background: #3b82f6; color: white;" onclick="openFile('UserProfile.tsx')" oncontextmenu="showFileContextMenu(event, 'file')">
+                                        🟦 UserProfile.tsx
+                                    </div>
+                                    <div style="display: flex; align-items: center; padding: 4px 8px; cursor: pointer; border-radius: 4px; font-size: 13px; user-select: none; margin-left: 32px;" onclick="openFile('App.tsx')">
+                                        🟨 App.tsx
+                                    </div>
+                                    <div style="display: flex; align-items: center; padding: 4px 8px; cursor: pointer; border-radius: 4px; font-size: 13px; user-select: none; margin-left: 16px;" onclick="toggleFolder(this)">
+                                        📁 types
+                                    </div>
+                                    <div style="display: flex; align-items: center; padding: 4px 8px; cursor: pointer; border-radius: 4px; font-size: 13px; user-select: none; margin-left: 32px;" onclick="openFile('user.ts')">
+                                        🟦 user.ts
+                                    </div>
+                                    <div style="display: flex; align-items: center; padding: 4px 8px; cursor: pointer; border-radius: 4px; font-size: 13px; user-select: none;" onclick="openFile('package.json')">
+                                        📋 package.json
+                                    </div>
+                                    
+                                    <!-- 檔案上傳區域 -->
+                                    <div style="margin-top: 16px; padding: 12px; border: 2px dashed #475569; border-radius: 8px; text-align: center; color: #64748b; font-size: 12px;" onclick="uploadFiles()">
+                                        📁 拖拽檔案到此處上傳<br>或點擊選擇檔案
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div style="display: flex; flex-direction: column; background: #111827;">
+                                <div style="background: #1e293b; display: flex; border-bottom: 1px solid #475569; min-height: 35px; align-items: center;">
+                                    <div style="display: flex; align-items: center; padding: 8px 12px; background: #111827; border-right: 1px solid #475569; cursor: pointer; font-size: 13px; color: #e2e8f0; position: relative;">
+                                        <span>📄 UserProfile.tsx</span>
+                                        <span style="margin-left: 8px; opacity: 0.7; cursor: pointer;" onclick="closeTab(this)">✕</span>
+                                    </div>
+                                </div>
+                                
+                                <div style="flex: 1; position: relative;">
+                                    <div style="position: absolute; left: 0; top: 0; bottom: 0; width: 50px; background: #0f172a; border-right: 1px solid #374151; padding: 16px 8px; color: #6b7280; font-family: 'Consolas', 'Monaco', 'Courier New', monospace; font-size: 14px; line-height: 1.6; user-select: none;" id="line-numbers">
+                                        1<br>2<br>3<br>4<br>5<br>6<br>7<br>8<br>9<br>10<br>11<br>12<br>13<br>14<br>15<br>16<br>17<br>18<br>19<br>20
+                                    </div>
+                                    <textarea style="width: 100%; height: 100%; background: #111827; border: none; outline: none; color: #e2e8f0; font-family: 'Consolas', 'Monaco', 'Courier New', monospace; font-size: 14px; line-height: 1.6; padding: 16px 16px 16px 60px; resize: none;" id="code-editor" spellcheck="false">interface User {
+  id: string;
+  name: string;
+  email: string;
+  avatar?: string;
+  role: 'admin' | 'user' | 'guest';
+  createdAt: Date;
+  lastLogin?: Date;
+}
+
+export function UserProfile({ user }: { user: User }) {
+  return (
+    <div className="user-profile">
+      <img 
+        src={user.avatar || '/default-avatar.png'} 
+        alt={user.name}
+        className="avatar"
+      />
+      <div className="user-info">
+        <h2>{user.name}</h2>
+        <p>{user.email}</p>
+        <span className={`role-badge ${user.role}`}>
+          {user.role.toUpperCase()}
+        </span>
+      </div>
+    </div>
+  );
+}</textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Terminal Tab -->
+                    <div id="terminal-tab" class="tab-content">
+                        <div style="background: #111827; color: #10b981; font-family: 'Consolas', 'Monaco', 'Courier New', monospace; display: flex; flex-direction: column; height: 100%;">
+                            <div style="background: #1f2937; padding: 8px 12px; border-bottom: 1px solid #374151; display: flex; justify-content: space-between; align-items: center; font-size: 13px;">
+                                <div style="display: flex; gap: 4px;">
+                                    <div style="padding: 4px 12px; background: #10b981; color: #000; border-radius: 4px; font-size: 12px; cursor: pointer;">bash</div>
+                                    <div style="padding: 4px 8px; background: #374151; border-radius: 4px; font-size: 12px; cursor: pointer;" onclick="newTerminalTab()">+</div>
+                                </div>
+                                <div>
+                                    <button class="action-btn" onclick="clearTerminal()">Clear</button>
+                                    <button class="action-btn" onclick="splitTerminal()">Split</button>
+                                </div>
+                            </div>
+                            
+                            <div style="flex: 1; padding: 12px; overflow-y: auto; font-size: 13px;" id="terminal-output">
+                                <div style="margin-bottom: 2px;">$ cd /workspace/openhands-project</div>
+                                <div style="margin-bottom: 2px;">$ npm install</div>
+                                <div style="margin-bottom: 2px;">✓ Dependencies installed successfully</div>
+                                <div style="margin-bottom: 2px;">$ npm run dev</div>
+                                <div style="margin-bottom: 2px;">✓ Development server started on localhost:3000</div>
+                                <div style="margin-bottom: 2px;">$ git status</div>
+                                <div style="margin-bottom: 2px;">On branch main</div>
+                                <div style="margin-bottom: 2px;">Changes to be committed:</div>
+                                <div style="margin-bottom: 2px;">  modified:   src/components/UserProfile.tsx</div>
+                                <div style="margin-bottom: 2px;">  new file:   src/types/user.ts</div>
+                            </div>
+                            
+                            <div style="border-top: 1px solid #374151; padding: 8px 12px; background: #1f2937; display: flex; align-items: center;">
+                                <span style="color: #10b981; margin-right: 8px;">$</span>
+                                <input type="text" style="flex: 1; background: transparent; border: none; outline: none; color: #10b981; font-family: inherit; font-size: 13px;" id="terminal-command" onkeypress="handleTerminalInput(event)" placeholder="輸入命令...">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Jupyter Tab -->
+                    <div id="jupyter-tab" class="tab-content">
+                        <div style="padding: 20px; overflow-y: auto; height: 100%;">
+                            <h3 style="margin-bottom: 16px; color: #e2e8f0;">🪐 Jupyter Notebook</h3>
+                            
+                            <div style="border: 1px solid #475569; border-radius: 8px; margin-bottom: 16px; background: #1e293b;">
+                                <div style="background: #334155; padding: 8px 12px; border-bottom: 1px solid #475569; display: flex; justify-content: space-between; align-items: center; font-size: 13px;">
+                                    <span>Code Cell [1]</span>
+                                    <div>
+                                        <button class="action-btn" onclick="runCell(this)">▶️ Run</button>
+                                        <button class="action-btn" onclick="addCell()">➕ Add</button>
+                                    </div>
+                                </div>
+                                <div style="padding: 12px; font-family: 'Consolas', 'Monaco', 'Courier New', monospace; font-size: 13px; background: #111827; color: #e2e8f0;">
+<pre>import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+
+# 分析用戶數據
+users_data = {
+    'name': ['Alice', 'Bob', 'Charlie', 'Diana', 'Eve'],
+    'age': [25, 30, 35, 28, 32],
+    'score': [85, 92, 78, 95, 88],
+    'role': ['user', 'admin', 'user', 'admin', 'user']
+}
+
+df = pd.DataFrame(users_data)
+print("用戶數據統計:")
+print(df.describe())</pre>
+                                </div>
+                                <div style="padding: 12px; background: #0f172a; color: #10b981; font-family: 'Consolas', 'Monaco', 'Courier New', monospace; font-size: 12px; border-top: 1px solid #475569;">
+<pre>用戶數據統計:
+             age      score
+count   5.000000   5.000000
+mean   30.000000  87.600000
+std     4.242641   6.542171
+min    25.000000  78.000000
+25%    28.000000  85.000000
+50%    30.000000  88.000000
+75%    32.000000  92.000000
+max    35.000000  95.000000</pre>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- App Tab -->
+                    <div id="app-tab" class="tab-content">
+                        <div style="padding: 20px; overflow-y: auto; height: 100%;">
+                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                                <h3 style="color: #e2e8f0;">📱 應用管理中心</h3>
+                                <span style="background: #f59e0b; color: #000; padding: 2px 6px; border-radius: 4px; font-size: 10px;">BETA</span>
+                            </div>
+                            
+                            <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 16px;">
+                                <div style="background: #1e293b; border-radius: 8px; padding: 16px; border: 1px solid #475569; transition: all 0.2s; cursor: pointer;" onclick="launchApp('react')">
+                                    <div style="font-size: 32px; margin-bottom: 12px;">⚛️</div>
+                                    <div style="font-weight: 600; margin-bottom: 8px; color: #e2e8f0;">React App</div>
+                                    <div style="font-size: 12px; color: #94a3b8; margin-bottom: 12px;">現代化前端應用</div>
+                                    <div style="color: #10b981; font-size: 12px;">🟢 Port 3000</div>
+                                </div>
+
+                                <div style="background: #1e293b; border-radius: 8px; padding: 16px; border: 1px solid #475569; transition: all 0.2s; cursor: pointer;" onclick="launchApp('express')">
+                                    <div style="font-size: 32px; margin-bottom: 12px;">🌐</div>
+                                    <div style="font-weight: 600; margin-bottom: 8px; color: #e2e8f0;">Express API</div>
+                                    <div style="font-size: 12px; color: #94a3b8; margin-bottom: 12px;">後端 API 服務</div>
+                                    <div style="color: #64748b; font-size: 12px;">⚫ 停止</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Browser Tab -->
+                    <div id="browser-tab" class="tab-content">
+                        <div style="display: flex; flex-direction: column; height: 100%;">
+                            <div style="background: #334155; padding: 12px 16px; border-bottom: 1px solid #475569; display: flex; gap: 12px; align-items: center;">
+                                <button class="action-btn" onclick="goBack()">⬅️</button>
+                                <button class="action-btn" onclick="goForward()">➡️</button>
+                                <button class="action-btn" onclick="refreshBrowser()">🔄</button>
+                                <input type="text" style="flex: 1; background: #1e293b; border: 1px solid #475569; border-radius: 6px; padding: 8px 12px; color: #e2e8f0; font-size: 14px;" value="http://localhost:3000" id="url-input">
+                                <button class="action-btn" onclick="openDevTools()">🔧 DevTools</button>
+                            </div>
+                            <div style="flex: 1; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); display: flex; align-items: center; justify-content: center; color: white; font-size: 18px; text-align: center;">
+                                <div>
+                                    🌐 實時預覽區域
+                                    <br><br>
+                                    <div style="font-size: 14px; opacity: 0.8;">
+                                        您的應用程序將在這裡顯示
+                                        <br>
+                                        支持熱重載和實時調試
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- 右鍵選單 -->
+    <div class="context-menu" id="context-menu">
+        <div class="context-menu-item" onclick="downloadViaVSCode()">
+            💻 Download via VS Code
+        </div>
+        <div class="context-menu-item" onclick="displayCost()">
+            💰 Display Cost
+        </div>
+        <div class="context-menu-item" onclick="showAgentTools()">
+            🛠️ Show Agent Tools & Metadata
+        </div>
+        <div class="context-menu-item" onclick="showMicroagents()">
+            🤖 Show Available Microagents
+        </div>
+    </div>
+
+    <script>
+        // 全局變量
+        let isLoggedIn = false;
+        let currentUser = null;
+        let queueCount = 347;
+        let isExecuting = false;
+        let quotaUsed = 485;
+        let quotaTotal = 600;
+
+        // 初始化
+        document.addEventListener('DOMContentLoaded', function() {
+            // 如果未登入，顯示歡迎頁面
+            if (!isLoggedIn) {
+                document.getElementById('welcome-screen').classList.remove('hidden');
+            } else {
+                // 載入初始對話
+                loadInitialChat();
+            }
+            
+            // 初始化編輯器
+            updateLineNumbers();
+            
+            // 設置編輯器事件監聽器
+            const codeEditor = document.getElementById('code-editor');
+            const lineNumbers = document.getElementById('line-numbers');
+            if (codeEditor && lineNumbers) {
+                codeEditor.addEventListener('input', updateLineNumbers);
+                codeEditor.addEventListener('scroll', function() {
+                    lineNumbers.scrollTop = this.scrollTop;
+                });
+            }
+            
+            // 設置輸入框事件監聽器
+            const userInput = document.getElementById('user-input');
+            if (userInput) {
+                userInput.addEventListener('keydown', function(e) {
+                    if (e.key === 'Enter' && !e.shiftKey) {
+                        e.preventDefault();
+                        sendMessage();
+                    }
+                });
+            }
+            
+            simulateQueue();
+        });
+
+        // 載入初始對話內容
+        function loadInitialChat() {
+            const chatHistory = document.getElementById('chat-history');
+            chatHistory.innerHTML = `
+                <div class="message user">
+                    <div class="message-content">
+                        創建一個 React 用戶資料組件，包含頭像、姓名、郵箱顯示
+                    </div>
+                </div>
+                
+                <div class="message assistant">
+                    <div class="message-content">
+                        我來幫你創建一個完整的用戶資料組件：
+                        
+                        <div class="code-block">
+                            <div class="code-header">
+                                <span>📄 UserProfile.tsx</span>
+                                <div class="code-actions">
+                                    <button class="action-btn" onclick="copyCode(this)">📋 Copy</button>
+                                    <button class="action-btn apply" onclick="applyCode(this)">▶️ Apply</button>
+                                    <button class="action-btn" onclick="saveCode(this)">💾 Save</button>
+                                </div>
+                            </div>
+                            <div class="code-content">
+<pre>interface User {
+  id: string;
+  name: string;
+  email: string;
+  avatar?: string;
+}
+
+export function UserProfile({ user }: { user: User }) {
+  return (
+    &lt;div className="user-profile"&gt;
+      &lt;img 
+        src={user.avatar || '/default-avatar.png'} 
+        alt={user.name}
+        className="avatar"
+      /&gt;
+      &lt;h2&gt;{user.name}&lt;/h2&gt;
+      &lt;p&gt;{user.email}&lt;/p&gt;
+    &lt;/div&gt;
+  );
+}</pre>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+            scrollToBottom();
+        }
+
+        // 歡迎頁面功能
+        function launchFromScratch() {
+            showDaytonaSetup("正在設置您的雲端開發環境...", () => {
+                hideWelcomeScreen();
+                newConversation();
+            });
+        }
+
+        function showAuthModal() {
+            document.getElementById('auth-modal').classList.add('show');
+        }
+
+        function closeAuthModal() {
+            document.getElementById('auth-modal').classList.remove('show');
+        }
+
+        function loginWithGithub() {
+            // 模擬 GitHub 登入
+            setTimeout(() => {
+                isLoggedIn = true;
+                currentUser = {
+                    name: "John Doe",
+                    email: "john@example.com",
+                    avatar: "👤"
+                };
+                closeAuthModal();
+                hideWelcomeScreen();
+                showNotification("登入成功！歡迎使用 OpenHands");
+            }, 1500);
+        }
+
+        function launchRepo() {
+            const repo = document.getElementById('repo-select').value;
+            const branch = document.getElementById('branch-select').value;
+            
+            if (!repo || !branch) {
+                alert('請選擇倉庫和分支');
+                return;
+            }
+
+            showDaytonaSetup(`正在連接到 ${repo} (${branch})...`, () => {
+                hideWelcomeScreen();
+                showNotification(`已連接到 ${repo}`);
+            });
+        }
+
+        function addGithubRepos() {
+            alert('將跳轉到官方網站進行 GitHub 倉庫授權配置');
+        }
+
+        function hideWelcomeScreen() {
+            document.getElementById('welcome-screen').classList.add('hidden');
+        }
+
+        function showDaytonaSetup(message, callback) {
+            // 模擬 Daytona 環境設置
+            const popup = document.createElement('div');
+            popup.style.cssText = `
+                position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
+                background: #1e293b; border-radius: 12px; padding: 30px;
+                border: 1px solid #475569; z-index: 3000; text-align: center;
+                color: #e2e8f0; min-width: 300px;
+            `;
+            popup.innerHTML = `
+                <div style="font-size: 16px; margin-bottom: 20px;">${message}</div>
+                <div style="margin-bottom: 20px;">⏳ 預計 30 秒...</div>
+                <div style="width: 200px; height: 4px; background: #334155; border-radius: 2px; margin: 0 auto;">
+                    <div style="height: 100%; background: #3b82f6; border-radius: 2px; width: 0%; transition: width 2s ease;" id="setup-progress"></div>
+                </div>
+            `;
+            
+            document.body.appendChild(popup);
+            
+            // 模擬進度
+            setTimeout(() => {
+                document.getElementById('setup-progress').style.width = '100%';
+            }, 100);
+            
+            setTimeout(() => {
+                document.body.removeChild(popup);
+                callback();
+            }, 2500);
+        }
+
+        // 設定頁面功能
+        function openSettings() {
+            document.getElementById('settings-modal').classList.add('show');
+        }
+
+        function closeSettings() {
+            document.getElementById('settings-modal').classList.remove('show');
+        }
+
+        function switchSettingsTab(tabName) {
+            // 移除所有活動狀態
+            document.querySelectorAll('.settings-tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            document.querySelectorAll('.settings-tab-content').forEach(content => {
+                content.style.display = 'none';
+            });
+
+            // 激活選中的標籤
+            event.target.classList.add('active');
+            document.getElementById('settings-' + tabName).style.display = 'block';
+            
+            // 當切換到Application標籤時，確保整合設定存在
+            if (tabName === 'application') {
+                setTimeout(() => {
+                    const appSettings = document.getElementById('settings-application');
+                    if (appSettings && !appSettings.querySelector('#connection-status')) {
+                        // 整合設定已經在HTML中定義，這裡只需要初始化狀態
+                        updateIntegrationStatus();
+                        testOpenHandsConnection();
+                    }
+                }, 100);
+            }
+        }
+
+        function configureGithubRepos() {
+            // 模擬跳轉到 GitHub 設定頁面
+            window.open('https://github.com/settings/installations/70077773', '_blank');
+        }
+
+        // 付費系統功能
+        function showBilling() {
+            document.getElementById('billing-modal').classList.add('show');
+        }
+
+        function closeBilling() {
+            document.getElementById('billing-modal').classList.remove('show');
+        }
+
+        function selectPlan(plan) {
+            document.querySelectorAll('.plan-card').forEach(card => {
+                card.classList.remove('active');
+            });
+            event.target.closest('.plan-card').classList.add('active');
+        }
+
+        function proceedToPayment() {
+            alert('跳轉到 Stripe 支付頁面...');
+            // 這裡會整合真實的 Stripe 支付
+        }
+
+        // 排隊系統模擬
+        function simulateQueue() {
+            if (!isLoggedIn) return;
+            
+            setInterval(() => {
+                if (queueCount > 200) {
+                    queueCount -= Math.floor(Math.random() * 5) + 1;
+                    document.getElementById('queue-count').textContent = queueCount;
+                    
+                    // 免費用戶顯示排隊
+                    if (quotaUsed >= 10) {
+                        document.getElementById('queue-alert').classList.add('show');
+                    }
+                }
+            }, 3000);
+        }
+
+        // 聊天功能
+        // 更新你的sendMessage函數
+        async function sendMessage() {
+            const input = document.getElementById('user-input');
+            const message = input.value.trim();
+            if (!message) return;
+
+            // 檢查配額（保留你的付費邏輯）
+            if (quotaUsed >= quotaTotal && !isLoggedIn) {
+                showBilling();
+                return;
+            }
+
+            // 免費用戶超過 10 次顯示排隊
+            if (quotaUsed >= 10 && !isLoggedIn) {
+                document.getElementById('queue-alert').classList.add('show');
+            }
+
+            const chatHistory = document.getElementById('chat-history');
+            const userMessage = document.createElement('div');
+            userMessage.className = 'message user fade-in';
+            userMessage.innerHTML = `<div class="message-content">${message}</div>`;
+            chatHistory.appendChild(userMessage);
+
+            scrollToBottom();
+            input.value = '';
+            
+            // 顯示正在處理狀態
+            isExecuting = true;
+            document.getElementById('pause-btn').classList.add('show');
+
+            try {
+                // 使用整合層發送消息
+                const response = await window.openHandsIntegration.sendMessage(message);
+                
+                // 創建AI回應
+                const aiMessage = document.createElement('div');
+                aiMessage.className = 'message assistant fade-in';
+                
+                // 處理代碼塊
+                let formattedContent = formatAIResponse(response.content);
+                
+                aiMessage.innerHTML = `<div class="message-content">${formattedContent}</div>`;
+                chatHistory.appendChild(aiMessage);
+                
+                scrollToBottom();
+                
+                // 更新配額
+                quotaUsed++;
+                updateQuotaDisplay();
+                
+            } catch (error) {
+                console.error('Message sending failed:', error);
+                
+                // 回退到你的原始演示回應
+                const aiMessage = document.createElement('div');
+                aiMessage.className = 'message assistant fade-in';
+                aiMessage.innerHTML = `
+                    <div class="message-content">
+                        抱歉，發送失敗。請檢查網路連接或稍後再試。
+                        <div style="margin-top: 8px; padding: 8px; background: rgba(239, 68, 68, 0.1); border-radius: 4px; font-size: 12px; color: #ef4444;">
+                            錯誤：${error.message}
+                        </div>
+                    </div>
+                `;
+                chatHistory.appendChild(aiMessage);
+                scrollToBottom();
+                
+                showNotification('發送失敗，請檢查連接');
+            } finally {
+                isExecuting = false;
+                document.getElementById('pause-btn').classList.remove('show');
+            }
+        }
+
+        // 格式化AI回應的輔助函數
+        function formatAIResponse(content) {
+            // 處理代碼塊（與你現有的格式保持一致）
+            return content.replace(/```(\w+)?\n([\s\S]*?)```/g, (match, lang, code) => {
+                return `
+                    <div class="code-block">
+                        <div class="code-header">
+                            <span>📄 ${lang || 'Code'}</span>
+                            <div class="code-actions">
+                                <button class="action-btn" onclick="copyCode(this)">📋 Copy</button>
+                                <button class="action-btn apply" onclick="applyCode(this)">▶️ Apply</button>
+                                <button class="action-btn" onclick="saveCode(this)">💾 Save</button>
+                            </div>
+                        </div>
+                        <div class="code-content">
+                            <pre>${code.trim()}</pre>
+                        </div>
+                    </div>
+                `;
+            });
+        }
+
+        // 自動滾動到底部功能
+        function scrollToBottom() {
+            const chatHistory = document.getElementById('chat-history');
+            setTimeout(() => {
+                chatHistory.scrollTop = chatHistory.scrollHeight;
+            }, 100);
+        }
+
+        // 檔案上傳功能
+        function uploadFile() {
+            const input = document.createElement('input');
+            input.type = 'file';
+            input.multiple = true;
+            input.accept = '*/*'; // 接受所有文件類型
+            
+            input.onchange = function(e) {
+                const files = Array.from(e.target.files);
+                if (files.length > 0) {
+                    // 顯示上傳的文件
+                    const chatHistory = document.getElementById('chat-history');
+                    const fileMessage = document.createElement('div');
+                    fileMessage.className = 'message user fade-in';
+                    
+                    let fileList = files.map(file => 
+                        `📎 ${file.name} (${(file.size / 1024).toFixed(1)} KB)`
+                    ).join('<br>');
+                    
+                    fileMessage.innerHTML = `
+                        <div class="message-content">
+                            已上傳 ${files.length} 個文件:<br><br>
+                            ${fileList}
+                        </div>
+                    `;
+                    chatHistory.appendChild(fileMessage);
+                    
+                    // 自動滾動到底部
+                    scrollToBottom();
+                    
+                    showNotification(`成功上傳 ${files.length} 個文件`);
+                    
+                    // 模擬 AI 處理文件
+                    setTimeout(() => {
+                        const aiResponse = document.createElement('div');
+                        aiResponse.className = 'message assistant fade-in';
+                        aiResponse.innerHTML = `
+                            <div class="message-content">
+                                我已經接收到您上傳的文件，正在分析中...
+                                <div class="code-block">
+                                    <div class="code-header">
+                                        <span>📁 文件分析結果</span>
+                                        <div class="code-actions">
+                                            <button class="action-btn" onclick="copyCode(this)">📋 Copy</button>
+                                            <button class="action-btn apply" onclick="applyCode(this)">▶️ Apply</button>
+                                        </div>
+                                    </div>
+                                    <div class="code-content">
+                                        <pre>// 文件分析完成
+${files.map(file => `// ${file.name} - ${file.type || 'unknown type'}`).join('\n')}
+
+// 已準備好進行下一步處理</pre>
+                                    </div>
+                                </div>
+                            </div>
+                        `;
+                        chatHistory.appendChild(aiResponse);
+                        scrollToBottom();
+                    }, 1500);
+                }
+            };
+            
+            input.click();
+        }
+
+        function pauseExecution() {
+            if (isExecuting) {
+                isExecuting = false;
+                document.getElementById('pause-btn').classList.remove('show');
+                showNotification("已暫停 AI 執行");
+            }
+        }
+
+        function updateQuotaDisplay() {
+            const percentage = (quotaUsed / quotaTotal) * 100;
+            document.querySelector('.quota-fill').style.width = percentage + '%';
+            document.querySelector('.quota-display span').textContent = `${quotaUsed}/${quotaTotal}`;
+            
+            if (percentage > 80) {
+                document.querySelector('.quota-fill').style.background = '#ef4444';
+            } else if (percentage > 60) {
+                document.querySelector('.quota-fill').style.background = '#f59e0b';
+            }
+        }
+
+        // 右鍵選單
+        function showContextMenu(event) {
+            event.preventDefault();
+            const menu = document.getElementById('context-menu');
+            menu.style.display = 'block';
+            menu.style.left = event.pageX + 'px';
+            menu.style.top = event.pageY + 'px';
+
+            // 點擊其他地方關閉選單
+            document.addEventListener('click', function closeMenu() {
+                menu.style.display = 'none';
+                document.removeEventListener('click', closeMenu);
+            });
+        }
+
+        function downloadViaVSCode() {
+            showNotification("正在通過 VS Code 下載...");
+        }
+
+        function displayCost() {
+            const cost = (quotaUsed * 0.002).toFixed(3);
+            showNotification(`當前對話成本: ${cost}`);
+        }
+
+        function showAgentTools() {
+            showNotification("顯示代理工具與元數據");
+        }
+
+        function showMicroagents() {
+            showNotification("顯示可用的微代理");
+        }
+
+        // Git 功能
+        function gitCommit() {
+            showNotification("正在提交變更...");
+        }
+
+        function gitPush() {
+            showNotification("正在推送到遠端倉庫...");
+        }
+
+        function gitPull() {
+            showNotification("正在拉取最新變更...");
+        }
+
+        function gitReset() {
+            if (confirm("確定要重置所有變更嗎？")) {
+                showNotification("已重置變更");
+            }
+        }
+
+        // 匯出功能
+        function exportConversation(format) {
+            showNotification(`正在匯出為 ${format.toUpperCase()} 格式...`);
+            
+            setTimeout(() => {
+                const blob = new Blob([`# OpenHands 對話記錄\n\n匯出格式: ${format}`], 
+                    { type: 'text/plain' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `conversation.${format}`;
+                a.click();
+                URL.revokeObjectURL(url);
+                
+                showNotification("匯出完成！");
+            }, 1000);
+        }
+
+        // 工具函數
+        function showNotification(message) {
+            const notification = document.createElement('div');
+            notification.style.cssText = `
+                position: fixed; top: 20px; right: 20px; z-index: 2000;
+                background: #10b981; color: white; padding: 12px 20px;
+                border-radius: 8px; font-size: 14px; max-width: 300px;
+                animation: fadeIn 0.3s ease-out;
+            `;
+            notification.textContent = message;
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.style.animation = 'fadeOut 0.3s ease-out';
+                setTimeout(() => document.body.removeChild(notification), 300);
+            }, 3000);
+        }
+
+        // 對話歷史側邊欄控制
+        function toggleChatHistory() {
+            const sidebar = document.getElementById('chat-history-sidebar');
+            const overlay = document.getElementById('chat-overlay');
+            
+            sidebar.classList.toggle('open');
+            overlay.classList.toggle('open');
+        }
+
+        function deleteConversation(button, event) {
+            event.stopPropagation(); // 防止觸發對話選擇
+            
+            const item = button.closest('.chat-history-item');
+            const title = item.querySelector('.chat-title').textContent;
+            
+            // 添加確認對話框
+            if (confirm(`確定要刪除對話「${title}」嗎？\n\n此操作無法恢復。`)) {
+                // 添加刪除動畫
+                item.style.transform = 'translateX(-100%)';
+                item.style.opacity = '0';
+                item.style.transition = 'all 0.3s ease-out';
+                
+                setTimeout(() => {
+                    // 如果刪除的是當前活動對話，清空聊天歷史
+                    if (item.classList.contains('active')) {
+                        document.getElementById('chat-history').innerHTML = '';
+                        
+                        // 如果還有其他對話，自動選擇第一個
+                        const remainingItems = document.querySelectorAll('.chat-history-item');
+                        if (remainingItems.length > 1) { // 大於1因為當前項目還沒被移除
+                            const firstOther = Array.from(remainingItems).find(i => i !== item);
+                            if (firstOther) {
+                                firstOther.classList.add('active');
+                            }
+                        }
+                    }
+                    
+                    item.remove();
+                    showNotification(`已刪除對話：${title}`);
+                    
+                    // 如果沒有對話了，顯示歡迎訊息
+                    const remainingItems = document.querySelectorAll('.chat-history-item');
+                    if (remainingItems.length === 0) {
+                        const chatHistory = document.getElementById('chat-history');
+                        chatHistory.innerHTML = `
+                            <div style="text-align: center; padding: 40px; color: #64748b;">
+                                <div style="font-size: 48px; margin-bottom: 16px;">💬</div>
+                                <h3 style="margin-bottom: 8px; color: #94a3b8;">沒有對話記錄</h3>
+                                <p>開始一個新對話來體驗 AI 開發助手</p>
+                            </div>
+                        `;
+                    }
+                }, 300);
+            }
+        }
+
+        // 改善對話選擇功能
+        function selectConversation(element) {
+            // 移除所有活動狀態
+            document.querySelectorAll('.chat-history-item').forEach(item => {
+                item.classList.remove('active');
+            });
+            
+            // 設置當前對話為活動狀態
+            element.classList.add('active');
+            
+            // 載入對話內容
+            const title = element.querySelector('.chat-title').textContent;
+            const repo = element.querySelector('.chat-repo').textContent;
+            const date = element.querySelector('.chat-date').textContent;
+            
+            // 模擬載入對話歷史
+            const chatHistory = document.getElementById('chat-history');
+            chatHistory.innerHTML = `
+                <div class="message assistant fade-in">
+                    <div class="message-content">
+                        已切換到對話：${title}<br>
+                        專案：${repo}<br>
+                        建立時間：${date}
+                        
+                        <div style="margin-top: 12px; padding: 8px; background: rgba(96, 165, 250, 0.1); border-radius: 4px; font-size: 12px; color: #60a5fa;">
+                            💡 這是一個示例對話記錄，您可以繼續在此對話中提問
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            scrollToBottom();
+            showNotification(`已切換到：${title}`);
+            
+            // 關閉側邊欄
+            toggleChatHistory();
+        }
+
+        // 改善新對話功能
+        function newConversation() {
+            const timestamp = new Date().toLocaleString('zh-TW', {
+                month: 'numeric',
+                day: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit'
+            });
+            
+            const conversationId = Math.random().toString(36).substr(2, 8);
+            
+            const newItem = document.createElement('div');
+            newItem.className = 'chat-history-item active fade-in';
+            newItem.onclick = () => selectConversation(newItem);
+            newItem.innerHTML = `
+                <div class="chat-title">新對話 #${conversationId}</div>
+                <div class="chat-date">剛剛 ${timestamp}</div>
+                <div class="chat-repo">scratch</div>
+                <button class="delete-chat-btn" onclick="deleteConversation(this, event)">🗑️</button>
+            `;
+            
+            // 添加到列表頂部
+            const list = document.querySelector('.chat-history-list');
+            if (list.children.length === 0) {
+                list.appendChild(newItem);
+            } else {
+                list.insertBefore(newItem, list.firstChild);
+            }
+            
+            // 移除其他活動狀態
+            document.querySelectorAll('.chat-history-item').forEach(item => {
+                if (item !== newItem) {
+                    item.classList.remove('active');
+                }
+            });
+            
+            // 清空聊天歷史並顯示歡迎訊息
+            const chatHistory = document.getElementById('chat-history');
+            chatHistory.innerHTML = `
+                <div class="message assistant fade-in">
+                    <div class="message-content">
+                        🎉 歡迎使用 OpenHands！
+                        
+                        <div style="margin-top: 12px; padding: 12px; background: rgba(16, 185, 129, 0.1); border-radius: 6px;">
+                            <div style="color: #10b981; font-weight: 600; margin-bottom: 8px;">✨ 我可以幫您：</div>
+                            <div style="font-size: 13px; line-height: 1.5; color: #e2e8f0;">
+                                • 編寫和修改程式碼<br>
+                                • 設置開發環境<br>
+                                • 調試和測試應用<br>
+                                • 部署和維護專案<br>
+                                • 學習新技術和最佳實踐
+                            </div>
+                        </div>
+                        
+                        <div style="margin-top: 12px; font-size: 13px; color: #94a3b8;">
+                            💡 請描述您想要開發的功能或遇到的問題
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            scrollToBottom();
+            showNotification("已創建新對話，準備開始開發！");
+        }
+
+        // Credits 頁面功能
+        function selectPlan(planType) {
+            document.querySelectorAll('.plan-card').forEach(card => {
+                card.classList.remove('active');
+            });
+            
+            event.target.closest('.plan-card').classList.add('active');
+            
+            if (planType === 'pro') {
+                showNotification("已選擇 Pro Plan");
+            } else {
+                showNotification("已選擇 Free Plan");
+            }
+        }
+
+        function purchaseQuotaPack(requests, price) {
+            if (confirm(`確定要購買 ${requests} 次請求配額包 (${price}) 嗎？`)) {
+                showNotification(`正在處理 ${requests} 次配額包購買...`);
+                
+                setTimeout(() => {
+                    quotaTotal += requests;
+                    updateQuotaDisplay();
+                    showNotification(`成功購買 ${requests} 次配額包！`);
+                }, 1500);
+            }
+        }
+
+        function openLearning() {
+            window.open('https://your-official-website.com/tutorial', '_blank');
+        }
+
+        // 標籤切換
+        function switchTab(tabName) {
+            document.querySelectorAll('.tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            document.querySelectorAll('.tab-content').forEach(content => {
+                content.classList.remove('active');
+            });
+
+            event.target.classList.add('active');
+            document.getElementById(tabName + '-tab').classList.add('active');
+        }
+
+        // 代碼操作
+        function copyCode(button) {
+            const codeContent = button.closest('.code-block').querySelector('.code-content pre');
+            navigator.clipboard.writeText(codeContent.textContent);
+            
+            const original = button.textContent;
+            button.textContent = '✓ Copied';
+            setTimeout(() => {
+                button.textContent = original;
+            }, 2000);
+        }
+
+        // 更新applyCode函數，支持實際文件保存
+        function applyCode(button) {
+            const codeContent = button.closest('.code-block').querySelector('.code-content pre').textContent;
+            
+            // 更新編輯器
+            const editor = document.getElementById('code-editor');
+            if (editor) {
+                editor.value = codeContent;
+                updateLineNumbers();
+            }
+            
+            // 切換到VS Code標籤
+            switchTab('vscode');
+            
+            // 如果是整合模式，可以自動保存文件
+            if (window.openHandsIntegration.currentMode === 'integrated') {
+                // 這裡可以添加自動保存邏輯
+                // const currentFile = getCurrentFileName();
+                // if (currentFile) {
+                //     window.openHandsAPI.saveFile(currentFile, codeContent);
+                // }
+            }
+            
+            const original = button.textContent;
+            button.textContent = '✓ Applied';
+            setTimeout(() => {
+                button.textContent = original;
+            }, 2000);
+        }
+
+        function saveCode(button) {
+            showNotification("代碼已保存到項目文件");
+        }
+
+        // VS Code 功能
+        function updateLineNumbers() {
+            const editor = document.getElementById('code-editor');
+            const lineNumbers = document.getElementById('line-numbers');
+            if (!editor || !lineNumbers) return;
+            
+            const lines = editor.value.split('\n').length;
+            lineNumbers.innerHTML = '';
+            for (let i = 1; i <= Math.max(lines, 20); i++) {
+                lineNumbers.innerHTML += i + '<br>';
+            }
+        }
+
+        // 更新openFile函數
+        async function openFile(filename) {
+            try {
+                // 使用整合層獲取文件內容
+                const content = await window.openHandsAPI.getFileContent(filename);
+                
+                // 更新代碼編輯器
+                const editor = document.getElementById('code-editor');
+                if (editor) {
+                    editor.value = content;
+                    updateLineNumbers();
+                    
+                    // 切換到VS Code標籤
+                    switchTab('vscode');
+                    
+                    // 更新標籤標題
+                    const tabTitle = document.querySelector('#vscode-tab .tab-title, #vscode-tab [style*="padding: 8px 12px"]');
+                    if (tabTitle) {
+                        tabTitle.innerHTML = `📄 ${filename.split('/').pop()} <span style="margin-left: 8px; opacity: 0.7; cursor: pointer;" onclick="closeTab(this)">✕</span>`;
+                    }
+                }
+                
+                showNotification(`已打開 ${filename}`);
+            } catch (error) {
+                console.error('Failed to open file:', error);
+                showNotification(`無法打開文件：${error.message}`);
+            }
+        }
+
+        // 更新uploadFiles函數
+        function uploadFiles() {
+            const input = document.createElement('input');
+            input.type = 'file';
+            input.multiple = true;
+            input.accept = '*/*';
+            
+            input.onchange = async function(e) {
+                const files = Array.from(e.target.files);
+                
+                if (files.length === 0) return;
+                
+                // 顯示上傳進度
+                showNotification(`正在上傳 ${files.length} 個文件...`);
+                
+                try {
+                    // 如果是整合模式，可以實際上傳文件
+                    if (window.openHandsIntegration.currentMode === 'integrated') {
+                        // 這裡可以添加實際的文件上傳邏輯
+                        for (const file of files) {
+                            const content = await readFileAsText(file);
+                            // 上傳到OpenHands
+                            // await window.openHandsAPI.saveFile(`/workspace/${file.name}`, content);
+                        }
+                    }
+                    
+                    // 更新UI顯示
+                    const chatHistory = document.getElementById('chat-history');
+                    const fileMessage = document.createElement('div');
+                    fileMessage.className = 'message user fade-in';
+                    
+                    let fileList = files.map(file =>
+                        `📎 ${file.name} (${(file.size / 1024).toFixed(1)} KB)`
+                    ).join('<br>');
+                    
+                    fileMessage.innerHTML = `
+                        <div class="message-content">
+                            已上傳 ${files.length} 個文件:<br><br>
+                            ${fileList}
+                        </div>
+                    `;
+                    chatHistory.appendChild(fileMessage);
+                    scrollToBottom();
+                    
+                    showNotification(`✅ 成功上傳 ${files.length} 個文件`);
+                    
+                    // 重新載入文件樹
+                    window.openHandsIntegration.loadFileSystem();
+                    
+                } catch (error) {
+                    showNotification(`❌ 上傳失敗：${error.message}`);
+                }
+            };
+            
+            input.click();
+        }
+
+        // 輔助函數：讀取文件為文本
+        function readFileAsText(file) {
+            return new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                reader.onload = e => resolve(e.target.result);
+                reader.onerror = reject;
+                reader.readAsText(file);
+            });
+        }
+
+        // 新增：保存當前文件
+        async function saveCurrentFile() {
+            const editor = document.getElementById('code-editor');
+            const currentFileName = getCurrentFileName();
+            
+            if (!editor || !currentFileName) {
+                showNotification('❌ 沒有可保存的文件');
+                return;
+            }
+            
+            try {
+                if (window.openHandsIntegration.currentMode === 'integrated') {
+                    // 實際保存到OpenHands
+                    await window.openHandsAPI.saveFile(currentFileName, editor.value);
+                    showNotification(`✅ ${currentFileName} 已保存`);
+                } else {
+                    // 演示模式
+                    showNotification(`💾 ${currentFileName} 已保存 (演示模式)`);
+                }
+            } catch (error) {
+                showNotification(`❌ 保存失敗：${error.message}`);
+            }
+        }
+
+        // 輔助函數：獲取當前文件名
+        function getCurrentFileName() {
+            const tabTitle = document.querySelector('#vscode-tab [style*="padding: 8px 12px"]');
+            if (tabTitle) {
+                const match = tabTitle.textContent.match(/📄\s*(.+?)\s*✕/);
+                return match ? `/workspace/${match[1]}` : null;
+            }
+            return null;
+        }
+
+        // 文件右鍵選單
+        function showFileContextMenu(event, fileType) {
+            event.preventDefault();
+            
+            // 創建右鍵選單
+            const menu = document.createElement('div');
+            menu.className = 'context-menu';
+            menu.style.display = 'block';
+            menu.style.left = event.pageX + 'px';
+            menu.style.top = event.pageY + 'px';
+            
+            const menuItems = fileType === 'directory' ? [
+                { text: '📁 新建文件', action: () => createNewFile(event.target) },
+                { text: '📂 新建資料夾', action: () => createNewFolder(event.target) },
+                { text: '🔄 重新整理', action: () => window.openHandsIntegration.loadFileSystem() }
+            ] : [
+                { text: '👁️ 預覽', action: () => openFile(event.target.textContent.trim()) },
+                { text: '✏️ 編輯', action: () => openFile(event.target.textContent.trim()) },
+                { text: '📋 複製路徑', action: () => copyToClipboard(event.target.textContent.trim()) },
+                { text: '🗑️ 刪除', action: () => deleteFile(event.target.textContent.trim()) }
+            ];
+            
+            menu.innerHTML = menuItems.map(item =>
+                `<div class="context-menu-item" onclick="${item.action.toString()}">${item.text}</div>`
+            ).join('');
+            
+            document.body.appendChild(menu);
+            
+            // 點擊其他地方關閉選單
+            setTimeout(() => {
+                document.addEventListener('click', function closeMenu() {
+                    menu.remove();
+                    document.removeEventListener('click', closeMenu);
+                });
+            }, 0);
+        }
+
+        // 輔助函數
+        function createNewFile(element) {
+            const fileName = prompt('請輸入文件名：');
+            if (fileName) {
+                showNotification(`📄 創建文件：${fileName}`);
+                // 在整合模式下可以實際創建文件
+            }
+        }
+
+        function createNewFolder(element) {
+            const folderName = prompt('請輸入資料夾名：');
+            if (folderName) {
+                showNotification(`📁 創建資料夾：${folderName}`);
+                // 在整合模式下可以實際創建資料夾
+            }
+        }
+
+        function copyToClipboard(text) {
+            navigator.clipboard.writeText(text);
+            showNotification('📋 路徑已複製');
+        }
+
+        function deleteFile(fileName) {
+            if (confirm(`確定要刪除 ${fileName} 嗎？`)) {
+                showNotification(`🗑️ 刪除文件：${fileName}`);
+                // 在整合模式下可以實際刪除文件
+            }
+        }
+
+        // 更新你的終端處理函數
+        function handleTerminalInput(event) {
+            if (event.key === 'Enter') {
+                const input = event.target;
+                const command = input.value.trim();
+                
+                if (!command) {
+                    input.value = '';
+                    return;
+                }
+                
+                // 使用整合層執行命令
+                window.openHandsIntegration.executeCommand(command);
+                
+                input.value = '';
+            }
+        }
+        
+        // 更新clearTerminal函數
+        function clearTerminal() {
+            const output = document.getElementById('terminal-output');
+            if (output) {
+                output.innerHTML = '';
+            }
+        }
+        
+        // 新增：新建終端標籤功能
+        function newTerminalTab() {
+            showNotification('新終端標籤已創建');
+            // 這裡可以添加實際的新標籤邏輯
+        }
+        
+        // 新增：分割終端功能
+        function splitTerminal() {
+            showNotification('終端已分割');
+            // 這裡可以添加實際的分割邏輯
+        }
+
+        // 其他功能
+        function launchApp(appType) {
+            showNotification(`正在啟動 ${appType} 應用...`);
+        }
+
+        function runCell(button) {
+            button.textContent = '⏳ Running...';
+            button.disabled = true;
+            
+            setTimeout(() => {
+                button.textContent = '▶️ Run';
+                button.disabled = false;
+                showNotification("代碼執行完成");
+            }, 1500);
+        }
+
+        function addCell() {
+            showNotification("已添加新的代碼單元格");
+        }
+
+        // 回車發送消息
+        document.addEventListener('DOMContentLoaded', function() {
+            const userInput = document.getElementById('user-input');
+            if (userInput) {
+                userInput.addEventListener('keydown', function(e) {
+                    if (e.key === 'Enter' && !e.shiftKey) {
+                        e.preventDefault();
+                        sendMessage();
+                    }
+                });
+            }
+        });
+
+        // 添加鍵盤快捷鍵支持
+        document.addEventListener('keydown', function(e) {
+            // Ctrl+S 保存文件
+            if (e.ctrlKey && e.key === 's') {
+                e.preventDefault();
+                saveCurrentFile();
+            }
+            
+            // Ctrl+` 切換到終端
+            if (e.ctrlKey && e.key === '`') {
+                e.preventDefault();
+                switchTab('terminal');
+                const terminalInput = document.getElementById('terminal-command');
+                if (terminalInput) {
+                    terminalInput.focus();
+                }
+            }
+        });
+
+        // 編輯器同步滾動
+        document.getElementById('code-editor').addEventListener('input', updateLineNumbers);
+        document.getElementById('code-editor').addEventListener('scroll', function() {
+            const lineNumbers = document.getElementById('line-numbers');
+            if (lineNumbers) {
+                lineNumbers.scrollTop = this.scrollTop;
+            }
+        });
+
+        // 拖拽功能
+        let isResizing = false;
+        const resizer = document.getElementById('resizer');
+        const leftPanel = document.querySelector('.left-panel');
+        const mainContent = document.querySelector('.main-content');
+
+        resizer.addEventListener('mousedown', (e) => {
+            isResizing = true;
+            document.addEventListener('mousemove', handleResize);
+            document.addEventListener('mouseup', stopResize);
+        });
+
+        function handleResize(e) {
+            if (!isResizing) return;
+            const newWidth = (e.clientX / window.innerWidth) * 100;
+            if (newWidth >= 25 && newWidth <= 60) {
+                leftPanel.style.width = newWidth + '%';
+            }
+        }
+
+        function stopResize() {
+            isResizing = false;
+            document.removeEventListener('mousemove', handleResize);
+            document.removeEventListener('mouseup', stopResize);
+        }
+
+        // OpenHands 整合設定處理函數
+        
+        // 處理模式變更
+        async function handleModeChange() {
+            const selectedMode = document.querySelector('input[name="integration-mode"]:checked').value;
+            
+            updateConnectionStatus('正在切換模式...');
+            
+            try {
+                const success = await window.openHandsIntegration.switchMode(selectedMode);
+                
+                if (success) {
+                    showNotification(`✅ 已切換到${selectedMode === 'integrated' ? '整合' : '演示'}模式`);
+                    updateIntegrationStatus();
+                } else {
+                    showNotification('❌ 模式切換失敗');
+                    // 重置選項
+                    document.querySelector('input[value="demo"]').checked = true;
+                }
+            } catch (error) {
+                console.error('Mode switch failed:', error);
+                showNotification('❌ 模式切換發生錯誤');
+                document.querySelector('input[value="demo"]').checked = true;
+            }
+        }
+        
+        // 處理功能開關
+        function handleFeatureToggle(feature, enabled) {
+            window.openHandsConfig.updateSettings({ [feature]: enabled });
+            showNotification(`${enabled ? '已啟用' : '已停用'} ${feature}`);
+            updateIntegrationStatus();
+        }
+        
+        // 測試 OpenHands 連接
+        async function testOpenHandsConnection() {
+            updateConnectionStatus('測試中...');
+            
+            try {
+                const isAvailable = await window.openHandsAPI.checkConnection();
+                
+                if (isAvailable) {
+                    updateConnectionStatus('✅ 連接成功', '#10b981');
+                    showNotification('✅ OpenHands 連接正常');
+                    
+                    // 啟用整合模式選項
+                    document.querySelector('input[value="integrated"]').disabled = false;
+                } else {
+                    updateConnectionStatus('❌ 連接失敗', '#ef4444');
+                    showNotification('❌ 無法連接到 OpenHands，請檢查服務是否運行');
+                    
+                    // 禁用整合模式選項
+                    document.querySelector('input[value="integrated"]').disabled = true;
+                    document.querySelector('input[value="demo"]').checked = true;
+                }
+            } catch (error) {
+                updateConnectionStatus('❌ 連接錯誤', '#ef4444');
+                showNotification('❌ 連接測試失敗：' + error.message);
+            }
+        }
+        
+        // 切換整合模式（快捷按鈕）
+        async function toggleIntegrationMode() {
+            const currentMode = document.querySelector('input[name="integration-mode"]:checked').value;
+            const newMode = currentMode === 'demo' ? 'integrated' : 'demo';
+            
+            document.querySelector(`input[value="${newMode}"]`).checked = true;
+            await handleModeChange();
+        }
+        
+        // 重置整合
+        async function resetIntegration() {
+            if (confirm('確定要重置 OpenHands 整合嗎？這將斷開所有連接並清除設定。')) {
+                try {
+                    await window.openHandsIntegration.reset();
+                    
+                    // 重置UI設定
+                    document.querySelector('input[value="demo"]').checked = true;
+                    document.getElementById('enable-websocket').checked = false;
+                    document.getElementById('enable-filesync').checked = false;
+                    document.getElementById('openhands-url').value = 'http://localhost:3000';
+                    
+                    updateIntegrationStatus();
+                    showNotification('🔄 整合已重置');
+                } catch (error) {
+                    showNotification('❌ 重置失敗：' + error.message);
+                }
+            }
+        }
+        
+        // 更新連接設定
+        function updateConnectionSettings() {
+            const newURL = document.getElementById('openhands-url').value;
+            
+            if (newURL) {
+                window.openHandsConfig.updateSettings({
+                    baseURL: newURL,
+                    wsURL: newURL.replace('http', 'ws')
+                });
+                
+                // 重新初始化API客戶端
+                window.openHandsAPI = new OpenHandsAPIClient();
+                
+                showNotification('✅ 連接設定已更新');
+            }
+        }
+        
+        // 更新連接狀態顯示
+        function updateConnectionStatus(text, color = '#64748b') {
+            const statusDot = document.getElementById('connection-status');
+            const statusText = document.getElementById('connection-text');
+            
+            if (statusDot) statusDot.style.background = color;
+            if (statusText) statusText.textContent = text;
+        }
+        
+        // 更新整合狀態顯示
+        function updateIntegrationStatus() {
+            const status = window.openHandsIntegration.getStatus();
+            
+            document.getElementById('status-mode').textContent = status.mode;
+            document.getElementById('status-session').textContent = status.sessionId || '無';
+            document.getElementById('status-ws').textContent = status.state.wsConnected ? '已連接' : '未連接';
+            document.getElementById('status-files').textContent = status.state.filesLoaded ? '已載入' : '未載入';
+        }
+        
+        // 初始化整合設定
+        function initializeIntegrationSettings() {
+            // 檢查初始連接狀態
+            updateConnectionStatus('檢查中...');
+            updateIntegrationStatus();
+            
+            // 如果整合層可用，進行初始化
+            if (window.openHandsIntegration) {
+                window.openHandsIntegration.initialize().then(() => {
+                    updateConnectionStatus('已初始化', 'success');
+                }).catch((error) => {
+                    updateConnectionStatus('初始化失敗', 'error');
+                    console.error('Integration initialization failed:', error);
+                });
+            } else {
+                updateConnectionStatus('整合層未載入', 'error');
+            }
+        }
+        
+        // 添加調試面板（可選）
+        function addDebugPanel() {
+            const debugPanel = document.createElement('div');
+            debugPanel.id = 'debug-panel';
+            debugPanel.style.cssText = `
+                position: fixed;
+                top: 60px;
+                right: 20px;
+                width: 300px;
+                background: #111827;
+                border: 1px solid #374151;
+                border-radius: 8px;
+                padding: 12px;
+                font-size: 12px;
+                color: #e5e7eb;
+                z-index: 1000;
+                max-height: 400px;
+                overflow-y: auto;
+                display: none;
+            `;
+            
+            debugPanel.innerHTML = `
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                    <strong>🐛 Debug Panel</strong>
+                    <button onclick="toggleDebugPanel()" style="background: none; border: none; color: #9ca3af; cursor: pointer;">✕</button>
+                </div>
+                <div id="debug-content">
+                    <div><strong>Mode:</strong> <span id="debug-mode">Loading...</span></div>
+                    <div><strong>Session:</strong> <span id="debug-session">Loading...</span></div>
+                    <div><strong>WebSocket:</strong> <span id="debug-ws">Loading...</span></div>
+                    <div><strong>Files:</strong> <span id="debug-files">Loading...</span></div>
+                </div>
+                <div style="margin-top: 8px; padding-top: 8px; border-top: 1px solid #374151;">
+                    <button onclick="refreshDebugInfo()" style="background: #3b82f6; color: white; border: none; padding: 4px 8px; border-radius: 4px; font-size: 11px; cursor: pointer;">🔄 Refresh</button>
+                    <button onclick="exportDebugInfo()" style="background: #10b981; color: white; border: none; padding: 4px 8px; border-radius: 4px; font-size: 11px; cursor: pointer; margin-left: 4px;">💾 Export</button>
+                </div>
+            `;
+            
+            document.body.appendChild(debugPanel);
+            
+            // 添加快捷鍵 Ctrl+Shift+D 顯示/隱藏調試面板
+            document.addEventListener('keydown', (e) => {
+                if (e.ctrlKey && e.shiftKey && e.key === 'D') {
+                    e.preventDefault();
+                    toggleDebugPanel();
+                }
+            });
+            
+            // 定期更新調試信息
+            setInterval(updateDebugInfo, 2000);
+        }
+        
+        // 調試面板控制函數
+        function toggleDebugPanel() {
+            const panel = document.getElementById('debug-panel');
+            if (panel) {
+                panel.style.display = panel.style.display === 'none' ? 'block' : 'none';
+                if (panel.style.display === 'block') {
+                    updateDebugInfo();
+                }
+            }
+        }
+        
+        function updateDebugInfo() {
+            const status = window.openHandsIntegration.getStatus();
+            
+            const elements = {
+                'debug-mode': status.mode,
+                'debug-session': status.sessionId || 'None',
+                'debug-ws': status.state.wsConnected ? 'Connected' : 'Disconnected',
+                'debug-files': status.state.filesLoaded ? 'Loaded' : 'Not loaded'
+            };
+            
+            Object.entries(elements).forEach(([id, value]) => {
+                const element = document.getElementById(id);
+                if (element) element.textContent = value;
+            });
+        }
+        
+        function refreshDebugInfo() {
+            updateDebugInfo();
+            showNotification('🔄 調試信息已刷新');
+        }
+        
+        function exportDebugInfo() {
+            const status = window.openHandsIntegration.getStatus();
+            const debugData = {
+                timestamp: new Date().toISOString(),
+                integration: status,
+                config: window.openHandsConfig.settings,
+                userAgent: navigator.userAgent,
+                url: window.location.href
+            };
+            
+            const blob = new Blob([JSON.stringify(debugData, null, 2)], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `openhands-debug-${Date.now()}.json`;
+            a.click();
+            URL.revokeObjectURL(url);
+            
+            showNotification('💾 調試信息已導出');
+        }
+        
+        // 添加一些有用的全局函數
+        window.OpenHandsUtils = {
+            // 快速切換模式
+            switchMode: (mode) => window.openHandsIntegration.switchMode(mode),
+            
+            // 獲取狀態
+            getStatus: () => window.openHandsIntegration.getStatus(),
+            
+            // 測試連接
+            testConnection: () => window.openHandsAPI.checkConnection(),
+            
+            // 重置整合
+            reset: () => window.openHandsIntegration.reset(),
+            
+            // 啟用調試
+            enableDebug: () => {
+                window.openHandsConfig.updateSettings({ debugMode: true });
+                addDebugPanel();
+            }
+        };
+
+        // 在頁面載入完成後初始化
+        document.addEventListener('DOMContentLoaded', async function() {
+            console.log('🚀 開始初始化 OpenHands 整合...');
+            
+            try {
+                // 1. 初始化OpenHands整合（不自動連接）
+                const integrationReady = await window.openHandsIntegration.initialize(false);
+                console.log('✅ OpenHands 整合初始化完成:', integrationReady);
+                
+                // 2. 添加整合狀態監聽器
+                setupIntegrationListeners();
+                
+                // 3. 檢查URL參數是否要求啟用整合模式
+                checkURLParameters();
+                
+                // 4. 更新UI以顯示當前模式
+                updateModeIndicators();
+                
+                // 5. 添加調試信息（開發階段有用）
+                if (window.openHandsConfig.settings.debugMode) {
+                    addDebugPanel();
+                }
+                
+                console.log('🎉 所有組件初始化完成！');
+                
+                // 控制台歡迎信息
+                console.log(`
+🚀 OpenHands 整合已載入！
+
+可用命令：
+- OpenHandsUtils.switchMode('integrated') - 切換到整合模式
+- OpenHandsUtils.switchMode('demo') - 切換到演示模式
+- OpenHandsUtils.getStatus() - 查看目前狀態
+- OpenHandsUtils.testConnection() - 測試連接
+- OpenHandsUtils.enableDebug() - 啟用調試面板
+
+快捷鍵：
+- Ctrl+S - 保存當前文件
+- Ctrl+\` - 切換到終端
+- Ctrl+Shift+D - 顯示/隱藏調試面板
+
+當前模式: ${window.openHandsIntegration?.currentMode || '初始化中...'}
+`);
+                
+            } catch (error) {
+                console.error('❌ 初始化失敗:', error);
+                showNotification('⚠️ 部分功能可能無法正常工作');
+            }
+            
+            // 你原有的初始化代碼...
+            if (!isLoggedIn) {
+                document.getElementById('welcome-screen').classList.remove('hidden');
+            } else {
+                loadInitialChat();
+            }
+            
+            updateLineNumbers();
+            // 延遲初始化，確保所有腳本都已載入
+            setTimeout(initializeIntegrationSettings, 1000);
+        });
+        
+        // 設置整合監聽器
+        function setupIntegrationListeners() {
+            // 監聽模式變更
+            window.addEventListener('openhands-mode-changed', (event) => {
+                console.log('模式已變更:', event.detail);
+                updateModeIndicators();
+            });
+            
+            // 監聽連接狀態變更
+            window.addEventListener('openhands-connection-changed', (event) => {
+                console.log('連接狀態變更:', event.detail);
+                updateConnectionIndicators(event.detail);
+            });
+        }
+        
+        // 檢查URL參數
+        function checkURLParameters() {
+            const urlParams = new URLSearchParams(window.location.search);
+            
+            // 如果URL包含 ?mode=integrated，自動切換到整合模式
+            if (urlParams.get('mode') === 'integrated') {
+                console.log('🔗 URL要求整合模式，嘗試連接...');
+                setTimeout(() => {
+                    window.openHandsIntegration.switchMode('integrated');
+                }, 1000);
+            }
+            
+            // 如果URL包含 ?debug=true，啟用調試模式
+            if (urlParams.get('debug') === 'true') {
+                window.openHandsConfig.updateSettings({ debugMode: true });
+                console.log('🐛 調試模式已啟用');
+            }
+        }
+        
+        // 更新模式指示器
+        function updateModeIndicators() {
+            const status = window.openHandsIntegration.getStatus();
+            
+            // 更新標題欄
+            const headerTitle = document.querySelector('.header h1');
+            if (headerTitle) {
+                const modeColor = status.mode === 'integrated' ? '#10b981' : '#60a5fa';
+                const modeText = status.mode === 'integrated' ? '● INTEGRATED' : '● DEMO';
+                
+                headerTitle.innerHTML = `
+                    🚀 OpenHands Dev Studio
+                    <span style="color: ${modeColor}; font-size: 12px;">${modeText}</span>
+                `;
+            }
+            
+            // 更新設定頁面中的模式選擇
+            const modeRadio = document.querySelector(`input[name="integration-mode"][value="${status.mode}"]`);
+            if (modeRadio) {
+                modeRadio.checked = true;
+            }
+        }
+        
+        // 更新連接指示器
+        function updateConnectionIndicators(connectionStatus) {
+            // 更新狀態指示器
+            const statusIndicator = document.querySelector('.status-indicator');
+            if (statusIndicator) {
+                const statusText = connectionStatus.connected ? '🟢 已連接' : '🟠 演示模式';
+                statusIndicator.innerHTML = `
+                    <div class="status-dot"></div>
+                    ${statusText}
+                `;
+            }
+        }
+    </script>
+</body>
+</html>
