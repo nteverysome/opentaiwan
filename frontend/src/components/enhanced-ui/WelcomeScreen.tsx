@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 interface User {
   id: string;
@@ -7,28 +8,18 @@ interface User {
   avatar?: string;
 }
 
-interface Repository {
-  id: string;
-  name: string;
-  fullName: string;
-  description?: string;
-  isPrivate: boolean;
-}
-
 interface WelcomeScreenProps {
   onLogin?: (user: User) => void;
   onLaunchFromScratch?: () => void;
-  repositories?: Repository[];
+  // repositories?: Repository[];
 }
 
-const WelcomeScreen: React.FC<WelcomeScreenProps> = ({ 
+function WelcomeScreen({ 
   onLogin, 
-  onLaunchFromScratch,
-  repositories = []
-}) => {
+  onLaunchFromScratch
+}: WelcomeScreenProps) {
+  const { t } = useTranslation();
   const [isLoading, setIsLoading] = useState(false);
-  const [selectedRepo, setSelectedRepo] = useState<string | null>(null);
-  const [selectedBranch, setSelectedBranch] = useState("main");
   const [showAuthModal, setShowAuthModal] = useState(false);
 
   // 模擬的GitHub登入
@@ -39,8 +30,8 @@ const WelcomeScreen: React.FC<WelcomeScreenProps> = ({
       setTimeout(() => {
         const mockUser: User = {
           id: "1",
-          name: "OpenHands User",
-          email: "user@openhands.dev",
+          name: t('openhandsUser'),
+          email: t('userEmail'),
           avatar: "https://github.com/github.png"
         };
         onLogin?.(mockUser);
@@ -48,7 +39,7 @@ const WelcomeScreen: React.FC<WelcomeScreenProps> = ({
         setShowAuthModal(false);
       }, 1500);
     } catch (error) {
-      console.error('Login failed:', error);
+      // console.error(t('loginFailed'), error);
       setIsLoading(false);
     }
   };
@@ -64,17 +55,15 @@ const WelcomeScreen: React.FC<WelcomeScreenProps> = ({
   };
 
   // 啟動倉庫
-  const handleLaunchRepo = () => {
-    if (!selectedRepo) return;
-    
-    setIsLoading(true);
-    try {
-      console.log('Launching repository:', selectedRepo, 'branch:', selectedBranch);
-      onLaunchFromScratch?.();
-    } finally {
-      setIsLoading(false);
-    }
-  };
+  // const handleLaunchRepo = () => {
+  //   setIsLoading(true);
+  //   try {
+  //     // console.log(t('launchingRepository'));
+  //     onLaunchFromScratch?.();
+  //   } finally {
+  //     setIsLoading(false);
+  //   }
+  // };
 
   return (
     <div style={{
@@ -108,7 +97,7 @@ const WelcomeScreen: React.FC<WelcomeScreenProps> = ({
             fontSize: '18px',
             lineHeight: '1.6'
           }}>
-            Your AI-powered development companion with an enhanced interface.
+            {t('aiPoweredCompanion')}
           </p>
         </div>
 
@@ -124,6 +113,7 @@ const WelcomeScreen: React.FC<WelcomeScreenProps> = ({
 
           <div style={{ display: 'flex', gap: '16px', flexDirection: 'column' }}>
             <button
+              type="button"
               onClick={handleLaunchFromScratch}
               disabled={isLoading}
               style={{
@@ -139,10 +129,11 @@ const WelcomeScreen: React.FC<WelcomeScreenProps> = ({
                 transition: 'all 0.2s'
               }}
             >
-              {isLoading ? '🔄 Starting...' : '✨ Launch from Scratch'}
+              {isLoading ? t('starting') : t('launchFromScratch')}
             </button>
 
             <button
+              type="button"
               onClick={() => setShowAuthModal(true)}
               disabled={isLoading}
               style={{
@@ -158,7 +149,7 @@ const WelcomeScreen: React.FC<WelcomeScreenProps> = ({
                 transition: 'all 0.2s'
               }}
             >
-              🔗 Connect to Repository
+              {t('connectToRepository')}
             </button>
           </div>
         </div>
@@ -183,11 +174,11 @@ const WelcomeScreen: React.FC<WelcomeScreenProps> = ({
             listStyle: 'none',
             padding: 0
           }}>
-            <li>✅ Modern Devin-style interface</li>
-            <li>✅ Enhanced workspace with 6 integrated tools</li>
-            <li>✅ Real-time terminal and code editor</li>
-            <li>✅ Advanced Git operations</li>
-            <li>✅ Streamlined conversation management</li>
+            <li>{t('modernDevinInterface')}</li>
+            <li>{t('enhancedWorkspace')}</li>
+            <li>{t('realTimeTerminal')}</li>
+            <li>{t('advancedGitOps')}</li>
+            <li>{t('streamlinedConversation')}</li>
           </ul>
         </div>
       </div>
@@ -221,7 +212,7 @@ const WelcomeScreen: React.FC<WelcomeScreenProps> = ({
               marginBottom: '16px',
               textAlign: 'center'
             }}>
-              Connect to Repository
+              {t('connectToRepository')}
             </h3>
             
             <p style={{
@@ -230,12 +221,12 @@ const WelcomeScreen: React.FC<WelcomeScreenProps> = ({
               textAlign: 'center',
               lineHeight: '1.5'
             }}>
-              Repository connection will be available in the next update. 
-              For now, try "Launch from Scratch" to explore the enhanced interface.
+              {t('repositoryConnectionMessage')}
             </p>
 
             <div style={{ display: 'flex', gap: '12px' }}>
               <button
+                type="button"
                 onClick={handleGitHubLogin}
                 disabled={isLoading}
                 style={{
@@ -250,10 +241,11 @@ const WelcomeScreen: React.FC<WelcomeScreenProps> = ({
                   cursor: 'pointer'
                 }}
               >
-                {isLoading ? '⏳ Connecting...' : '🚀 Demo Login'}
+                {isLoading ? t('connecting') : t('demoLogin')}
               </button>
               
               <button
+                type="button"
                 onClick={() => setShowAuthModal(false)}
                 style={{
                   flex: 1,
@@ -267,7 +259,7 @@ const WelcomeScreen: React.FC<WelcomeScreenProps> = ({
                   cursor: 'pointer'
                 }}
               >
-                Cancel
+                {t('cancel')}
               </button>
             </div>
           </div>

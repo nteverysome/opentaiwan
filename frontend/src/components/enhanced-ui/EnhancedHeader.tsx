@@ -1,4 +1,5 @@
 import React from "react";
+import { useTranslation } from 'react-i18next';
 
 interface User {
   id: string;
@@ -17,7 +18,7 @@ interface EnhancedHeaderProps {
   onLogout: () => void;
 }
 
-const EnhancedHeader: React.FC<EnhancedHeaderProps> = ({
+function EnhancedHeader({
   user,
   quotaUsed,
   quotaTotal,
@@ -25,21 +26,22 @@ const EnhancedHeader: React.FC<EnhancedHeaderProps> = ({
   onShowSettings,
   onShowBilling,
   onLogout,
-}) => {
+}: EnhancedHeaderProps) {
+  const { t } = useTranslation();
   const quotaPercentage = (quotaUsed / quotaTotal) * 100;
   const showQueue = quotaUsed >= 10; // 免費用戶超過10次顯示排隊
 
   return (
     <header className="header">
       <div className="header-left">
-        <h1>🚀 OpenHands Dev Studio</h1>
+        <h1>🚀 {t('openHandsDevStudio')}</h1>
       </div>
 
       <div className="header-right">
         {/* 排隊提示 */}
         {showQueue && (
           <div className="queue-alert show">
-            ⏳ Queue: <span>{queueCount}</span> people
+            ⏳ {t('queue')}: <span>{queueCount}</span> {t('people')}
           </div>
         )}
 
@@ -53,12 +55,11 @@ const EnhancedHeader: React.FC<EnhancedHeaderProps> = ({
               className="quota-fill"
               style={{
                 width: `${quotaPercentage}%`,
-                background:
-                  quotaPercentage > 80
-                    ? "#ef4444"
-                    : quotaPercentage > 60
-                      ? "#f59e0b"
-                      : "#10b981",
+                background: (() => {
+                  if (quotaPercentage > 80) return "#ef4444";
+                  if (quotaPercentage > 60) return "#f59e0b";
+                  return "#10b981";
+                })(),
               }}
             />
           </div>
@@ -68,7 +69,7 @@ const EnhancedHeader: React.FC<EnhancedHeaderProps> = ({
         <div className="status-bar">
           <div className="status-indicator">
             <div className="status-dot" />
-            API Ready
+            {t('apiReady')}
           </div>
         </div>
 
@@ -77,7 +78,7 @@ const EnhancedHeader: React.FC<EnhancedHeaderProps> = ({
           <div
             className="user-avatar"
             onClick={onShowBilling}
-            title="User Profile & Billing"
+            title={t('userProfileAndBilling')}
           >
             {user?.avatar || "👤"}
           </div>
@@ -85,14 +86,14 @@ const EnhancedHeader: React.FC<EnhancedHeaderProps> = ({
           {/* 用戶下拉選單 */}
           <div className="user-dropdown">
             <div className="dropdown-item" onClick={onShowSettings}>
-              ⚙️ Settings
+              ⚙️ {t('settings')}
             </div>
             <div className="dropdown-item" onClick={onShowBilling}>
-              💰 Billing
+              💰 {t('billing')}
             </div>
             <div className="dropdown-separator" />
             <div className="dropdown-item" onClick={onLogout}>
-              🚪 Logout
+              🚪 {t('logout')}
             </div>
           </div>
         </div>

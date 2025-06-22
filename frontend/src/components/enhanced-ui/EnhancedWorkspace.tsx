@@ -1,6 +1,53 @@
-import React, { useState, useRef } from "react";
+import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 // 整合 OpenHands 真實組件
 import Terminal from "#/components/features/terminal/terminal";
+
+// 預設代碼內容
+const defaultCodeContent = `interface User {
+  id: string;
+  name: string;
+  email: string;
+  avatar?: string;
+  role: 'admin' | 'user' | 'guest';
+  createdAt: Date;
+  lastLogin?: Date;
+}
+
+export function UserProfile({ user }: { user: User }) {
+  return (
+    <div className="user-profile">
+      <img
+        src={user.avatar || '/default-avatar.png'}
+        alt={user.name}
+        className="avatar"
+      />
+      <div className="user-info">
+        <h2>{user.name}</h2>
+        <p>{user.email}</p>
+        <span className={\`role-badge \${user.role}\`}>
+          {user.role.toUpperCase()}
+        </span>
+      </div>
+    </div>
+  );
+}`;
+
+// 獲取文件圖標
+const getFileIcon = (language?: string) => {
+  switch (language) {
+    case "typescript":
+      return "🟦";
+    case "javascript":
+      return "🟨";
+    case "json":
+      return "📋";
+    case "markdown":
+      return "📝";
+    default:
+      return "📄";
+  }
+};
 
 interface FileItem {
   id: string;
@@ -24,22 +71,21 @@ interface EnhancedWorkspaceProps {
   // 可以接收 OpenHands 現有的工作區相關 props
   fileTree?: FileItem[];
   gitStatus?: GitStatus;
-  terminalOutput?: string[];
 }
 
-const EnhancedWorkspace: React.FC<EnhancedWorkspaceProps> = ({
+function EnhancedWorkspace({
   activeTab,
   onTabSwitch,
   fileTree = [],
   gitStatus,
-  terminalOutput = [],
-}) => {
+}: EnhancedWorkspaceProps) {
+  const { t } = useTranslation();
   const [openFiles, setOpenFiles] = useState<string[]>(["UserProfile.tsx"]);
   const [activeFile, setActiveFile] = useState("UserProfile.tsx");
-  const [terminalInput, setTerminalInput] = useState("");
+  // const [terminalInput, setTerminalInput] = useState("");
   const [codeContent, setCodeContent] = useState(defaultCodeContent);
 
-  const terminalRef = useRef<HTMLDivElement>(null);
+  // const terminalRef = useRef<HTMLDivElement>(null);
 
   // 模擬的文件樹數據 - 將來可以替換為真實的 OpenHands 文件樹 API
   const mockFileTree: FileItem[] = [
@@ -109,31 +155,31 @@ const EnhancedWorkspace: React.FC<EnhancedWorkspaceProps> = ({
   const mockGitStatus = {
     branch: "main",
     staged: [],
-    modified: ["src/components/UserProfile.tsx", "src/App.tsx"],
-    untracked: ["src/components/NewComponent.tsx"],
+    modified: [t('srcComponentsUserProfileTsx'), t('srcAppTsx')],
+    untracked: [t('newComponentTsx')],
   };
 
   const displayGitStatus = gitStatus || mockGitStatus;
 
   // 標籤配置
   const tabs = [
-    { id: "changes", name: "Changes", icon: "🔄" },
-    { id: "vscode", name: "VS Code", icon: "💻" },
-    { id: "terminal", name: "Terminal", icon: "🖥️" },
-    { id: "jupyter", name: "Jupyter", icon: "📓" },
-    { id: "app", name: "App", icon: "📱" },
-    { id: "browser", name: "Browser", icon: "🌐" },
+    { id: "changes", name: t('changes'), icon: "🔄" },
+    { id: "vscode", name: t('vsCode'), icon: "💻" },
+    { id: "terminal", name: t('terminal'), icon: "🖥️" },
+    { id: "jupyter", name: t('jupyter'), icon: "📓" },
+    { id: "app", name: t('app'), icon: "📱" },
+    { id: "browser", name: t('browser'), icon: "🌐" },
   ];
 
   // 文件操作 - 將來可以整合 OpenHands 的文件 API
-  const openFile = (fileName: string, filePath: string) => {
+  const openFile = (fileName: string) => {
     if (!openFiles.includes(fileName)) {
       setOpenFiles([...openFiles, fileName]);
     }
     setActiveFile(fileName);
 
     // TODO: 調用 OpenHands 的文件讀取 API
-    console.log("Opening file:", filePath);
+    // console.log(t('openingFile'), _filePath);
   };
 
   const closeFile = (fileName: string) => {
@@ -148,25 +194,24 @@ const EnhancedWorkspace: React.FC<EnhancedWorkspaceProps> = ({
   // Git 操作 - 將來可以整合 OpenHands 的 Git API
   const gitCommit = () => {
     // TODO: 調用 OpenHands 的 Git commit API
-    console.log("Git commit");
+    // console.log(t('gitCommit'));
   };
   const gitPush = () => {
     // TODO: 調用 OpenHands 的 Git push API
-    console.log("Git push");
+    // console.log(t('gitPush'));
   };
   const gitPull = () => {
     // TODO: 調用 OpenHands 的 Git pull API
-    console.log("Git pull");
+    // console.log(t('gitPull'));
   };
   const gitReset = () => {
     // TODO: 調用 OpenHands 的 Git reset API
-    console.log("Git reset");
+    // console.log(t('gitReset'));
   };
 
   // 匯出功能 - 將來可以整合 OpenHands 的匯出 API
-  const exportConversation = (format: string) => {
+  const exportConversation = () => {
     // TODO: 調用 OpenHands 的匯出 API
-    console.log("Exporting as:", format);
   };
 
   // 渲染文件樹
@@ -176,7 +221,7 @@ const EnhancedWorkspace: React.FC<EnhancedWorkspaceProps> = ({
         <div
           className={`file-tree-item ${item.type} ${activeFile === item.name ? "active" : ""}`}
           style={{ marginLeft: `${level * 16}px` }}
-          onClick={() => item.type === "file" && openFile(item.name, item.path)}
+          onClick={() => item.type === "file" && openFile(item.name)}
         >
           {item.type === "folder" ? "📁" : getFileIcon(item.language)}
           {item.name}
@@ -186,20 +231,7 @@ const EnhancedWorkspace: React.FC<EnhancedWorkspaceProps> = ({
     ));
 
   // 獲取文件圖標
-  const getFileIcon = (language?: string) => {
-    switch (language) {
-      case "typescript":
-        return "🟦";
-      case "javascript":
-        return "🟨";
-      case "json":
-        return "📋";
-      case "markdown":
-        return "📝";
-      default:
-        return "📄";
-    }
-  };
+
 
   return (
     <div className="workspace-panel">
@@ -207,6 +239,7 @@ const EnhancedWorkspace: React.FC<EnhancedWorkspaceProps> = ({
       <div className="workspace-tabs">
         {tabs.map((tab) => (
           <button
+            type="button"
             key={tab.id}
             className={`tab ${activeTab === tab.id ? "active" : ""}`}
             onClick={() => onTabSwitch(tab.id)}
@@ -242,7 +275,7 @@ const EnhancedWorkspace: React.FC<EnhancedWorkspaceProps> = ({
                   📝 Git Status
                 </div>
                 <div style={{ color: "#10b981", fontSize: "10px" }}>
-                  🟢 Active
+                  🟢 {t('active')}
                 </div>
               </div>
               <div
@@ -252,7 +285,7 @@ const EnhancedWorkspace: React.FC<EnhancedWorkspaceProps> = ({
                   color: "#e2e8f0",
                 }}
               >
-                Current branch: {displayGitStatus.branch}
+                {t('currentBranch')}: {displayGitStatus.branch}
               </div>
               <div style={{ color: "#94a3b8", fontSize: "14px" }}>
                 Pending:{" "}
@@ -262,18 +295,18 @@ const EnhancedWorkspace: React.FC<EnhancedWorkspaceProps> = ({
               </div>
 
               <div className="git-actions">
-                <button className="git-btn" onClick={gitCommit}>
-                  📤 Commit
-                </button>
-                <button className="git-btn" onClick={gitPush}>
-                  🚀 Push
-                </button>
-                <button className="git-btn" onClick={gitPull}>
-                  ⬇️ Pull
-                </button>
-                <button className="git-btn danger" onClick={gitReset}>
-                  🔄 Reset
-                </button>
+                <button type="button" className="git-btn" onClick={gitCommit}>
+              📝 {t('commit')}
+            </button>
+            <button type="button" className="git-btn" onClick={gitPush}>
+              ⬆️ {t('push')}
+            </button>
+            <button type="button" className="git-btn" onClick={gitPull}>
+              ⬇️ {t('pull')}
+            </button>
+            <button type="button" className="git-btn danger" onClick={gitReset}>
+              🔄 {t('reset')}
+            </button>
               </div>
             </div>
 
@@ -300,28 +333,32 @@ const EnhancedWorkspace: React.FC<EnhancedWorkspaceProps> = ({
               </h4>
               <div className="export-options">
                 <button
+                  type="button"
                   className="export-btn"
-                  onClick={() => exportConversation("markdown")}
+                  onClick={() => exportConversation()}
                 >
-                  📝 Markdown
+                  📝 {t('markdown')}
                 </button>
                 <button
+                  type="button"
                   className="export-btn"
-                  onClick={() => exportConversation("pdf")}
+                  onClick={() => exportConversation()}
                 >
-                  📄 PDF
+                  📄 {t('pdf')}
                 </button>
                 <button
+                  type="button"
                   className="export-btn"
-                  onClick={() => exportConversation("json")}
+                  onClick={() => exportConversation()}
                 >
-                  📋 JSON
+                  📋 {t('json')}
                 </button>
                 <button
+                  type="button"
                   className="export-btn"
-                  onClick={() => exportConversation("zip")}
+                  onClick={() => exportConversation()}
                 >
-                  📦 ZIP
+                  📦 {t('zip')}
                 </button>
               </div>
             </div>
@@ -409,15 +446,15 @@ const EnhancedWorkspace: React.FC<EnhancedWorkspaceProps> = ({
         >
           <div className="jupyter-content">
             <h3 style={{ marginBottom: "16px", color: "#e2e8f0" }}>
-              🪐 Jupyter Notebook
+              🪐 {t('jupyterNotebook')}
             </h3>
 
             <div className="notebook-cell">
               <div className="cell-header">
-                <span>Code Cell [1]</span>
+                <span>{t('codeCell')} [1]</span>
                 <div>
-                  <button className="action-btn">▶️ Run</button>
-                  <button className="action-btn">➕ Add</button>
+                  <button type="button" className="action-btn">▶️ {t('run')}</button>
+            <button type="button" className="action-btn">➕ {t('add')}</button>
                 </div>
               </div>
               <div className="cell-content">
@@ -464,7 +501,7 @@ max    35.000000  95.000000`}</pre>
                 marginBottom: "20px",
               }}
             >
-              <h3 style={{ color: "#e2e8f0" }}>📱 App Management Center</h3>
+              <h3 style={{ color: "#e2e8f0" }}>📱 {t('appManagementCenter')}</h3>
               <span
                 style={{
                   background: "#f59e0b",
@@ -487,16 +524,16 @@ max    35.000000  95.000000`}</pre>
             >
               <div className="app-card">
                 <div className="app-icon">⚛️</div>
-                <div className="app-title">React App</div>
-                <div className="app-description">Modern Frontend Application</div>
-                <div className="app-status running">🟢 Port 3000</div>
+                <div className="app-title">{t('reactApp')}</div>
+                <div className="app-description">{t('modernFrontendApplication')}</div>
+                <div className="app-status running">🟢 {t('port3000')}</div>
               </div>
 
               <div className="app-card">
                 <div className="app-icon">🌐</div>
-                <div className="app-title">Express API</div>
-                <div className="app-description">Backend API Service</div>
-                <div className="app-status stopped">⚫ Stopped</div>
+                <div className="app-title">{t('expressApi')}</div>
+                <div className="app-description">{t('backendApiService')}</div>
+                <div className="app-status stopped">⚫ {t('stopped')}</div>
               </div>
             </div>
           </div>
@@ -510,25 +547,25 @@ max    35.000000  95.000000`}</pre>
             style={{ display: "flex", flexDirection: "column", height: "100%" }}
           >
             <div className="browser-toolbar">
-              <button className="browser-nav-btn">⬅️</button>
-              <button className="browser-nav-btn">➡️</button>
-              <button className="browser-nav-btn">🔄</button>
+              <button type="button" className="browser-nav-btn">⬅️</button>
+            <button type="button" className="browser-nav-btn">➡️</button>
+            <button type="button" className="browser-nav-btn">🔄</button>
               <input
                 type="text"
                 className="browser-url-input"
                 defaultValue="http://localhost:3000"
               />
-              <button className="action-btn">🔧 DevTools</button>
+              <button type="button" className="action-btn">🔧 DevTools</button>
             </div>
             <div className="browser-preview">
               <div>
-                🌐 Live Preview Area
+                🌐 {t('livePreviewArea')}
                 <br />
                 <br />
                 <div style={{ fontSize: "14px", opacity: 0.8 }}>
-                  Your application will display here
+                  {t('yourApplicationWillDisplayHere')}
                   <br />
-                  Supports hot reload and live debugging
+                  {t('supportsHotReloadAndLiveDebugging')}
                 </div>
               </div>
             </div>
@@ -539,34 +576,6 @@ max    35.000000  95.000000`}</pre>
   );
 };
 
-// 預設代碼內容
-const defaultCodeContent = `interface User {
-  id: string;
-  name: string;
-  email: string;
-  avatar?: string;
-  role: 'admin' | 'user' | 'guest';
-  createdAt: Date;
-  lastLogin?: Date;
-}
 
-export function UserProfile({ user }: { user: User }) {
-  return (
-    <div className="user-profile">
-      <img
-        src={user.avatar || '/default-avatar.png'}
-        alt={user.name}
-        className="avatar"
-      />
-      <div className="user-info">
-        <h2>{user.name}</h2>
-        <p>{user.email}</p>
-        <span className={\`role-badge \${user.role}\`}>
-          {user.role.toUpperCase()}
-        </span>
-      </div>
-    </div>
-  );
-}`;
 
 export default EnhancedWorkspace;

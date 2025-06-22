@@ -7,7 +7,7 @@ import EnhancedLeftPanel from './EnhancedLeftPanel';
 import EnhancedWorkspace from './EnhancedWorkspace';
 import SettingsModal from './SettingsModal';
 import BillingModal from './BillingModal';
-import '../../../styles/enhanced-theme.css';
+import '../../styles/enhanced-theme.css';
 
 interface User {
   id: string;
@@ -34,7 +34,7 @@ interface LayoutState {
   queueCount: number;
 }
 
-const EnhancedLayout: React.FC<EnhancedLayoutProps> = ({ className, children }) => {
+function EnhancedLayout({ className, children }: EnhancedLayoutProps) {
   const [state, setState] = useState<LayoutState>({
     isLoggedIn: false,
     currentUser: null,
@@ -74,9 +74,9 @@ const EnhancedLayout: React.FC<EnhancedLayoutProps> = ({ className, children }) 
     }));
   };
 
-  const updateLeftPanelWidth = (width: number) => {
-    setState(prev => ({ ...prev, leftPanelWidth: width }));
-  };
+  // const updateLeftPanelWidth = (width: number) => {
+  //   setState(prev => ({ ...prev, leftPanelWidth: width }));
+  // };
 
   const switchTab = (tabId: string) => {
     setState(prev => ({ ...prev, activeTab: tabId }));
@@ -93,35 +93,7 @@ const EnhancedLayout: React.FC<EnhancedLayoutProps> = ({ className, children }) 
       )}
 
       {/* 主應用界面 */}
-      {!state.showWelcome && (
-        <div className="studio-container">
-          {/* 頂部標題欄 */}
-          <EnhancedHeader
-            user={state.currentUser}
-            quotaUsed={state.quotaUsed}
-            quotaTotal={state.quotaTotal}
-            queueCount={state.queueCount}
-            onShowSettings={() => toggleModal('settings')}
-            onShowBilling={() => toggleModal('billing')}
-            onLogout={handleLogout}
-          />
-
-          {/* 主要內容區域 */}
-          <main className="main-content">
-            {/* 左側面板 */}
-            <EnhancedLeftPanel
-              onLogin={handleLogin}
-              onLaunchFromScratch={() => setState(prev => ({ ...prev, showWelcome: false }))}
-            />
-
-            {/* 右側工作區 */}
-            <EnhancedWorkspace
-              activeTab={state.activeTab}
-              onTabSwitch={switchTab}
-            />
-          </main>
-        </div>
-      )}
+      {!state.showWelcome && children}
 
       {/* 設定模態框 */}
       {state.showSettings && (

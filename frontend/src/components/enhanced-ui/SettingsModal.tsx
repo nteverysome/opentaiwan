@@ -29,7 +29,7 @@ interface UserSettings {
   language: string;
 }
 
-const SettingsModal: React.FC<SettingsModalProps> = ({ user, onClose }) => {
+function SettingsModal({ user, onClose }: SettingsModalProps) {
   const [activeTab, setActiveTab] = useState<SettingsTab>("user");
   const [settings, setSettings] = useState<UserSettings>({
     email: user?.email || "",
@@ -49,13 +49,13 @@ const SettingsModal: React.FC<SettingsModalProps> = ({ user, onClose }) => {
     { id: "apikeys" as SettingsTab, name: "API Keys", icon: "🔑" },
   ];
 
-  const updateSetting = (key: keyof UserSettings, value: any) => {
+  const updateSetting = (key: keyof UserSettings, value: string | boolean) => {
     setSettings((prev) => ({ ...prev, [key]: value }));
   };
 
   const saveSettings = () => {
     // 這裡應該調用 OpenHands 的設定保存 API
-    console.log("Saving settings:", settings);
+    // console.log("Saving settings:", settings);
   };
 
   const configureGithubRepos = () => {
@@ -65,12 +65,12 @@ const SettingsModal: React.FC<SettingsModalProps> = ({ user, onClose }) => {
 
   const installSlackApp = () => {
     // 安裝 Slack 應用
-    console.log("Installing Slack app...");
+    // console.log("Installing Slack app...");
   };
 
   const createApiKey = () => {
     // 創建新的 API 密鑰
-    console.log("Creating new API key...");
+    // console.log("Creating new API key...");
   };
 
   const renderTabContent = () => {
@@ -86,7 +86,7 @@ const SettingsModal: React.FC<SettingsModalProps> = ({ user, onClose }) => {
                 value={settings.email}
                 onChange={(e) => updateSetting("email", e.target.value)}
               />
-              <button className="settings-btn" onClick={saveSettings}>
+              <button type="button" className="settings-btn" onClick={saveSettings}>
                 Save
               </button>
             </div>
@@ -141,7 +141,7 @@ const SettingsModal: React.FC<SettingsModalProps> = ({ user, onClose }) => {
           <div>
             <div className="settings-section">
               <h3>GitHub Integration</h3>
-              <button className="settings-btn" onClick={configureGithubRepos}>
+              <button type="button" className="settings-btn" onClick={configureGithubRepos}>
                 Configure Github Repositories
               </button>
               <p
@@ -153,7 +153,7 @@ const SettingsModal: React.FC<SettingsModalProps> = ({ user, onClose }) => {
 
             <div className="settings-section">
               <h3>Slack Integration</h3>
-              <button className="settings-btn" onClick={installSlackApp}>
+              <button type="button" className="settings-btn" onClick={installSlackApp}>
                 Install OpenHands Slack App
               </button>
               <p
@@ -186,7 +186,7 @@ const SettingsModal: React.FC<SettingsModalProps> = ({ user, onClose }) => {
                       Connect directly from VS Code
                     </div>
                   </div>
-                  <button className="settings-btn">Install</button>
+                  <button type="button" className="settings-btn">Install</button>
                 </div>
 
                 <div
@@ -207,7 +207,7 @@ const SettingsModal: React.FC<SettingsModalProps> = ({ user, onClose }) => {
                       For IntelliJ, PyCharm, and more
                     </div>
                   </div>
-                  <button className="settings-btn">Install</button>
+                  <button type="button" className="settings-btn">Install</button>
                 </div>
               </div>
             </div>
@@ -344,7 +344,7 @@ const SettingsModal: React.FC<SettingsModalProps> = ({ user, onClose }) => {
                 </div>
               </div>
 
-              <button className="settings-btn" onClick={saveSettings}>
+              <button type="button" className="settings-btn" onClick={saveSettings}>
                 Save Preferences
               </button>
             </div>
@@ -458,10 +458,11 @@ const SettingsModal: React.FC<SettingsModalProps> = ({ user, onClose }) => {
                 </div>
               </div>
 
-              <button className="settings-btn" style={{ marginRight: "8px" }}>
+              <button type="button" className="settings-btn" style={{ marginRight: "8px" }}>
                 💳 Manage Billing
               </button>
               <button
+                type="button"
                 className="settings-btn"
                 style={{ background: "#ef4444" }}
               >
@@ -540,7 +541,7 @@ const SettingsModal: React.FC<SettingsModalProps> = ({ user, onClose }) => {
               <p style={{ marginBottom: "16px" }}>
                 Store sensitive configuration values securely
               </p>
-              <button className="settings-btn">Add a new secret</button>
+              <button type="button" className="settings-btn">Add a new secret</button>
             </div>
 
             <div className="settings-section">
@@ -549,9 +550,9 @@ const SettingsModal: React.FC<SettingsModalProps> = ({ user, onClose }) => {
                 style={{ fontSize: "14px", color: "#94a3b8", lineHeight: 1.5 }}
               >
                 Secrets are encrypted environment variables that can be used in
-                your OpenHands sessions. They're perfect for storing API keys,
+                your OpenHands sessions. They&apos;re perfect for storing API keys,
                 database credentials, and other sensitive information that you
-                don't want to hardcode in your projects.
+                don&apos;t want to hardcode in your projects.
               </p>
             </div>
           </div>
@@ -562,7 +563,7 @@ const SettingsModal: React.FC<SettingsModalProps> = ({ user, onClose }) => {
           <div>
             <div className="settings-section">
               <h3>API Keys</h3>
-              <button className="settings-btn" onClick={createApiKey}>
+              <button type="button" className="settings-btn" onClick={createApiKey}>
                 Create API Key
               </button>
               <p
@@ -577,9 +578,20 @@ const SettingsModal: React.FC<SettingsModalProps> = ({ user, onClose }) => {
                 programmatically. Keep your API keys secure: anyone with your
                 API key can access your account. For more information on how to
                 use the API, see our{" "}
-                <a href="#" style={{ color: "#60a5fa" }}>
+                <button
+                  type="button"
+                  style={{
+                    background: "none",
+                    border: "none",
+                    color: "#60a5fa",
+                    cursor: "pointer",
+                    textDecoration: "underline",
+                    padding: 0,
+                    font: "inherit"
+                  }}
+                >
                   API documentation
-                </a>
+                </button>
                 .
               </p>
             </div>
@@ -654,6 +666,7 @@ const SettingsModal: React.FC<SettingsModalProps> = ({ user, onClose }) => {
         <div className="settings-header">
           <h2 style={{ color: "#e2e8f0" }}>⚙️ Settings</h2>
           <button
+            type="button"
             onClick={onClose}
             style={{
               background: "none",
@@ -671,6 +684,7 @@ const SettingsModal: React.FC<SettingsModalProps> = ({ user, onClose }) => {
         <div className="settings-tabs">
           {tabs.map((tab) => (
             <button
+              type="button"
               key={tab.id}
               className={`settings-tab ${activeTab === tab.id ? "active" : ""}`}
               onClick={() => setActiveTab(tab.id)}

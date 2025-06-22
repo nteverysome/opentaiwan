@@ -4,6 +4,7 @@
 <script src="js/openhands-integration.js"></script>
 <!DOCTYPE html>
 <html lang="zh-TW">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -672,8 +673,13 @@
             background: #4b5563;
         }
 
-        .action-btn.apply { background: #059669; }
-        .action-btn.apply:hover { background: #047857; }
+        .action-btn.apply {
+            background: #059669;
+        }
+
+        .action-btn.apply:hover {
+            background: #047857;
+        }
 
         /* 右鍵選單 */
         .context-menu {
@@ -848,7 +854,12 @@
         }
 
         /* 所有其他標籤的樣式保持一致... */
-        .changes-content, .vscode-content, .terminal-content, .jupyter-content, .app-content, .browser-content {
+        .changes-content,
+        .vscode-content,
+        .terminal-content,
+        .jupyter-content,
+        .app-content,
+        .browser-content {
             height: 100%;
             overflow-y: auto;
         }
@@ -929,12 +940,12 @@
             .main-content {
                 flex-direction: column;
             }
-            
+
             .left-panel {
                 width: 100%;
                 height: 50%;
             }
-            
+
             .workspace-panel {
                 height: 50%;
             }
@@ -1090,8 +1101,15 @@
         }
 
         @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         .fade-in {
@@ -1099,6 +1117,7 @@
         }
     </style>
 </head>
+
 <body>
     <!-- 歡迎頁面 -->
     <div class="welcome-screen" id="welcome-screen">
@@ -1109,7 +1128,7 @@
                 Opentaiwan 讓 AI 驅動開發變得簡單，使用強大的 Daytona 雲端環境來建造和維護軟體。
                 立即開始您的開發之旅。
             </p>
-            
+
             <div>
                 <!-- 主要啟動按鈕 - 更新為無縫整合 -->
                 <button class="welcome-btn" onclick="launchFromScratch()">
@@ -1138,7 +1157,7 @@
                     <option value="facebook/react">facebook/react (範例)</option>
                     <option value="microsoft/vscode">microsoft/vscode (範例)</option>
                 </select>
-                
+
                 <select class="repo-selector" id="branch-select">
                     <option value="">Select a branch</option>
                     <option value="main">main</option>
@@ -1159,13 +1178,16 @@
             <div style="margin-top: 40px;">
                 <h3 style="color: #e2e8f0; margin-bottom: 16px;">✨ 建議的任務</h3>
                 <div style="display: flex; flex-direction: column; gap: 8px;">
-                    <button class="welcome-btn secondary" onclick="quickStartReactApp()" style="width: 100%; font-size: 13px; padding: 8px 16px;">
+                    <button class="welcome-btn secondary" onclick="quickStartReactApp()"
+                        style="width: 100%; font-size: 13px; padding: 8px 16px;">
                         ⚛️ 創建 React 應用
                     </button>
-                    <button class="welcome-btn secondary" onclick="quickStartPythonAPI()" style="width: 100%; font-size: 13px; padding: 8px 16px;">
+                    <button class="welcome-btn secondary" onclick="quickStartPythonAPI()"
+                        style="width: 100%; font-size: 13px; padding: 8px 16px;">
                         🐍 構建 Python API
                     </button>
-                    <button class="welcome-btn secondary" onclick="quickStartNodeApp()" style="width: 100%; font-size: 13px; padding: 8px 16px;">
+                    <button class="welcome-btn secondary" onclick="quickStartNodeApp()"
+                        style="width: 100%; font-size: 13px; padding: 8px 16px;">
                         🟢 開發 Node.js 應用
                     </button>
                 </div>
@@ -1174,7 +1196,8 @@
 
         <!-- 添加一個新的功能預覽區域 -->
         <div style="position: absolute; bottom: 20px; left: 50%; transform: translateX(-50%); text-align: center;">
-            <div style="background: rgba(16, 185, 129, 0.1); border: 1px solid #10b981; border-radius: 8px; padding: 12px 20px;">
+            <div
+                style="background: rgba(16, 185, 129, 0.1); border: 1px solid #10b981; border-radius: 8px; padding: 12px 20px;">
                 <div style="color: #10b981; font-weight: 600; font-size: 12px; margin-bottom: 4px;">
                     🏗️ POWERED BY DAYTONA
                 </div>
@@ -1192,19 +1215,21 @@
             <p style="color: #94a3b8; margin-bottom: 24px;">
                 Sign in with your GitHub account to access your repositories and start building.
             </p>
-            
+
             <button class="github-btn" onclick="loginWithGithub()">
                 <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24">
-                    <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.577 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+                    <path
+                        d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.577 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z" />
                 </svg>
                 Login with GitHub
             </button>
-            
+
             <p style="font-size: 12px; color: #64748b; margin-top: 16px;">
                 By signing in, you agree to our Terms of Service and Privacy Policy.
             </p>
-            
-            <button onclick="closeAuthModal()" style="background: none; border: none; color: #64748b; margin-top: 16px; cursor: pointer;">
+
+            <button onclick="closeAuthModal()"
+                style="background: none; border: none; color: #64748b; margin-top: 16px; cursor: pointer;">
                 ✕ Close
             </button>
         </div>
@@ -1215,9 +1240,10 @@
         <div class="settings-content">
             <div class="settings-header">
                 <h2 style="color: #e2e8f0;">⚙️ Settings</h2>
-                <button onclick="closeSettings()" style="background: none; border: none; color: #94a3b8; cursor: pointer; font-size: 20px;">✕</button>
+                <button onclick="closeSettings()"
+                    style="background: none; border: none; color: #94a3b8; cursor: pointer; font-size: 20px;">✕</button>
             </div>
-            
+
             <div class="settings-tabs">
                 <button class="settings-tab active" onclick="switchSettingsTab('user')">User</button>
                 <button class="settings-tab" onclick="switchSettingsTab('integrations')">Integrations</button>
@@ -1226,7 +1252,7 @@
                 <button class="settings-tab" onclick="switchSettingsTab('secrets')">Secrets</button>
                 <button class="settings-tab" onclick="switchSettingsTab('apikeys')">API Keys</button>
             </div>
-            
+
             <div class="settings-body" id="settings-body">
                 <div id="settings-user" class="settings-tab-content">
                     <div class="settings-section">
@@ -1235,16 +1261,17 @@
                         <button class="settings-btn">Save</button>
                     </div>
                 </div>
-                
+
                 <div id="settings-integrations" class="settings-tab-content" style="display: none;">
                     <div class="settings-section">
                         <h3>GitHub Integration</h3>
-                        <button class="settings-btn" onclick="configureGithubRepos()">Configure Github Repositories</button>
+                        <button class="settings-btn" onclick="configureGithubRepos()">Configure Github
+                            Repositories</button>
                         <p style="font-size: 12px; color: #64748b; margin-top: 8px;">
                             Manage which repositories Opentaiwan can access
                         </p>
                     </div>
-                    
+
                     <div class="settings-section">
                         <h3>Slack Integration</h3>
                         <button class="settings-btn">Install Opentaiwan Slack App</button>
@@ -1253,7 +1280,7 @@
                         </p>
                     </div>
                 </div>
-                
+
                 <div id="settings-application" class="settings-tab-content" style="display: none;">
                     <div class="settings-section">
                         <h3>Language</h3>
@@ -1262,185 +1289,370 @@
                             <option value="zh">繁體中文</option>
                         </select>
                     </div>
-                    
+
                     <div class="settings-section">
                         <h3>Preferences</h3>
-                        <label style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px; color: #e2e8f0;">
+                        <label
+                            style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px; color: #e2e8f0;">
                             <input type="checkbox" checked> Enable analytics
                         </label>
-                        <label style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px; color: #e2e8f0;">
+                        <label
+                            style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px; color: #e2e8f0;">
                             <input type="checkbox"> Sound Notifications
                         </label>
                         <label style="display: flex; align-items: center; gap: 8px; color: #e2e8f0;">
                             <input type="checkbox" checked> Suggest Tasks on GitHub
                         </label>
                     </div>
-                    
+
                     <div class="settings-section">
                         <h3>🔧 Opentaiwan 整合設定</h3>
                         <div style="margin-bottom: 16px;">
                             <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px;">
-                                <div id="connection-status" style="width: 12px; height: 12px; border-radius: 50%; background: #64748b;"></div>
+                                <div id="connection-status"
+                                    style="width: 12px; height: 12px; border-radius: 50%; background: #64748b;"></div>
                                 <span id="connection-text" style="color: #94a3b8; font-size: 14px;">檢查中...</span>
                             </div>
                         </div>
-                        
+
                         <div style="margin-bottom: 16px;">
-                            <label style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px; color: #e2e8f0;">
-                                <input type="radio" name="integration-mode" value="demo" checked onchange="handleModeChange()">
+                            <label
+                                style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px; color: #e2e8f0;">
+                                <input type="radio" name="integration-mode" value="demo" checked
+                                    onchange="handleModeChange()">
                                 演示模式 (離線功能，不需要後端)
                             </label>
                             <label style="display: flex; align-items: center; gap: 8px; color: #e2e8f0;">
-                                <input type="radio" name="integration-mode" value="integrated" onchange="handleModeChange()">
+                                <input type="radio" name="integration-mode" value="integrated"
+                                    onchange="handleModeChange()">
                                 整合模式 (連接 Opentaiwan 後端)
                             </label>
                         </div>
-                        
+
                         <div style="margin-bottom: 16px;">
-                            <label style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px; color: #e2e8f0;">
-                                <input type="checkbox" id="enable-websocket" onchange="handleFeatureToggle('enableWebSocket', this.checked)">
+                            <label
+                                style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px; color: #e2e8f0;">
+                                <input type="checkbox" id="enable-websocket"
+                                    onchange="handleFeatureToggle('enableWebSocket', this.checked)">
                                 啟用 WebSocket (實時終端和聊天)
                             </label>
-                            <label style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px; color: #e2e8f0;">
-                                <input type="checkbox" id="enable-filesync" onchange="handleFeatureToggle('enableFileSync', this.checked)">
+                            <label
+                                style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px; color: #e2e8f0;">
+                                <input type="checkbox" id="enable-filesync"
+                                    onchange="handleFeatureToggle('enableFileSync', this.checked)">
                                 啟用文件同步 (自動載入專案文件)
                             </label>
                             <label style="display: flex; align-items: center; gap: 8px; color: #e2e8f0;">
-                                <input type="checkbox" id="enable-debug" checked onchange="handleFeatureToggle('debugMode', this.checked)">
+                                <input type="checkbox" id="enable-debug" checked
+                                    onchange="handleFeatureToggle('debugMode', this.checked)">
                                 調試模式 (顯示詳細日誌)
                             </label>
                         </div>
-                        
+
                         <div style="display: flex; gap: 8px; margin-bottom: 16px;">
                             <button class="settings-btn" onclick="testOpenHandsConnection()">🔌 測試連接</button>
                             <button class="settings-btn" onclick="toggleIntegrationMode()">🔄 切換模式</button>
-                            <button class="settings-btn" onclick="resetIntegration()" style="background: #ef4444;">🔄 重置</button>
+                            <button class="settings-btn" onclick="resetIntegration()" style="background: #ef4444;">🔄
+                                重置</button>
                         </div>
-                        
+
                         <div style="margin-bottom: 16px;">
                             <h4 style="color: #e2e8f0; margin-bottom: 8px; font-size: 14px;">連接設定</h4>
-                            <input type="text" class="settings-input" id="openhands-url" placeholder="Opentaiwan URL (預設: http://localhost:3000)" value="http://localhost:3000">
+                            <input type="text" class="settings-input" id="openhands-url"
+                                placeholder="Opentaiwan URL (預設: http://localhost:3000)" value="http://localhost:3000">
                             <button class="settings-btn" onclick="updateConnectionSettings()">更新連接</button>
                         </div>
-                        
-                        <div id="integration-status" style="background: #334155; padding: 12px; border-radius: 6px; font-size: 12px; color: #94a3b8;">
+
+                        <div id="integration-status"
+                            style="background: #334155; padding: 12px; border-radius: 6px; font-size: 12px; color: #94a3b8;">
                             <div><strong>狀態：</strong><span id="status-mode">演示模式</span></div>
                             <div><strong>會話：</strong><span id="status-session">無</span></div>
                             <div><strong>WebSocket：</strong><span id="status-ws">未連接</span></div>
                             <div><strong>文件同步：</strong><span id="status-files">未啟用</span></div>
                         </div>
                     </div>
+
+                    <!-- Daytona 雲端開發環境設定 -->
+                    <div class="settings-section">
+                        <h3>🏗️ Daytona 雲端開發環境</h3>
+                        <div style="margin-bottom: 16px;">
+                            <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px;">
+                                <div id="daytona-connection-status"
+                                    style="width: 12px; height: 12px; border-radius: 50%; background: #64748b;"></div>
+                                <span id="daytona-connection-text" style="color: #94a3b8; font-size: 14px;">未連接</span>
+                            </div>
+                        </div>
+
+                        <!-- API 密鑰設定 -->
+                        <div style="margin-bottom: 16px;">
+                            <label style="display: block; margin-bottom: 8px; color: #e2e8f0; font-size: 14px;">
+                                Daytona API 密鑰
+                            </label>
+                            <div style="display: flex; gap: 8px;">
+                                <input type="password" class="settings-input" id="daytona-api-key"
+                                    placeholder="輸入您的 Daytona API 密鑰" style="flex: 1;">
+                                <button class="settings-btn" onclick="setDaytonaAPIKey()">設置</button>
+                            </div>
+                            <p style="font-size: 12px; color: #64748b; margin-top: 4px;">
+                                從 <a href="https://app.daytona.io/dashboard/keys" target="_blank"
+                                    style="color: #60a5fa;">Daytona 儀表板</a> 獲取 API 密鑰
+                            </p>
+                        </div>
+
+                        <!-- 運行模式選擇 -->
+                        <div style="margin-bottom: 16px;">
+                            <h4 style="color: #e2e8f0; margin-bottom: 8px; font-size: 14px;">運行模式</h4>
+                            <label
+                                style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px; color: #e2e8f0;">
+                                <input type="radio" name="dev-mode" value="demo" checked
+                                    onchange="handleDevModeChange()">
+                                演示模式 (離線功能，無需後端)
+                            </label>
+                            <label
+                                style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px; color: #e2e8f0;">
+                                <input type="radio" name="dev-mode" value="daytona" onchange="handleDevModeChange()">
+                                Daytona 模式 (雲端沙盒環境) ⭐ 推薦
+                            </label>
+                            <label style="display: flex; align-items: center; gap: 8px; color: #e2e8f0;">
+                                <input type="radio" name="dev-mode" value="openhands" onchange="handleDevModeChange()">
+                                OpenHands 模式 (本地後端)
+                            </label>
+                        </div>
+
+                        <!-- Daytona 功能開關 -->
+                        <div style="margin-bottom: 16px;">
+                            <h4 style="color: #e2e8f0; margin-bottom: 8px; font-size: 14px;">Daytona 功能</h4>
+                            <label
+                                style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px; color: #e2e8f0;">
+                                <input type="checkbox" id="enable-daytona-billing"
+                                    onchange="handleDaytonaFeatureToggle('billing', this.checked)">
+                                啟用付費管理 (查看使用量和帳單)
+                            </label>
+                            <label
+                                style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px; color: #e2e8f0;">
+                                <input type="checkbox" id="enable-daytona-snapshots"
+                                    onchange="handleDaytonaFeatureToggle('snapshots', this.checked)">
+                                啟用快照功能 (保存環境狀態)
+                            </label>
+                            <label
+                                style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px; color: #e2e8f0;">
+                                <input type="checkbox" id="enable-daytona-preview" checked
+                                    onchange="handleDaytonaFeatureToggle('preview', this.checked)">
+                                啟用預覽功能 (實時應用預覽)
+                            </label>
+                            <label style="display: flex; align-items: center; gap: 8px; color: #e2e8f0;">
+                                <input type="checkbox" id="enable-daytona-autosave" checked
+                                    onchange="handleDaytonaFeatureToggle('autoSave', this.checked)">
+                                自動保存沙盒
+                            </label>
+                        </div>
+
+                        <!-- 沙盒配置 -->
+                        <div style="margin-bottom: 16px;">
+                            <h4 style="color: #e2e8f0; margin-bottom: 8px; font-size: 14px;">沙盒配置</h4>
+                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 8px;">
+                                <div>
+                                    <label
+                                        style="display: block; margin-bottom: 4px; color: #94a3b8; font-size: 12px;">預設語言</label>
+                                    <select class="settings-input" id="daytona-default-language"
+                                        onchange="updateDaytonaSandboxConfig()">
+                                        <option value="python">Python</option>
+                                        <option value="javascript">JavaScript/Node.js</option>
+                                        <option value="typescript">TypeScript</option>
+                                        <option value="java">Java</option>
+                                        <option value="go">Go</option>
+                                        <option value="rust">Rust</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label
+                                        style="display: block; margin-bottom: 4px; color: #94a3b8; font-size: 12px;">Docker
+                                        映像</label>
+                                    <select class="settings-input" id="daytona-default-image"
+                                        onchange="updateDaytonaSandboxConfig()">
+                                        <option value="python:3.11">Python 3.11</option>
+                                        <option value="node:18">Node.js 18</option>
+                                        <option value="node:20">Node.js 20</option>
+                                        <option value="openjdk:17">OpenJDK 17</option>
+                                        <option value="golang:1.21">Go 1.21</option>
+                                        <option value="rust:latest">Rust Latest</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <label style="display: flex; align-items: center; gap: 8px; color: #e2e8f0;">
+                                <input type="checkbox" id="auto-create-sandbox" checked
+                                    onchange="updateDaytonaSandboxConfig()">
+                                自動創建沙盒
+                            </label>
+                        </div>
+                        <!-- 控制按鈕 -->
+                        <div style="display: flex; gap: 8px; margin-bottom: 16px;">
+                            <button class="settings-btn" onclick="testDaytonaConnection()">🔌 測試連接</button>
+                            <button class="settings-btn" onclick="switchToDaytonaMode()">🚀 啟用 Daytona</button>
+                            <button class="settings-btn" onclick="openDaytonaDashboard()">🏗️ 開啟儀表板</button>
+                            <button class="settings-btn" onclick="resetDaytonaIntegration()"
+                                style="background: #ef4444;">🔄 重置</button>
+                        </div>
+
+                        <!-- 狀態顯示 -->
+                        <div id="daytona-status"
+                            style="background: #334155; padding: 12px; border-radius: 6px; font-size: 12px; color: #94a3b8;">
+                            <div><strong>模式：</strong><span id="daytona-status-mode">演示模式</span></div>
+                            <div><strong>沙盒：</strong><span id="daytona-status-sandbox">無</span></div>
+                            <div><strong>連接：</strong><span id="daytona-status-connection">未連接</span></div>
+                            <div><strong>付費：</strong><span id="daytona-status-billing">未載入</span></div>
+                        </div>
+
+                        <!-- 付費信息顯示 -->
+                        <div id="daytona-billing-info"
+                            style="display: none; margin-top: 16px; background: #1e3a3a; border: 1px solid #10b981; padding: 16px; border-radius: 8px;">
+                            <h4 style="color: #10b981; margin-bottom: 8px; font-size: 14px;">💎 Daytona 付費方案</h4>
+                            <div id="daytona-billing-details" style="font-size: 12px; color: #e2e8f0;">
+                                載入中...
+                            </div>
+                            <div style="margin-top: 8px;">
+                                <button class="settings-btn" onclick="openDaytonaBilling()"
+                                    style="background: #10b981;">管理付費</button>
+                            </div>
+                        </div>
+
+                    </div>
                 </div>
-                
+
                 <div id="settings-credits" class="settings-tab-content" style="display: none;">
                     <!-- Credits Header -->
-                    <div style="background: linear-gradient(135deg, #3b82f6, #8b5cf6); border-radius: 12px; padding: 20px; margin-bottom: 24px; color: white; text-align: center;">
+                    <div
+                        style="background: linear-gradient(135deg, #3b82f6, #8b5cf6); border-radius: 12px; padding: 20px; margin-bottom: 24px; color: white; text-align: center;">
                         <h2 style="margin-bottom: 8px;">💎 Choose Your Plan</h2>
                         <p style="opacity: 0.9; margin: 0;">Unlock the full power of AI development</p>
                     </div>
-                    
+
                     <!-- Plan Cards -->
                     <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 24px;">
                         <!-- Free Plan -->
-                        <div class="plan-card" onclick="selectPlan('free')" style="background: #334155; border: 2px solid #475569; border-radius: 12px; padding: 20px; cursor: pointer; transition: all 0.3s;">
-                            <div style="display: flex; justify-content: between; align-items: center; margin-bottom: 16px;">
+                        <div class="plan-card" onclick="selectPlan('free')"
+                            style="background: #334155; border: 2px solid #475569; border-radius: 12px; padding: 20px; cursor: pointer; transition: all 0.3s;">
+                            <div
+                                style="display: flex; justify-content: between; align-items: center; margin-bottom: 16px;">
                                 <h3 style="color: #e2e8f0; margin: 0; font-size: 18px;">Free Plan</h3>
                             </div>
-                            
+
                             <div style="font-size: 36px; font-weight: 700; color: #60a5fa; margin-bottom: 16px;">
                                 $0<span style="font-size: 16px; color: #94a3b8;">/month</span>
                             </div>
-                            
+
                             <div>
-                                <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px; color: #e2e8f0; font-size: 14px;">
+                                <div
+                                    style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px; color: #e2e8f0; font-size: 14px;">
                                     <span style="color: #10b981;">✅</span> 10 requests/day with GPT-4o
                                 </div>
-                                <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px; color: #e2e8f0; font-size: 14px;">
+                                <div
+                                    style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px; color: #e2e8f0; font-size: 14px;">
                                     <span style="color: #10b981;">✅</span> 50 requests/month total
                                 </div>
-                                <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px; color: #e2e8f0; font-size: 14px;">
+                                <div
+                                    style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px; color: #e2e8f0; font-size: 14px;">
                                     <span style="color: #94a3b8;">⏱️</span> Queue wait time: 12-15 min
                                 </div>
-                                <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px; color: #e2e8f0; font-size: 14px;">
+                                <div
+                                    style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px; color: #e2e8f0; font-size: 14px;">
                                     <span style="color: #ef4444;">❌</span> No priority support
                                 </div>
                             </div>
                         </div>
-                        
+
                         <!-- Pro Plan -->
-                        <div class="plan-card active" onclick="selectPlan('pro')" style="background: #1e3a3a; border: 2px solid #10b981; border-radius: 12px; padding: 20px; cursor: pointer; transition: all 0.3s; position: relative;">
-                            <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 16px;">
+                        <div class="plan-card active" onclick="selectPlan('pro')"
+                            style="background: #1e3a3a; border: 2px solid #10b981; border-radius: 12px; padding: 20px; cursor: pointer; transition: all 0.3s; position: relative;">
+                            <div
+                                style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 16px;">
                                 <div>
                                     <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 4px;">
                                         <h3 style="color: #e2e8f0; margin: 0; font-size: 18px;">Pro Plan</h3>
-                                        <span style="background: #f59e0b; color: #000; padding: 2px 8px; border-radius: 12px; font-size: 10px; font-weight: 600;">HOT</span>
+                                        <span
+                                            style="background: #f59e0b; color: #000; padding: 2px 8px; border-radius: 12px; font-size: 10px; font-weight: 600;">HOT</span>
                                     </div>
                                 </div>
-                                
+
                                 <!-- 配額顯示在右邊 -->
                                 <div style="text-align: right;">
                                     <div style="font-size: 12px; color: #94a3b8; margin-bottom: 4px;">當前配額</div>
                                     <div style="font-size: 20px; font-weight: 700; color: #10b981;">485/600</div>
-                                    <div style="width: 80px; height: 6px; background: rgba(255, 255, 255, 0.2); border-radius: 3px; margin-top: 4px;">
-                                        <div style="height: 100%; background: #10b981; border-radius: 3px; width: 80%;"></div>
+                                    <div
+                                        style="width: 80px; height: 6px; background: rgba(255, 255, 255, 0.2); border-radius: 3px; margin-top: 4px;">
+                                        <div style="height: 100%; background: #10b981; border-radius: 3px; width: 80%;">
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                            
+
                             <div style="font-size: 36px; font-weight: 700; color: #10b981; margin-bottom: 16px;">
                                 $29<span style="font-size: 16px; color: #94a3b8;">/month</span>
                             </div>
-                            
+
                             <div>
-                                <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px; color: #e2e8f0; font-size: 14px;">
+                                <div
+                                    style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px; color: #e2e8f0; font-size: 14px;">
                                     <span style="color: #f59e0b;">🚀</span> 600 requests/month
                                 </div>
-                                <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px; color: #e2e8f0; font-size: 14px;">
+                                <div
+                                    style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px; color: #e2e8f0; font-size: 14px;">
                                     <span style="color: #f59e0b;">⚡</span> No queue - instant access
                                 </div>
-                                <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px; color: #e2e8f0; font-size: 14px;">
+                                <div
+                                    style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px; color: #e2e8f0; font-size: 14px;">
                                     <span style="color: #f59e0b;">🎯</span> Premium AI models
                                 </div>
-                                <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px; color: #e2e8f0; font-size: 14px;">
+                                <div
+                                    style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px; color: #e2e8f0; font-size: 14px;">
                                     <span style="color: #f59e0b;">📞</span> Priority support
                                 </div>
-                                <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px; color: #e2e8f0; font-size: 14px;">
+                                <div
+                                    style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px; color: #e2e8f0; font-size: 14px;">
                                     <span style="color: #f59e0b;">📤</span> Export conversations
                                 </div>
                             </div>
-                            
+
                             <!-- Annual Billing Promo -->
-                            <div style="background: #1e40af; color: white; padding: 8px 12px; border-radius: 6px; font-size: 12px; text-align: center; margin-top: 12px;">
+                            <div
+                                style="background: #1e40af; color: white; padding: 8px 12px; border-radius: 6px; font-size: 12px; text-align: center; margin-top: 12px;">
                                 💰 Save 20% with annual billing - $261/year
                             </div>
                         </div>
                     </div>
-                    
+
                     <!-- Add-on Quota Packs -->
                     <div style="margin-top: 24px;">
                         <h4 style="color: #e2e8f0; margin-bottom: 12px; font-size: 16px;">📦 Add-on Quota Packs</h4>
                         <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px;">
-                            <div style="background: #334155; padding: 16px; border-radius: 8px; text-align: center; border: 1px solid #475569; transition: all 0.2s; cursor: pointer;" onclick="purchaseQuotaPack(100, 5)">
+                            <div style="background: #334155; padding: 16px; border-radius: 8px; text-align: center; border: 1px solid #475569; transition: all 0.2s; cursor: pointer;"
+                                onclick="purchaseQuotaPack(100, 5)">
                                 <div style="font-weight: 600; color: #e2e8f0; margin-bottom: 8px;">100 requests</div>
                                 <div style="font-size: 24px; font-weight: 700; color: #10b981;">$5</div>
                             </div>
-                            <div style="background: #334155; padding: 16px; border-radius: 8px; text-align: center; border: 2px solid #f59e0b; transition: all 0.2s; cursor: pointer;" onclick="purchaseQuotaPack(300, 12)">
-                                <div style="display: flex; align-items: center; justify-content: center; gap: 4px; margin-bottom: 8px;">
+                            <div style="background: #334155; padding: 16px; border-radius: 8px; text-align: center; border: 2px solid #f59e0b; transition: all 0.2s; cursor: pointer;"
+                                onclick="purchaseQuotaPack(300, 12)">
+                                <div
+                                    style="display: flex; align-items: center; justify-content: center; gap: 4px; margin-bottom: 8px;">
                                     <span style="font-weight: 600; color: #e2e8f0;">300 requests</span>
-                                    <span style="background: #f59e0b; color: #000; padding: 2px 6px; border-radius: 8px; font-size: 8px; font-weight: 600;">HOT</span>
+                                    <span
+                                        style="background: #f59e0b; color: #000; padding: 2px 6px; border-radius: 8px; font-size: 8px; font-weight: 600;">HOT</span>
                                 </div>
                                 <div style="font-size: 24px; font-weight: 700; color: #10b981;">$12</div>
                             </div>
-                            <div style="background: #334155; padding: 16px; border-radius: 8px; text-align: center; border: 1px solid #475569; transition: all 0.2s; cursor: pointer;" onclick="purchaseQuotaPack(600, 20)">
+                            <div style="background: #334155; padding: 16px; border-radius: 8px; text-align: center; border: 1px solid #475569; transition: all 0.2s; cursor: pointer;"
+                                onclick="purchaseQuotaPack(600, 20)">
                                 <div style="font-weight: 600; color: #e2e8f0; margin-bottom: 8px;">600 requests</div>
                                 <div style="font-size: 24px; font-weight: 700; color: #10b981;">$20</div>
                             </div>
                         </div>
                     </div>
-                    
+
                     <!-- Upgrade Button -->
                     <div style="margin-top: 24px; text-align: center;">
-                        <button style="background: linear-gradient(135deg, #3b82f6, #8b5cf6); color: white; border: none; padding: 12px 32px; border-radius: 8px; font-size: 16px; font-weight: 600; cursor: pointer; margin-bottom: 8px;" onclick="proceedToPayment()">
+                        <button
+                            style="background: linear-gradient(135deg, #3b82f6, #8b5cf6); color: white; border: none; padding: 12px 32px; border-radius: 8px; font-size: 16px; font-weight: 600; cursor: pointer; margin-bottom: 8px;"
+                            onclick="proceedToPayment()">
                             💳 Upgrade to Pro - $29/month
                         </button>
                         <p style="font-size: 12px; color: #64748b; margin: 0;">
@@ -1448,21 +1660,21 @@
                         </p>
                     </div>
                 </div>
-                
+
                 <div id="settings-secrets" class="settings-tab-content" style="display: none;">
                     <div style="text-align: center; padding: 40px; color: #64748b;">
                         <p>No secrets found</p>
                         <button class="settings-btn" style="margin-top: 16px;">Add a new secret</button>
                     </div>
                 </div>
-                
+
                 <div id="settings-apikeys" class="settings-tab-content" style="display: none;">
                     <div class="settings-section">
                         <button class="settings-btn">Create API Key</button>
                         <p style="font-size: 12px; color: #64748b; margin-top: 8px; line-height: 1.5;">
-                            API keys allow you to authenticate with the Opentaiwan API programmatically. 
-                            Keep your API keys secure: anyone with your API key can access your account. 
-                            For more information on how to use the API, see our 
+                            API keys allow you to authenticate with the Opentaiwan API programmatically.
+                            Keep your API keys secure: anyone with your API key can access your account.
+                            For more information on how to use the API, see our
                             <a href="#" style="color: #60a5fa;">API documentation</a>.
                         </p>
                     </div>
@@ -1478,7 +1690,7 @@
                 <h2>💎 Choose Your Plan</h2>
                 <p style="opacity: 0.9; margin-top: 8px;">Unlock the full power of AI development</p>
             </div>
-            
+
             <div class="billing-body">
                 <div class="plan-card" onclick="selectPlan('free')">
                     <div class="plan-title">Free Plan</div>
@@ -1490,7 +1702,7 @@
                         <li>❌ No priority support</li>
                     </ul>
                 </div>
-                
+
                 <div class="plan-card active" onclick="selectPlan('pro')">
                     <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px;">
                         <div class="plan-title">Pro Plan</div>
@@ -1505,12 +1717,13 @@
                         <li>💾 Export conversations</li>
                     </ul>
                     <div style="margin-top: 12px;">
-                        <div style="background: #1e40af; color: white; padding: 8px 12px; border-radius: 6px; font-size: 12px; text-align: center;">
+                        <div
+                            style="background: #1e40af; color: white; padding: 8px 12px; border-radius: 6px; font-size: 12px; text-align: center;">
                             💰 Save 20% with annual billing - $261/year
                         </div>
                     </div>
                 </div>
-                
+
                 <div style="margin-top: 24px;">
                     <h4 style="color: #e2e8f0; margin-bottom: 12px;">📦 Add-on Quota Packs</h4>
                     <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px;">
@@ -1518,8 +1731,10 @@
                             <div style="font-weight: 600; color: #e2e8f0;">100 requests</div>
                             <div style="font-size: 20px; font-weight: 700; color: #10b981;">$5</div>
                         </div>
-                        <div style="background: #334155; padding: 12px; border-radius: 8px; text-align: center; border: 2px solid #f59e0b;">
-                            <div style="display: flex; align-items: center; justify-content: center; gap: 4px; margin-bottom: 4px;">
+                        <div
+                            style="background: #334155; padding: 12px; border-radius: 8px; text-align: center; border: 2px solid #f59e0b;">
+                            <div
+                                style="display: flex; align-items: center; justify-content: center; gap: 4px; margin-bottom: 4px;">
                                 <span style="font-weight: 600; color: #e2e8f0;">300 requests</span>
                                 <span class="hot-badge">HOT</span>
                             </div>
@@ -1531,7 +1746,7 @@
                         </div>
                     </div>
                 </div>
-                
+
                 <div style="margin-top: 24px; text-align: center;">
                     <button class="welcome-btn" onclick="proceedToPayment()">
                         💳 Upgrade to Pro - $29/month
@@ -1540,8 +1755,9 @@
                         Secure payment powered by Stripe
                     </p>
                 </div>
-                
-                <button onclick="closeBilling()" style="background: none; border: none; color: #64748b; margin-top: 16px; cursor: pointer; width: 100%; text-align: center;">
+
+                <button onclick="closeBilling()"
+                    style="background: none; border: none; color: #64748b; margin-top: 16px; cursor: pointer; width: 100%; text-align: center;">
                     ✕ Close
                 </button>
             </div>
@@ -1560,7 +1776,7 @@
                 <div class="queue-alert" id="queue-alert">
                     ⏳ Queue: <span id="queue-count">347</span> people
                 </div>
-                
+
                 <!-- 配額顯示 -->
                 <div class="quota-display" onclick="showBilling()">
                     <span>485/600</span>
@@ -1568,14 +1784,14 @@
                         <div class="quota-fill"></div>
                     </div>
                 </div>
-                
+
                 <div class="status-bar">
                     <div class="status-indicator">
                         <div class="status-dot"></div>
                         API Ready
                     </div>
                 </div>
-                
+
                 <!-- 用戶頭像 -->
                 <div class="user-avatar" onclick="showBilling()" title="User Profile & Billing">
                     👤
@@ -1597,9 +1813,9 @@
                             📋 <span>歷史</span>
                         </button>
                     </div>
-                    
+
                     <div class="toolbar-separator"></div>
-                    
+
                     <div class="toolbar-group">
                         <button class="toolbar-btn" title="設定功能" onclick="openSettings()">
                             ⚙️ <span>設定</span>
@@ -1656,11 +1872,11 @@
                                 創建一個 React 用戶資料組件，包含頭像、姓名、郵箱顯示
                             </div>
                         </div>
-                        
+
                         <div class="message assistant">
                             <div class="message-content">
                                 我來幫你創建一個完整的用戶資料組件：
-                                
+
                                 <div class="code-block">
                                     <div class="code-header">
                                         <span>📄 UserProfile.tsx</span>
@@ -1671,7 +1887,7 @@
                                         </div>
                                     </div>
                                     <div class="code-content">
-<pre>interface User {
+                                        <pre>interface User {
   id: string;
   name: string;
   email: string;
@@ -1700,10 +1916,7 @@ export function UserProfile({ user }: { user: User }) {
                     <!-- 輸入區域 -->
                     <div class="input-section">
                         <div class="input-box">
-                            <textarea 
-                                class="input-textarea" 
-                                placeholder="描述你想要的功能或改進..."
-                                id="user-input"></textarea>
+                            <textarea class="input-textarea" placeholder="描述你想要的功能或改進..." id="user-input"></textarea>
                             <div class="input-actions">
                                 <div class="input-tools">
                                     <!-- 只保留檔案上傳功能 -->
@@ -1741,13 +1954,14 @@ export function UserProfile({ user }: { user: User }) {
                     <div id="changes-tab" class="tab-content active">
                         <div class="changes-content" style="padding: 20px;">
                             <div class="git-status">
-                                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+                                <div
+                                    style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
                                     <div style="color: #f59e0b; font-size: 12px; font-weight: 600;">📝 Git 狀態</div>
                                     <div style="color: #10b981; font-size: 10px;">🟢 運行中</div>
                                 </div>
                                 <div style="font-weight: 600; margin-bottom: 8px; color: #e2e8f0;">當前分支: main</div>
                                 <div style="color: #94a3b8; font-size: 14px;">待提交: 3 個文件</div>
-                                
+
                                 <div class="git-actions">
                                     <button class="git-btn" onclick="gitCommit()">📤 Commit</button>
                                     <button class="git-btn" onclick="gitPush()">🚀 Push</button>
@@ -1755,23 +1969,32 @@ export function UserProfile({ user }: { user: User }) {
                                     <button class="git-btn danger" onclick="gitReset()">🔄 Reset</button>
                                 </div>
                             </div>
-                            
+
                             <h3 style="margin-bottom: 16px; color: #e2e8f0;">變更文件</h3>
                             <div style="display: flex; flex-direction: column; gap: 8px;">
-                                <div style="display: flex; align-items: center; gap: 12px; padding: 8px 12px; background: #1e293b; border-radius: 6px; font-size: 14px;">
-                                    <div style="width: 16px; height: 16px; border-radius: 3px; background: #f59e0b; color: #000; display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: bold;">M</div>
+                                <div
+                                    style="display: flex; align-items: center; gap: 12px; padding: 8px 12px; background: #1e293b; border-radius: 6px; font-size: 14px;">
+                                    <div
+                                        style="width: 16px; height: 16px; border-radius: 3px; background: #f59e0b; color: #000; display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: bold;">
+                                        M</div>
                                     <span>src/components/UserProfile.tsx</span>
                                 </div>
-                                <div style="display: flex; align-items: center; gap: 12px; padding: 8px 12px; background: #1e293b; border-radius: 6px; font-size: 14px;">
-                                    <div style="width: 16px; height: 16px; border-radius: 3px; background: #10b981; color: #000; display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: bold;">A</div>
+                                <div
+                                    style="display: flex; align-items: center; gap: 12px; padding: 8px 12px; background: #1e293b; border-radius: 6px; font-size: 14px;">
+                                    <div
+                                        style="width: 16px; height: 16px; border-radius: 3px; background: #10b981; color: #000; display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: bold;">
+                                        A</div>
                                     <span>src/types/user.ts</span>
                                 </div>
-                                <div style="display: flex; align-items: center; gap: 12px; padding: 8px 12px; background: #1e293b; border-radius: 6px; font-size: 14px;">
-                                    <div style="width: 16px; height: 16px; border-radius: 3px; background: #f59e0b; color: #000; display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: bold;">M</div>
+                                <div
+                                    style="display: flex; align-items: center; gap: 12px; padding: 8px 12px; background: #1e293b; border-radius: 6px; font-size: 14px;">
+                                    <div
+                                        style="width: 16px; height: 16px; border-radius: 3px; background: #f59e0b; color: #000; display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: bold;">
+                                        M</div>
                                     <span>package.json</span>
                                 </div>
                             </div>
-                            
+
                             <!-- 匯出功能 -->
                             <div class="export-section">
                                 <h4 style="color: #e2e8f0; margin-bottom: 12px;">📤 匯出功能</h4>
@@ -1796,59 +2019,78 @@ export function UserProfile({ user }: { user: User }) {
                     <!-- VS Code Tab -->
                     <div id="vscode-tab" class="tab-content">
                         <div style="display: grid; grid-template-columns: 250px 1fr; height: 100%;">
-                            <div style="background: #1e293b; border-right: 1px solid #475569; display: flex; flex-direction: column;">
-                                <div style="background: #334155; padding: 8px 12px; border-bottom: 1px solid #475569; font-size: 11px; font-weight: 600; color: #e2e8f0; text-transform: uppercase; letter-spacing: 0.5px;">
+                            <div
+                                style="background: #1e293b; border-right: 1px solid #475569; display: flex; flex-direction: column;">
+                                <div
+                                    style="background: #334155; padding: 8px 12px; border-bottom: 1px solid #475569; font-size: 11px; font-weight: 600; color: #e2e8f0; text-transform: uppercase; letter-spacing: 0.5px;">
                                     Explorer
                                 </div>
                                 <div style="flex: 1; padding: 8px; overflow-y: auto;">
                                     <!-- 檔案搜尋 -->
                                     <div style="margin-bottom: 12px;">
-                                        <input type="text" placeholder="🔍 Search files..." style="width: 100%; background: #334155; border: 1px solid #475569; border-radius: 4px; padding: 6px 8px; color: #e2e8f0; font-size: 12px;">
+                                        <input type="text" placeholder="🔍 Search files..."
+                                            style="width: 100%; background: #334155; border: 1px solid #475569; border-radius: 4px; padding: 6px 8px; color: #e2e8f0; font-size: 12px;">
                                     </div>
-                                    
+
                                     <!-- 檔案樹 -->
-                                    <div style="display: flex; align-items: center; padding: 4px 8px; cursor: pointer; border-radius: 4px; font-size: 13px; user-select: none;" oncontextmenu="showFileContextMenu(event, 'folder')" onclick="toggleFolder(this)">
+                                    <div style="display: flex; align-items: center; padding: 4px 8px; cursor: pointer; border-radius: 4px; font-size: 13px; user-select: none;"
+                                        oncontextmenu="showFileContextMenu(event, 'folder')"
+                                        onclick="toggleFolder(this)">
                                         📁 src
                                     </div>
-                                    <div style="display: flex; align-items: center; padding: 4px 8px; cursor: pointer; border-radius: 4px; font-size: 13px; user-select: none; margin-left: 16px;" onclick="toggleFolder(this)">
+                                    <div style="display: flex; align-items: center; padding: 4px 8px; cursor: pointer; border-radius: 4px; font-size: 13px; user-select: none; margin-left: 16px;"
+                                        onclick="toggleFolder(this)">
                                         📁 components
                                     </div>
-                                    <div style="display: flex; align-items: center; padding: 4px 8px; cursor: pointer; border-radius: 4px; font-size: 13px; user-select: none; margin-left: 32px; background: #3b82f6; color: white;" onclick="openFile('UserProfile.tsx')" oncontextmenu="showFileContextMenu(event, 'file')">
+                                    <div style="display: flex; align-items: center; padding: 4px 8px; cursor: pointer; border-radius: 4px; font-size: 13px; user-select: none; margin-left: 32px; background: #3b82f6; color: white;"
+                                        onclick="openFile('UserProfile.tsx')"
+                                        oncontextmenu="showFileContextMenu(event, 'file')">
                                         🟦 UserProfile.tsx
                                     </div>
-                                    <div style="display: flex; align-items: center; padding: 4px 8px; cursor: pointer; border-radius: 4px; font-size: 13px; user-select: none; margin-left: 32px;" onclick="openFile('App.tsx')">
+                                    <div style="display: flex; align-items: center; padding: 4px 8px; cursor: pointer; border-radius: 4px; font-size: 13px; user-select: none; margin-left: 32px;"
+                                        onclick="openFile('App.tsx')">
                                         🟨 App.tsx
                                     </div>
-                                    <div style="display: flex; align-items: center; padding: 4px 8px; cursor: pointer; border-radius: 4px; font-size: 13px; user-select: none; margin-left: 16px;" onclick="toggleFolder(this)">
+                                    <div style="display: flex; align-items: center; padding: 4px 8px; cursor: pointer; border-radius: 4px; font-size: 13px; user-select: none; margin-left: 16px;"
+                                        onclick="toggleFolder(this)">
                                         📁 types
                                     </div>
-                                    <div style="display: flex; align-items: center; padding: 4px 8px; cursor: pointer; border-radius: 4px; font-size: 13px; user-select: none; margin-left: 32px;" onclick="openFile('user.ts')">
+                                    <div style="display: flex; align-items: center; padding: 4px 8px; cursor: pointer; border-radius: 4px; font-size: 13px; user-select: none; margin-left: 32px;"
+                                        onclick="openFile('user.ts')">
                                         🟦 user.ts
                                     </div>
-                                    <div style="display: flex; align-items: center; padding: 4px 8px; cursor: pointer; border-radius: 4px; font-size: 13px; user-select: none;" onclick="openFile('package.json')">
+                                    <div style="display: flex; align-items: center; padding: 4px 8px; cursor: pointer; border-radius: 4px; font-size: 13px; user-select: none;"
+                                        onclick="openFile('package.json')">
                                         📋 package.json
                                     </div>
-                                    
+
                                     <!-- 檔案上傳區域 -->
-                                    <div style="margin-top: 16px; padding: 12px; border: 2px dashed #475569; border-radius: 8px; text-align: center; color: #64748b; font-size: 12px;" onclick="uploadFiles()">
+                                    <div style="margin-top: 16px; padding: 12px; border: 2px dashed #475569; border-radius: 8px; text-align: center; color: #64748b; font-size: 12px;"
+                                        onclick="uploadFiles()">
                                         📁 拖拽檔案到此處上傳<br>或點擊選擇檔案
                                     </div>
                                 </div>
                             </div>
-                            
+
                             <div style="display: flex; flex-direction: column; background: #111827;">
-                                <div style="background: #1e293b; display: flex; border-bottom: 1px solid #475569; min-height: 35px; align-items: center;">
-                                    <div style="display: flex; align-items: center; padding: 8px 12px; background: #111827; border-right: 1px solid #475569; cursor: pointer; font-size: 13px; color: #e2e8f0; position: relative;">
+                                <div
+                                    style="background: #1e293b; display: flex; border-bottom: 1px solid #475569; min-height: 35px; align-items: center;">
+                                    <div
+                                        style="display: flex; align-items: center; padding: 8px 12px; background: #111827; border-right: 1px solid #475569; cursor: pointer; font-size: 13px; color: #e2e8f0; position: relative;">
                                         <span>📄 UserProfile.tsx</span>
-                                        <span style="margin-left: 8px; opacity: 0.7; cursor: pointer;" onclick="closeTab(this)">✕</span>
+                                        <span style="margin-left: 8px; opacity: 0.7; cursor: pointer;"
+                                            onclick="closeTab(this)">✕</span>
                                     </div>
                                 </div>
-                                
+
                                 <div style="flex: 1; position: relative;">
-                                    <div style="position: absolute; left: 0; top: 0; bottom: 0; width: 50px; background: #0f172a; border-right: 1px solid #374151; padding: 16px 8px; color: #6b7280; font-family: 'Consolas', 'Monaco', 'Courier New', monospace; font-size: 14px; line-height: 1.6; user-select: none;" id="line-numbers">
+                                    <div style="position: absolute; left: 0; top: 0; bottom: 0; width: 50px; background: #0f172a; border-right: 1px solid #374151; padding: 16px 8px; color: #6b7280; font-family: 'Consolas', 'Monaco', 'Courier New', monospace; font-size: 14px; line-height: 1.6; user-select: none;"
+                                        id="line-numbers">
                                         1<br>2<br>3<br>4<br>5<br>6<br>7<br>8<br>9<br>10<br>11<br>12<br>13<br>14<br>15<br>16<br>17<br>18<br>19<br>20
                                     </div>
-                                    <textarea style="width: 100%; height: 100%; background: #111827; border: none; outline: none; color: #e2e8f0; font-family: 'Consolas', 'Monaco', 'Courier New', monospace; font-size: 14px; line-height: 1.6; padding: 16px 16px 16px 60px; resize: none;" id="code-editor" spellcheck="false">interface User {
+                                    <textarea
+                                        style="width: 100%; height: 100%; background: #111827; border: none; outline: none; color: #e2e8f0; font-family: 'Consolas', 'Monaco', 'Courier New', monospace; font-size: 14px; line-height: 1.6; padding: 16px 16px 16px 60px; resize: none;"
+                                        id="code-editor" spellcheck="false">interface User {
   id: string;
   name: string;
   email: string;
@@ -1883,19 +2125,25 @@ export function UserProfile({ user }: { user: User }) {
 
                     <!-- Terminal Tab -->
                     <div id="terminal-tab" class="tab-content">
-                        <div style="background: #111827; color: #10b981; font-family: 'Consolas', 'Monaco', 'Courier New', monospace; display: flex; flex-direction: column; height: 100%;">
-                            <div style="background: #1f2937; padding: 8px 12px; border-bottom: 1px solid #374151; display: flex; justify-content: space-between; align-items: center; font-size: 13px;">
+                        <div
+                            style="background: #111827; color: #10b981; font-family: 'Consolas', 'Monaco', 'Courier New', monospace; display: flex; flex-direction: column; height: 100%;">
+                            <div
+                                style="background: #1f2937; padding: 8px 12px; border-bottom: 1px solid #374151; display: flex; justify-content: space-between; align-items: center; font-size: 13px;">
                                 <div style="display: flex; gap: 4px;">
-                                    <div style="padding: 4px 12px; background: #10b981; color: #000; border-radius: 4px; font-size: 12px; cursor: pointer;">bash</div>
-                                    <div style="padding: 4px 8px; background: #374151; border-radius: 4px; font-size: 12px; cursor: pointer;" onclick="newTerminalTab()">+</div>
+                                    <div
+                                        style="padding: 4px 12px; background: #10b981; color: #000; border-radius: 4px; font-size: 12px; cursor: pointer;">
+                                        bash</div>
+                                    <div style="padding: 4px 8px; background: #374151; border-radius: 4px; font-size: 12px; cursor: pointer;"
+                                        onclick="newTerminalTab()">+</div>
                                 </div>
                                 <div>
                                     <button class="action-btn" onclick="clearTerminal()">Clear</button>
                                     <button class="action-btn" onclick="splitTerminal()">Split</button>
                                 </div>
                             </div>
-                            
-                            <div style="flex: 1; padding: 12px; overflow-y: auto; font-size: 13px;" id="terminal-output">
+
+                            <div style="flex: 1; padding: 12px; overflow-y: auto; font-size: 13px;"
+                                id="terminal-output">
                                 <div style="margin-bottom: 2px;">$ cd /workspace/openhands-project</div>
                                 <div style="margin-bottom: 2px;">$ npm install</div>
                                 <div style="margin-bottom: 2px;">✓ Dependencies installed successfully</div>
@@ -1904,13 +2152,16 @@ export function UserProfile({ user }: { user: User }) {
                                 <div style="margin-bottom: 2px;">$ git status</div>
                                 <div style="margin-bottom: 2px;">On branch main</div>
                                 <div style="margin-bottom: 2px;">Changes to be committed:</div>
-                                <div style="margin-bottom: 2px;">  modified:   src/components/UserProfile.tsx</div>
-                                <div style="margin-bottom: 2px;">  new file:   src/types/user.ts</div>
+                                <div style="margin-bottom: 2px;"> modified: src/components/UserProfile.tsx</div>
+                                <div style="margin-bottom: 2px;"> new file: src/types/user.ts</div>
                             </div>
-                            
-                            <div style="border-top: 1px solid #374151; padding: 8px 12px; background: #1f2937; display: flex; align-items: center;">
+
+                            <div
+                                style="border-top: 1px solid #374151; padding: 8px 12px; background: #1f2937; display: flex; align-items: center;">
                                 <span style="color: #10b981; margin-right: 8px;">$</span>
-                                <input type="text" style="flex: 1; background: transparent; border: none; outline: none; color: #10b981; font-family: inherit; font-size: 13px;" id="terminal-command" onkeypress="handleTerminalInput(event)" placeholder="輸入命令...">
+                                <input type="text"
+                                    style="flex: 1; background: transparent; border: none; outline: none; color: #10b981; font-family: inherit; font-size: 13px;"
+                                    id="terminal-command" onkeypress="handleTerminalInput(event)" placeholder="輸入命令...">
                             </div>
                         </div>
                     </div>
@@ -1919,17 +2170,20 @@ export function UserProfile({ user }: { user: User }) {
                     <div id="jupyter-tab" class="tab-content">
                         <div style="padding: 20px; overflow-y: auto; height: 100%;">
                             <h3 style="margin-bottom: 16px; color: #e2e8f0;">🪐 Jupyter Notebook</h3>
-                            
-                            <div style="border: 1px solid #475569; border-radius: 8px; margin-bottom: 16px; background: #1e293b;">
-                                <div style="background: #334155; padding: 8px 12px; border-bottom: 1px solid #475569; display: flex; justify-content: space-between; align-items: center; font-size: 13px;">
+
+                            <div
+                                style="border: 1px solid #475569; border-radius: 8px; margin-bottom: 16px; background: #1e293b;">
+                                <div
+                                    style="background: #334155; padding: 8px 12px; border-bottom: 1px solid #475569; display: flex; justify-content: space-between; align-items: center; font-size: 13px;">
                                     <span>Code Cell [1]</span>
                                     <div>
                                         <button class="action-btn" onclick="runCell(this)">▶️ Run</button>
                                         <button class="action-btn" onclick="addCell()">➕ Add</button>
                                     </div>
                                 </div>
-                                <div style="padding: 12px; font-family: 'Consolas', 'Monaco', 'Courier New', monospace; font-size: 13px; background: #111827; color: #e2e8f0;">
-<pre>import pandas as pd
+                                <div
+                                    style="padding: 12px; font-family: 'Consolas', 'Monaco', 'Courier New', monospace; font-size: 13px; background: #111827; color: #e2e8f0;">
+                                    <pre>import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 
@@ -1945,8 +2199,9 @@ df = pd.DataFrame(users_data)
 print("用戶數據統計:")
 print(df.describe())</pre>
                                 </div>
-                                <div style="padding: 12px; background: #0f172a; color: #10b981; font-family: 'Consolas', 'Monaco', 'Courier New', monospace; font-size: 12px; border-top: 1px solid #475569;">
-<pre>用戶數據統計:
+                                <div
+                                    style="padding: 12px; background: #0f172a; color: #10b981; font-family: 'Consolas', 'Monaco', 'Courier New', monospace; font-size: 12px; border-top: 1px solid #475569;">
+                                    <pre>用戶數據統計:
              age      score
 count   5.000000   5.000000
 mean   30.000000  87.600000
@@ -1964,20 +2219,25 @@ max    35.000000  95.000000</pre>
                     <!-- App Tab -->
                     <div id="app-tab" class="tab-content">
                         <div style="padding: 20px; overflow-y: auto; height: 100%;">
-                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                            <div
+                                style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
                                 <h3 style="color: #e2e8f0;">📱 應用管理中心</h3>
-                                <span style="background: #f59e0b; color: #000; padding: 2px 6px; border-radius: 4px; font-size: 10px;">BETA</span>
+                                <span
+                                    style="background: #f59e0b; color: #000; padding: 2px 6px; border-radius: 4px; font-size: 10px;">BETA</span>
                             </div>
-                            
-                            <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 16px;">
-                                <div style="background: #1e293b; border-radius: 8px; padding: 16px; border: 1px solid #475569; transition: all 0.2s; cursor: pointer;" onclick="launchApp('react')">
+
+                            <div
+                                style="display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 16px;">
+                                <div style="background: #1e293b; border-radius: 8px; padding: 16px; border: 1px solid #475569; transition: all 0.2s; cursor: pointer;"
+                                    onclick="launchApp('react')">
                                     <div style="font-size: 32px; margin-bottom: 12px;">⚛️</div>
                                     <div style="font-weight: 600; margin-bottom: 8px; color: #e2e8f0;">React App</div>
                                     <div style="font-size: 12px; color: #94a3b8; margin-bottom: 12px;">現代化前端應用</div>
                                     <div style="color: #10b981; font-size: 12px;">🟢 Port 3000</div>
                                 </div>
 
-                                <div style="background: #1e293b; border-radius: 8px; padding: 16px; border: 1px solid #475569; transition: all 0.2s; cursor: pointer;" onclick="launchApp('express')">
+                                <div style="background: #1e293b; border-radius: 8px; padding: 16px; border: 1px solid #475569; transition: all 0.2s; cursor: pointer;"
+                                    onclick="launchApp('express')">
                                     <div style="font-size: 32px; margin-bottom: 12px;">🌐</div>
                                     <div style="font-weight: 600; margin-bottom: 8px; color: #e2e8f0;">Express API</div>
                                     <div style="font-size: 12px; color: #94a3b8; margin-bottom: 12px;">後端 API 服務</div>
@@ -1990,14 +2250,18 @@ max    35.000000  95.000000</pre>
                     <!-- Browser Tab -->
                     <div id="browser-tab" class="tab-content">
                         <div style="display: flex; flex-direction: column; height: 100%;">
-                            <div style="background: #334155; padding: 12px 16px; border-bottom: 1px solid #475569; display: flex; gap: 12px; align-items: center;">
+                            <div
+                                style="background: #334155; padding: 12px 16px; border-bottom: 1px solid #475569; display: flex; gap: 12px; align-items: center;">
                                 <button class="action-btn" onclick="goBack()">⬅️</button>
                                 <button class="action-btn" onclick="goForward()">➡️</button>
                                 <button class="action-btn" onclick="refreshBrowser()">🔄</button>
-                                <input type="text" style="flex: 1; background: #1e293b; border: 1px solid #475569; border-radius: 6px; padding: 8px 12px; color: #e2e8f0; font-size: 14px;" value="http://localhost:3000" id="url-input">
+                                <input type="text"
+                                    style="flex: 1; background: #1e293b; border: 1px solid #475569; border-radius: 6px; padding: 8px 12px; color: #e2e8f0; font-size: 14px;"
+                                    value="http://localhost:3000" id="url-input">
                                 <button class="action-btn" onclick="openDevTools()">🔧 DevTools</button>
                             </div>
-                            <div style="flex: 1; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); display: flex; align-items: center; justify-content: center; color: white; font-size: 18px; text-align: center;">
+                            <div
+                                style="flex: 1; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); display: flex; align-items: center; justify-content: center; color: white; font-size: 18px; text-align: center;">
                                 <div>
                                     🌐 實時預覽區域
                                     <br><br>
@@ -2041,7 +2305,7 @@ max    35.000000  95.000000</pre>
         let quotaTotal = 600;
 
         // 初始化
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', function () {
             // 如果未登入，顯示歡迎頁面
             if (!isLoggedIn) {
                 document.getElementById('welcome-screen').classList.remove('hidden');
@@ -2049,31 +2313,31 @@ max    35.000000  95.000000</pre>
                 // 載入初始對話
                 loadInitialChat();
             }
-            
+
             // 初始化編輯器
             updateLineNumbers();
-            
+
             // 設置編輯器事件監聽器
             const codeEditor = document.getElementById('code-editor');
             const lineNumbers = document.getElementById('line-numbers');
             if (codeEditor && lineNumbers) {
                 codeEditor.addEventListener('input', updateLineNumbers);
-                codeEditor.addEventListener('scroll', function() {
+                codeEditor.addEventListener('scroll', function () {
                     lineNumbers.scrollTop = this.scrollTop;
                 });
             }
-            
+
             // 設置輸入框事件監聽器
             const userInput = document.getElementById('user-input');
             if (userInput) {
-                userInput.addEventListener('keydown', function(e) {
+                userInput.addEventListener('keydown', function (e) {
                     if (e.key === 'Enter' && !e.shiftKey) {
                         e.preventDefault();
                         sendMessage();
                     }
                 });
             }
-            
+
             simulateQueue();
         });
 
@@ -2133,7 +2397,7 @@ export function UserProfile({ user }: { user: User }) {
          * 無縫 Daytona 啟動整合
          * 一鍵註冊、設置、啟動完整流程
          */
-        
+
         // 全局狀態管理
         window.DaytonaLaunchState = {
             isLaunching: false,
@@ -2142,23 +2406,23 @@ export function UserProfile({ user }: { user: User }) {
             checkInterval: null,
             userInfo: null
         };
-        
+
         /**
          * 主要啟動函數 - Launch from Scratch
          */
         async function launchFromScratch() {
             console.log('🚀 啟動 Daytona 無縫整合流程...');
-             
+
             try {
                 window.DaytonaLaunchState.isLaunching = true;
-                 
+
                 // 1. 顯示啟動進度
                 showLaunchProgress();
-                 
+
                 // 2. 檢查現有配置
                 updateLaunchStep('檢查現有配置...', '🔍');
                 const hasExistingConfig = await checkExistingDaytonaConfig();
-                 
+
                 if (hasExistingConfig) {
                     // 已有配置，直接啟動
                     updateLaunchStep('發現現有配置，正在啟動...', '⚡');
@@ -2168,51 +2432,51 @@ export function UserProfile({ user }: { user: User }) {
                     updateLaunchStep('準備 Daytona 註冊流程...', '📝');
                     await newUserRegistrationFlow();
                 }
-                 
+
             } catch (error) {
                 console.error('❌ 啟動流程失敗:', error);
                 showLaunchError(error.message);
             }
         }
-        
+
         /**
          * 主要啟動函數 - Launch (from repository)
          */
         async function launchRepo() {
             const repo = document.getElementById('repo-select').value;
             const branch = document.getElementById('branch-select').value;
-             
+
             if (!repo || !branch) {
                 showNotification('❌ 請選擇倉庫和分支');
                 return;
             }
-        
+
             console.log(`🚀 啟動 Daytona 專案：${repo} (${branch})`);
-             
+
             try {
                 window.DaytonaLaunchState.isLaunching = true;
                 showLaunchProgress();
-                 
+
                 // 檢查配置
                 updateLaunchStep('檢查 Daytona 配置...', '🔍');
                 const hasConfig = await checkExistingDaytonaConfig();
-                 
+
                 if (!hasConfig) {
                     // 需要先註冊
                     updateLaunchStep('需要設置 Daytona 帳戶...', '📝');
                     await newUserRegistrationFlow();
                 }
-                 
+
                 // 啟動特定專案
                 updateLaunchStep(`正在載入 ${repo}...`, '📦');
                 await launchProjectWithRepo(repo, branch);
-                 
+
             } catch (error) {
                 console.error('❌ 專案啟動失敗:', error);
                 showLaunchError(error.message);
             }
         }
-        
+
         /**
          * 檢查現有 Daytona 配置
          */
@@ -2223,7 +2487,7 @@ export function UserProfile({ user }: { user: User }) {
                     // 測試 API 密鑰是否有效
                     const api = new DaytonaAPIClient(window.daytonaConfig.getAPIConfig());
                     const isValid = await api.checkConnection();
-                     
+
                     if (isValid) {
                         console.log('✅ 發現有效的 Daytona 配置');
                         return true;
@@ -2234,36 +2498,36 @@ export function UserProfile({ user }: { user: User }) {
                         return false;
                     }
                 }
-                 
+
                 return false;
             } catch (error) {
                 console.error('❌ 配置檢查失敗:', error);
                 return false;
             }
         }
-        
+
         /**
          * 新用戶註冊流程
          */
         async function newUserRegistrationFlow() {
             updateLaunchStep('開啟 Daytona 註冊頁面...', '🌐');
-             
+
             // 1. 打開 Daytona 註冊/登入頁面
             const authURL = 'https://app.daytona.io/auth/signup?source=opentaiwan&integration=openhands';
             window.DaytonaLaunchState.authWindow = window.open(
-                authURL, 
+                authURL,
                 'daytona-auth',
                 'width=500,height=700,scrollbars=yes,resizable=yes,status=yes,location=yes'
             );
-             
+
             // 2. 監控認證視窗
             updateLaunchStep('等待用戶完成註冊/登入...', '⏳');
             await monitorAuthWindow();
-             
+
             // 3. 引導用戶獲取 API 密鑰
             updateLaunchStep('引導 API 密鑰設置...', '🔑');
             await guideAPIKeySetup();
-             
+
             // 4. 完成設置並啟動
             updateLaunchStep('完成設置，正在啟動環境...', '🚀');
             await finalizeSetupAndLaunch();
@@ -2290,36 +2554,36 @@ export function UserProfile({ user }: { user: User }) {
                 hideWelcomeScreen();
                 showNotification("登入成功！歡迎使用 Opentaiwan");
             }, 1500);
-        } 
+        }
 
         /** 
          * 載入快速啟動歡迎信息 
-         */ 
-        function loadQuickStartWelcomeMessage(quickStartType, quickStartMessage) { 
-            const chatHistory = document.getElementById('chat-history'); 
-            const userInfo = window.DaytonaLaunchState.userInfo; 
-            
-            const typeEmojis = { 
-                'react': '⚛️', 
-                'python-api': '🐍', 
-                'nodejs': '🟢' 
-            }; 
-            
-            const typeNames = { 
-                'react': 'React 應用開發', 
-                'python-api': 'Python API 開發', 
-                'nodejs': 'Node.js 應用開發' 
-            }; 
-            
-            const emoji = typeEmojis[quickStartType] || '🚀'; 
-            const typeName = typeNames[quickStartType] || '應用開發'; 
-            
-            let welcomeMessage = `${emoji} **歡迎使用 Opentaiwan ${typeName} 環境！**`; 
-            
-            if (userInfo) { 
-                welcomeMessage += `\n\n👋 您好，${userInfo.name || '開發者'}！`; 
-            } 
-            
+         */
+        function loadQuickStartWelcomeMessage(quickStartType, quickStartMessage) {
+            const chatHistory = document.getElementById('chat-history');
+            const userInfo = window.DaytonaLaunchState.userInfo;
+
+            const typeEmojis = {
+                'react': '⚛️',
+                'python-api': '🐍',
+                'nodejs': '🟢'
+            };
+
+            const typeNames = {
+                'react': 'React 應用開發',
+                'python-api': 'Python API 開發',
+                'nodejs': 'Node.js 應用開發'
+            };
+
+            const emoji = typeEmojis[quickStartType] || '🚀';
+            const typeName = typeNames[quickStartType] || '應用開發';
+
+            let welcomeMessage = `${emoji} **歡迎使用 Opentaiwan ${typeName} 環境！**`;
+
+            if (userInfo) {
+                welcomeMessage += `\n\n👋 您好，${userInfo.name || '開發者'}！`;
+            }
+
             welcomeMessage += ` 
         
         🏗️ **您的專用 Daytona 雲端開發環境已準備就緒** 
@@ -2335,82 +2599,82 @@ export function UserProfile({ user }: { user: User }) {
         • 創建快照保存開發進度 
         • 一鍵部署到生產環境 
         
-        🚀 **讓我們開始構建您的 ${typeName} 吧！**`; 
-        
+        🚀 **讓我們開始構建您的 ${typeName} 吧！**`;
+
             chatHistory.innerHTML = ` 
                 <div class="message assistant fade-in"> 
                     <div class="message-content"> 
                         ${welcomeMessage.replace(/\n/g, '<br>')} 
                     </div> 
                 </div> 
-            `; 
-            
+            `;
+
             // 自動發送快速啟動消息 
-            setTimeout(() => { 
-                autoSendQuickStartMessage(quickStartMessage); 
-            }, 2000); 
-            
-            scrollToBottom(); 
-        } 
-        
+            setTimeout(() => {
+                autoSendQuickStartMessage(quickStartMessage);
+            }, 2000);
+
+            scrollToBottom();
+        }
+
         /** 
          * 自動發送快速啟動消息 
-         */ 
-        async function autoSendQuickStartMessage(message) { 
-            const input = document.getElementById('user-input'); 
-            if (input) { 
-                input.value = message; 
-                
+         */
+        async function autoSendQuickStartMessage(message) {
+            const input = document.getElementById('user-input');
+            if (input) {
+                input.value = message;
+
                 // 顯示用戶消息 
-                const chatHistory = document.getElementById('chat-history'); 
-                const userMessage = document.createElement('div'); 
-                userMessage.className = 'message user fade-in'; 
-                userMessage.innerHTML = `<div class="message-content">${message}</div>`; 
-                chatHistory.appendChild(userMessage); 
-                
-                scrollToBottom(); 
-                input.value = ''; 
-                
+                const chatHistory = document.getElementById('chat-history');
+                const userMessage = document.createElement('div');
+                userMessage.className = 'message user fade-in';
+                userMessage.innerHTML = `<div class="message-content">${message}</div>`;
+                chatHistory.appendChild(userMessage);
+
+                scrollToBottom();
+                input.value = '';
+
                 // 自動處理消息 
-                if (window.daytonaIntegration && window.daytonaIntegration.isInitialized) { 
-                    try { 
-                        const response = await window.daytonaIntegration.sendMessage(message); 
-                        
-                        const aiMessage = document.createElement('div'); 
-                        aiMessage.className = 'message assistant fade-in'; 
-                        aiMessage.innerHTML = `<div class="message-content">${formatResponse(response.content)}</div>`; 
-                        chatHistory.appendChild(aiMessage); 
-                        
-                        scrollToBottom(); 
-                    } catch (error) { 
-                        console.error('自動消息處理失敗:', error); 
-                    } 
-                } 
-            } 
-        } 
-        
+                if (window.daytonaIntegration && window.daytonaIntegration.isInitialized) {
+                    try {
+                        const response = await window.daytonaIntegration.sendMessage(message);
+
+                        const aiMessage = document.createElement('div');
+                        aiMessage.className = 'message assistant fade-in';
+                        aiMessage.innerHTML = `<div class="message-content">${formatResponse(response.content)}</div>`;
+                        chatHistory.appendChild(aiMessage);
+
+                        scrollToBottom();
+                    } catch (error) {
+                        console.error('自動消息處理失敗:', error);
+                    }
+                }
+            }
+        }
+
         /** 
          * 獲取快速啟動顯示名稱 
-         */ 
-        function getQuickStartDisplayName(quickStartType) { 
-            const names = { 
-                'react': 'React 開發', 
-                'python-api': 'Python API', 
-                'nodejs': 'Node.js 開發' 
-            }; 
-            return names[quickStartType] || '應用開發'; 
-        } 
-        
+         */
+        function getQuickStartDisplayName(quickStartType) {
+            const names = {
+                'react': 'React 開發',
+                'python-api': 'Python API',
+                'nodejs': 'Node.js 開發'
+            };
+            return names[quickStartType] || '應用開發';
+        }
+
         /** 
          * 更新原有的 completeLaunchSequence 函數 
-         */ 
-        const originalCompleteLaunchSequence = completeLaunchSequence; 
-        completeLaunchSequence = function(message) { 
-            if (window.DaytonaLaunchState.quickStartType) { 
-                completeLaunchSequenceWithQuickStart(message); 
-            } else { 
-                originalCompleteLaunchSequence(message); 
-            } 
+         */
+        const originalCompleteLaunchSequence = completeLaunchSequence;
+        completeLaunchSequence = function (message) {
+            if (window.DaytonaLaunchState.quickStartType) {
+                completeLaunchSequenceWithQuickStart(message);
+            } else {
+                originalCompleteLaunchSequence(message);
+            }
         };
 
         function addGithubRepos() {
@@ -2428,10 +2692,10 @@ export function UserProfile({ user }: { user: User }) {
             return new Promise((resolve, reject) => {
                 let checkCount = 0;
                 const maxChecks = 300; // 5分鐘超時
-                
+
                 window.DaytonaLaunchState.checkInterval = setInterval(() => {
                     checkCount++;
-                    
+
                     // 檢查視窗是否關閉
                     if (window.DaytonaLaunchState.authWindow.closed) {
                         clearInterval(window.DaytonaLaunchState.checkInterval);
@@ -2439,14 +2703,14 @@ export function UserProfile({ user }: { user: User }) {
                         resolve();
                         return;
                     }
-                    
+
                     // 檢查是否能訪問 success 頁面
                     try {
                         const currentURL = window.DaytonaLaunchState.authWindow.location.href;
                         if (currentURL.includes('/dashboard') || currentURL.includes('/success')) {
                             clearInterval(window.DaytonaLaunchState.checkInterval);
                             updateLaunchStep('註冊成功！正在設置 API...', '🎉');
-                            
+
                             // 給用戶幾秒鐘時間看到成功頁面
                             setTimeout(() => {
                                 window.DaytonaLaunchState.authWindow.close();
@@ -2457,7 +2721,7 @@ export function UserProfile({ user }: { user: User }) {
                     } catch (e) {
                         // 跨域錯誤，正常情況
                     }
-                    
+
                     // 超時處理
                     if (checkCount >= maxChecks) {
                         clearInterval(window.DaytonaLaunchState.checkInterval);
@@ -2467,7 +2731,7 @@ export function UserProfile({ user }: { user: User }) {
                 }, 1000);
             });
         }
-        
+
         /**
          * 引導 API 密鑰設置
          */
@@ -2476,13 +2740,13 @@ export function UserProfile({ user }: { user: User }) {
                 // 創建 API 密鑰設置引導模態框
                 const modal = createAPIKeyGuideModal();
                 document.body.appendChild(modal);
-                
+
                 // 監聽設置完成事件
                 window.addEventListener('daytona-api-key-set', (event) => {
                     document.body.removeChild(modal);
                     resolve(event.detail.apiKey);
                 }, { once: true });
-                
+
                 // 監聽取消事件
                 window.addEventListener('daytona-setup-cancelled', () => {
                     document.body.removeChild(modal);
@@ -2490,7 +2754,7 @@ export function UserProfile({ user }: { user: User }) {
                 }, { once: true });
             });
         }
-        
+
         /**
          * 創建 API 密鑰設置引導模態框
          */
@@ -2501,7 +2765,7 @@ export function UserProfile({ user }: { user: User }) {
                 background: rgba(0, 0, 0, 0.8); z-index: 3000;
                 display: flex; align-items: center; justify-content: center;
             `;
-            
+
             modal.innerHTML = `
                 <div style="background: #1e293b; border-radius: 16px; padding: 32px; max-width: 500px; width: 90%; border: 1px solid #475569;">
                     <div style="text-align: center; margin-bottom: 24px;">
@@ -2557,53 +2821,53 @@ export function UserProfile({ user }: { user: User }) {
                     </div>
                 </div>
             `;
-            
+
             return modal;
         }
-        
+
         /**
          * 開啟 Daytona API Keys 頁面
          */
         function openDaytonaAPIKeysPage() {
             window.open('https://app.daytona.io/settings/api-keys', '_blank');
         }
-        
+
         /**
          * 驗證並設置 API 密鑰
          */
         function validateAndSetAPIKey() {
             const apiKeyInput = document.getElementById('api-key-input');
             const apiKey = apiKeyInput.value.trim();
-            
+
             if (!apiKey) {
                 alert('請輸入 API 密鑰');
                 return;
             }
-            
+
             if (!apiKey.startsWith('dt-')) {
                 const confirm = window.confirm('API 密鑰格式似乎不正確（通常以 dt- 開頭）。您確定要繼續嗎？');
                 if (!confirm) return;
             }
-            
+
             // 保存 API 密鑰
             if (!window.daytonaConfig) {
                 window.daytonaConfig = new DaytonaConfig();
             }
             window.daytonaConfig.setAPIKey(apiKey);
-            
+
             // 觸發設置完成事件
             window.dispatchEvent(new CustomEvent('daytona-api-key-set', {
                 detail: { apiKey }
             }));
         }
-        
+
         /**
          * 取消 Daytona 設置
          */
         function cancelDaytonaSetup() {
             window.dispatchEvent(new CustomEvent('daytona-setup-cancelled'));
         }
-        
+
         /**
          * 顯示啟動進度
          */
@@ -2615,7 +2879,7 @@ export function UserProfile({ user }: { user: User }) {
                 background: rgba(0, 0, 0, 0.9); display: flex;
                 align-items: center; justify-content: center; z-index: 5000;
             `;
-            
+
             progressModal.innerHTML = `
                 <div style="
                     background: #1e293b; border-radius: 16px; padding: 40px;
@@ -2634,10 +2898,10 @@ export function UserProfile({ user }: { user: User }) {
                     <div style="margin-top: 16px; font-size: 12px; color: #64748b;">這可能需要幾分鐘時間...</div>
                 </div>
             `;
-            
+
             document.body.appendChild(progressModal);
         }
-        
+
         /**
          * 更新啟動步驟
          */
@@ -2645,16 +2909,16 @@ export function UserProfile({ user }: { user: User }) {
             const stepText = document.getElementById('launch-step-text');
             const stepIcon = document.getElementById('launch-step-icon');
             const progressBar = document.getElementById('launch-progress-bar');
-            
+
             if (stepText) stepText.textContent = text;
             if (stepIcon) stepIcon.textContent = icon;
             if (progressBar && progress !== null) {
                 progressBar.style.width = `${progress}%`;
             }
-            
+
             console.log(`📋 ${icon} ${text}`);
         }
-        
+
         /**
          * 顯示啟動錯誤
          */
@@ -2663,14 +2927,14 @@ export function UserProfile({ user }: { user: User }) {
             if (progressModal) {
                 document.body.removeChild(progressModal);
             }
-            
+
             const errorModal = document.createElement('div');
             errorModal.style.cssText = `
                 position: fixed; top: 0; left: 0; right: 0; bottom: 0;
                 background: rgba(0, 0, 0, 0.8); display: flex;
                 align-items: center; justify-content: center; z-index: 5000;
             `;
-            
+
             errorModal.innerHTML = `
                 <div style="
                     background: #1e293b; border-radius: 16px; padding: 32px;
@@ -2686,90 +2950,90 @@ export function UserProfile({ user }: { user: User }) {
                     ">確定</button>
                 </div>
             `;
-            
+
             document.body.appendChild(errorModal);
-            
+
             // 重置狀態
             window.DaytonaLaunchState.isLaunching = false;
         }
-        
+
         /**
          * 使用現有配置啟動
          */
         async function launchWithExistingConfig() {
             updateLaunchStep('連接到 Daytona...', '🔗', 25);
             await new Promise(resolve => setTimeout(resolve, 1000));
-            
+
             updateLaunchStep('創建開發環境...', '🏗️', 50);
             await new Promise(resolve => setTimeout(resolve, 2000));
-            
+
             updateLaunchStep('啟動 OpenHands...', '🤖', 75);
             await new Promise(resolve => setTimeout(resolve, 1500));
-            
+
             updateLaunchStep('完成！', '✅', 100);
             await new Promise(resolve => setTimeout(resolve, 1000));
-            
+
             // 關閉進度模態框並啟動主應用
             const progressModal = document.getElementById('daytona-launch-progress');
             if (progressModal) {
                 document.body.removeChild(progressModal);
             }
-            
+
             hideWelcomeScreen();
             newConversation();
             showNotification('🚀 Daytona 環境已成功啟動！');
         }
-        
+
         /**
          * 完成設置並啟動
          */
         async function finalizeSetupAndLaunch() {
             updateLaunchStep('驗證配置...', '✅', 60);
             await new Promise(resolve => setTimeout(resolve, 1000));
-            
+
             updateLaunchStep('創建開發環境...', '🏗️', 80);
             await new Promise(resolve => setTimeout(resolve, 2000));
-            
+
             updateLaunchStep('啟動完成！', '🎉', 100);
             await new Promise(resolve => setTimeout(resolve, 1000));
-            
+
             // 關閉進度模態框
             const progressModal = document.getElementById('daytona-launch-progress');
             if (progressModal) {
                 document.body.removeChild(progressModal);
             }
-            
+
             hideWelcomeScreen();
             newConversation();
             showNotification('🎉 歡迎使用 Daytona + OpenHands！');
         }
-        
+
         /**
          * 啟動特定專案
          */
         async function launchProjectWithRepo(repo, branch) {
             updateLaunchStep(`克隆 ${repo}...`, '📥', 40);
             await new Promise(resolve => setTimeout(resolve, 2000));
-            
+
             updateLaunchStep(`切換到 ${branch} 分支...`, '🌿', 60);
             await new Promise(resolve => setTimeout(resolve, 1000));
-            
+
             updateLaunchStep('設置開發環境...', '⚙️', 80);
             await new Promise(resolve => setTimeout(resolve, 2000));
-            
+
             updateLaunchStep('專案啟動完成！', '🎯', 100);
             await new Promise(resolve => setTimeout(resolve, 1000));
-            
+
             // 關閉進度模態框
             const progressModal = document.getElementById('daytona-launch-progress');
             if (progressModal) {
                 document.body.removeChild(progressModal);
             }
-            
+
             hideWelcomeScreen();
             showNotification(`🎯 專案 ${repo} 已成功載入！`);
         }
-        
+
         /**
          * Daytona 配置管理類
          */
@@ -2777,27 +3041,27 @@ export function UserProfile({ user }: { user: User }) {
             constructor() {
                 this.storageKey = 'daytona_config';
             }
-            
+
             isConfigured() {
                 const config = localStorage.getItem(this.storageKey);
                 return config && JSON.parse(config).apiKey;
             }
-            
+
             setAPIKey(apiKey) {
                 const config = { apiKey, timestamp: Date.now() };
                 localStorage.setItem(this.storageKey, JSON.stringify(config));
             }
-            
+
             getAPIConfig() {
                 const config = localStorage.getItem(this.storageKey);
                 return config ? JSON.parse(config) : null;
             }
-            
+
             clearAPIKey() {
                 localStorage.removeItem(this.storageKey);
             }
         }
-        
+
         /**
          * Daytona API 客戶端類
          */
@@ -2806,18 +3070,18 @@ export function UserProfile({ user }: { user: User }) {
                 this.apiKey = config?.apiKey;
                 this.baseURL = 'https://api.daytona.io';
             }
-            
+
             async checkConnection() {
                 try {
                     // 模擬 API 檢查（實際應用中應該調用真實 API）
                     if (!this.apiKey) return false;
-                    
+
                     // 這裡應該是真實的 API 調用
                     // const response = await fetch(`${this.baseURL}/health`, {
                     //     headers: { 'Authorization': `Bearer ${this.apiKey}` }
                     // });
                     // return response.ok;
-                    
+
                     // 模擬檢查
                     await new Promise(resolve => setTimeout(resolve, 500));
                     return this.apiKey.length > 10; // 簡單驗證
@@ -2827,7 +3091,7 @@ export function UserProfile({ user }: { user: User }) {
                 }
             }
         }
-        
+
         // 初始化 Daytona 配置
         window.daytonaConfig = new DaytonaConfig();
 
@@ -2847,14 +3111,14 @@ export function UserProfile({ user }: { user: User }) {
                     <div style="height: 100%; background: #3b82f6; border-radius: 2px; width: 0%; transition: width 2s ease;" id="setup-progress"></div>
                 </div>
             `;
-            
+
             document.body.appendChild(popup);
-            
+
             // 模擬進度
             setTimeout(() => {
                 document.getElementById('setup-progress').style.width = '100%';
             }, 100);
-            
+
             setTimeout(() => {
                 document.body.removeChild(popup);
                 callback();
@@ -2882,7 +3146,7 @@ export function UserProfile({ user }: { user: User }) {
             // 激活選中的標籤
             event.target.classList.add('active');
             document.getElementById('settings-' + tabName).style.display = 'block';
-            
+
             // 當切換到Application標籤時，確保整合設定存在
             if (tabName === 'application') {
                 setTimeout(() => {
@@ -2925,12 +3189,12 @@ export function UserProfile({ user }: { user: User }) {
         // 排隊系統模擬
         function simulateQueue() {
             if (!isLoggedIn) return;
-            
+
             setInterval(() => {
                 if (queueCount > 200) {
                     queueCount -= Math.floor(Math.random() * 5) + 1;
                     document.getElementById('queue-count').textContent = queueCount;
-                    
+
                     // 免費用戶顯示排隊
                     if (quotaUsed >= 10) {
                         document.getElementById('queue-alert').classList.add('show');
@@ -2965,7 +3229,7 @@ export function UserProfile({ user }: { user: User }) {
 
             scrollToBottom();
             input.value = '';
-            
+
             // 顯示正在處理狀態
             isExecuting = true;
             document.getElementById('pause-btn').classList.add('show');
@@ -2973,26 +3237,26 @@ export function UserProfile({ user }: { user: User }) {
             try {
                 // 使用整合層發送消息
                 const response = await window.openHandsIntegration.sendMessage(message);
-                
+
                 // 創建AI回應
                 const aiMessage = document.createElement('div');
                 aiMessage.className = 'message assistant fade-in';
-                
+
                 // 處理代碼塊
                 let formattedContent = formatAIResponse(response.content);
-                
+
                 aiMessage.innerHTML = `<div class="message-content">${formattedContent}</div>`;
                 chatHistory.appendChild(aiMessage);
-                
+
                 scrollToBottom();
-                
+
                 // 更新配額
                 quotaUsed++;
                 updateQuotaDisplay();
-                
+
             } catch (error) {
                 console.error('Message sending failed:', error);
-                
+
                 // 回退到你的原始演示回應
                 const aiMessage = document.createElement('div');
                 aiMessage.className = 'message assistant fade-in';
@@ -3006,7 +3270,7 @@ export function UserProfile({ user }: { user: User }) {
                 `;
                 chatHistory.appendChild(aiMessage);
                 scrollToBottom();
-                
+
                 showNotification('發送失敗，請檢查連接');
             } finally {
                 isExecuting = false;
@@ -3050,19 +3314,19 @@ export function UserProfile({ user }: { user: User }) {
             input.type = 'file';
             input.multiple = true;
             input.accept = '*/*'; // 接受所有文件類型
-            
-            input.onchange = function(e) {
+
+            input.onchange = function (e) {
                 const files = Array.from(e.target.files);
                 if (files.length > 0) {
                     // 顯示上傳的文件
                     const chatHistory = document.getElementById('chat-history');
                     const fileMessage = document.createElement('div');
                     fileMessage.className = 'message user fade-in';
-                    
-                    let fileList = files.map(file => 
+
+                    let fileList = files.map(file =>
                         `📎 ${file.name} (${(file.size / 1024).toFixed(1)} KB)`
                     ).join('<br>');
-                    
+
                     fileMessage.innerHTML = `
                         <div class="message-content">
                             已上傳 ${files.length} 個文件:<br><br>
@@ -3070,12 +3334,12 @@ export function UserProfile({ user }: { user: User }) {
                         </div>
                     `;
                     chatHistory.appendChild(fileMessage);
-                    
+
                     // 自動滾動到底部
                     scrollToBottom();
-                    
+
                     showNotification(`成功上傳 ${files.length} 個文件`);
-                    
+
                     // 模擬 AI 處理文件
                     setTimeout(() => {
                         const aiResponse = document.createElement('div');
@@ -3105,7 +3369,7 @@ ${files.map(file => `// ${file.name} - ${file.type || 'unknown type'}`).join('\n
                     }, 1500);
                 }
             };
-            
+
             input.click();
         }
 
@@ -3121,7 +3385,7 @@ ${files.map(file => `// ${file.name} - ${file.type || 'unknown type'}`).join('\n
             const percentage = (quotaUsed / quotaTotal) * 100;
             document.querySelector('.quota-fill').style.width = percentage + '%';
             document.querySelector('.quota-display span').textContent = `${quotaUsed}/${quotaTotal}`;
-            
+
             if (percentage > 80) {
                 document.querySelector('.quota-fill').style.background = '#ef4444';
             } else if (percentage > 60) {
@@ -3183,9 +3447,9 @@ ${files.map(file => `// ${file.name} - ${file.type || 'unknown type'}`).join('\n
         // 匯出功能
         function exportConversation(format) {
             showNotification(`正在匯出為 ${format.toUpperCase()} 格式...`);
-            
+
             setTimeout(() => {
-                const blob = new Blob([`# OpenHands 對話記錄\n\n匯出格式: ${format}`], 
+                const blob = new Blob([`# OpenHands 對話記錄\n\n匯出格式: ${format}`],
                     { type: 'text/plain' });
                 const url = URL.createObjectURL(blob);
                 const a = document.createElement('a');
@@ -3193,7 +3457,7 @@ ${files.map(file => `// ${file.name} - ${file.type || 'unknown type'}`).join('\n
                 a.download = `conversation.${format}`;
                 a.click();
                 URL.revokeObjectURL(url);
-                
+
                 showNotification("匯出完成！");
             }, 1000);
         }
@@ -3209,7 +3473,7 @@ ${files.map(file => `// ${file.name} - ${file.type || 'unknown type'}`).join('\n
             `;
             notification.textContent = message;
             document.body.appendChild(notification);
-            
+
             setTimeout(() => {
                 notification.style.animation = 'fadeOut 0.3s ease-out';
                 setTimeout(() => document.body.removeChild(notification), 300);
@@ -3220,29 +3484,29 @@ ${files.map(file => `// ${file.name} - ${file.type || 'unknown type'}`).join('\n
         function toggleChatHistory() {
             const sidebar = document.getElementById('chat-history-sidebar');
             const overlay = document.getElementById('chat-overlay');
-            
+
             sidebar.classList.toggle('open');
             overlay.classList.toggle('open');
         }
 
         function deleteConversation(button, event) {
             event.stopPropagation(); // 防止觸發對話選擇
-            
+
             const item = button.closest('.chat-history-item');
             const title = item.querySelector('.chat-title').textContent;
-            
+
             // 添加確認對話框
             if (confirm(`確定要刪除對話「${title}」嗎？\n\n此操作無法恢復。`)) {
                 // 添加刪除動畫
                 item.style.transform = 'translateX(-100%)';
                 item.style.opacity = '0';
                 item.style.transition = 'all 0.3s ease-out';
-                
+
                 setTimeout(() => {
                     // 如果刪除的是當前活動對話，清空聊天歷史
                     if (item.classList.contains('active')) {
                         document.getElementById('chat-history').innerHTML = '';
-                        
+
                         // 如果還有其他對話，自動選擇第一個
                         const remainingItems = document.querySelectorAll('.chat-history-item');
                         if (remainingItems.length > 1) { // 大於1因為當前項目還沒被移除
@@ -3252,10 +3516,10 @@ ${files.map(file => `// ${file.name} - ${file.type || 'unknown type'}`).join('\n
                             }
                         }
                     }
-                    
+
                     item.remove();
                     showNotification(`已刪除對話：${title}`);
-                    
+
                     // 如果沒有對話了，顯示歡迎訊息
                     const remainingItems = document.querySelectorAll('.chat-history-item');
                     if (remainingItems.length === 0) {
@@ -3278,15 +3542,15 @@ ${files.map(file => `// ${file.name} - ${file.type || 'unknown type'}`).join('\n
             document.querySelectorAll('.chat-history-item').forEach(item => {
                 item.classList.remove('active');
             });
-            
+
             // 設置當前對話為活動狀態
             element.classList.add('active');
-            
+
             // 載入對話內容
             const title = element.querySelector('.chat-title').textContent;
             const repo = element.querySelector('.chat-repo').textContent;
             const date = element.querySelector('.chat-date').textContent;
-            
+
             // 模擬載入對話歷史
             const chatHistory = document.getElementById('chat-history');
             chatHistory.innerHTML = `
@@ -3302,10 +3566,10 @@ ${files.map(file => `// ${file.name} - ${file.type || 'unknown type'}`).join('\n
                     </div>
                 </div>
             `;
-            
+
             scrollToBottom();
             showNotification(`已切換到：${title}`);
-            
+
             // 關閉側邊欄
             toggleChatHistory();
         }
@@ -3318,9 +3582,9 @@ ${files.map(file => `// ${file.name} - ${file.type || 'unknown type'}`).join('\n
                 hour: '2-digit',
                 minute: '2-digit'
             });
-            
+
             const conversationId = Math.random().toString(36).substr(2, 8);
-            
+
             const newItem = document.createElement('div');
             newItem.className = 'chat-history-item active fade-in';
             newItem.onclick = () => selectConversation(newItem);
@@ -3330,7 +3594,7 @@ ${files.map(file => `// ${file.name} - ${file.type || 'unknown type'}`).join('\n
                 <div class="chat-repo">scratch</div>
                 <button class="delete-chat-btn" onclick="deleteConversation(this, event)">🗑️</button>
             `;
-            
+
             // 添加到列表頂部
             const list = document.querySelector('.chat-history-list');
             if (list.children.length === 0) {
@@ -3338,14 +3602,14 @@ ${files.map(file => `// ${file.name} - ${file.type || 'unknown type'}`).join('\n
             } else {
                 list.insertBefore(newItem, list.firstChild);
             }
-            
+
             // 移除其他活動狀態
             document.querySelectorAll('.chat-history-item').forEach(item => {
                 if (item !== newItem) {
                     item.classList.remove('active');
                 }
             });
-            
+
             // 清空聊天歷史並顯示歡迎訊息
             const chatHistory = document.getElementById('chat-history');
             chatHistory.innerHTML = `
@@ -3370,7 +3634,7 @@ ${files.map(file => `// ${file.name} - ${file.type || 'unknown type'}`).join('\n
                     </div>
                 </div>
             `;
-            
+
             scrollToBottom();
             showNotification("已創建新對話，準備開始開發！");
         }
@@ -3380,9 +3644,9 @@ ${files.map(file => `// ${file.name} - ${file.type || 'unknown type'}`).join('\n
             document.querySelectorAll('.plan-card').forEach(card => {
                 card.classList.remove('active');
             });
-            
+
             event.target.closest('.plan-card').classList.add('active');
-            
+
             if (planType === 'pro') {
                 showNotification("已選擇 Pro Plan");
             } else {
@@ -3393,7 +3657,7 @@ ${files.map(file => `// ${file.name} - ${file.type || 'unknown type'}`).join('\n
         function purchaseQuotaPack(requests, price) {
             if (confirm(`確定要購買 ${requests} 次請求配額包 (${price}) 嗎？`)) {
                 showNotification(`正在處理 ${requests} 次配額包購買...`);
-                
+
                 setTimeout(() => {
                     quotaTotal += requests;
                     updateQuotaDisplay();
@@ -3423,7 +3687,7 @@ ${files.map(file => `// ${file.name} - ${file.type || 'unknown type'}`).join('\n
         function copyCode(button) {
             const codeContent = button.closest('.code-block').querySelector('.code-content pre');
             navigator.clipboard.writeText(codeContent.textContent);
-            
+
             const original = button.textContent;
             button.textContent = '✓ Copied';
             setTimeout(() => {
@@ -3434,17 +3698,17 @@ ${files.map(file => `// ${file.name} - ${file.type || 'unknown type'}`).join('\n
         // 更新applyCode函數，支持實際文件保存
         function applyCode(button) {
             const codeContent = button.closest('.code-block').querySelector('.code-content pre').textContent;
-            
+
             // 更新編輯器
             const editor = document.getElementById('code-editor');
             if (editor) {
                 editor.value = codeContent;
                 updateLineNumbers();
             }
-            
+
             // 切換到VS Code標籤
             switchTab('vscode');
-            
+
             // 如果是整合模式，可以自動保存文件
             if (window.openHandsIntegration.currentMode === 'integrated') {
                 // 這裡可以添加自動保存邏輯
@@ -3453,7 +3717,7 @@ ${files.map(file => `// ${file.name} - ${file.type || 'unknown type'}`).join('\n
                 //     window.openHandsAPI.saveFile(currentFile, codeContent);
                 // }
             }
-            
+
             const original = button.textContent;
             button.textContent = '✓ Applied';
             setTimeout(() => {
@@ -3470,7 +3734,7 @@ ${files.map(file => `// ${file.name} - ${file.type || 'unknown type'}`).join('\n
             const editor = document.getElementById('code-editor');
             const lineNumbers = document.getElementById('line-numbers');
             if (!editor || !lineNumbers) return;
-            
+
             const lines = editor.value.split('\n').length;
             lineNumbers.innerHTML = '';
             for (let i = 1; i <= Math.max(lines, 20); i++) {
@@ -3483,23 +3747,23 @@ ${files.map(file => `// ${file.name} - ${file.type || 'unknown type'}`).join('\n
             try {
                 // 使用整合層獲取文件內容
                 const content = await window.openHandsAPI.getFileContent(filename);
-                
+
                 // 更新代碼編輯器
                 const editor = document.getElementById('code-editor');
                 if (editor) {
                     editor.value = content;
                     updateLineNumbers();
-                    
+
                     // 切換到VS Code標籤
                     switchTab('vscode');
-                    
+
                     // 更新標籤標題
                     const tabTitle = document.querySelector('#vscode-tab .tab-title, #vscode-tab [style*="padding: 8px 12px"]');
                     if (tabTitle) {
                         tabTitle.innerHTML = `📄 ${filename.split('/').pop()} <span style="margin-left: 8px; opacity: 0.7; cursor: pointer;" onclick="closeTab(this)">✕</span>`;
                     }
                 }
-                
+
                 showNotification(`已打開 ${filename}`);
             } catch (error) {
                 console.error('Failed to open file:', error);
@@ -3513,15 +3777,15 @@ ${files.map(file => `// ${file.name} - ${file.type || 'unknown type'}`).join('\n
             input.type = 'file';
             input.multiple = true;
             input.accept = '*/*';
-            
-            input.onchange = async function(e) {
+
+            input.onchange = async function (e) {
                 const files = Array.from(e.target.files);
-                
+
                 if (files.length === 0) return;
-                
+
                 // 顯示上傳進度
                 showNotification(`正在上傳 ${files.length} 個文件...`);
-                
+
                 try {
                     // 如果是整合模式，可以實際上傳文件
                     if (window.openHandsIntegration.currentMode === 'integrated') {
@@ -3532,16 +3796,16 @@ ${files.map(file => `// ${file.name} - ${file.type || 'unknown type'}`).join('\n
                             // await window.openHandsAPI.saveFile(`/workspace/${file.name}`, content);
                         }
                     }
-                    
+
                     // 更新UI顯示
                     const chatHistory = document.getElementById('chat-history');
                     const fileMessage = document.createElement('div');
                     fileMessage.className = 'message user fade-in';
-                    
+
                     let fileList = files.map(file =>
                         `📎 ${file.name} (${(file.size / 1024).toFixed(1)} KB)`
                     ).join('<br>');
-                    
+
                     fileMessage.innerHTML = `
                         <div class="message-content">
                             已上傳 ${files.length} 個文件:<br><br>
@@ -3550,17 +3814,17 @@ ${files.map(file => `// ${file.name} - ${file.type || 'unknown type'}`).join('\n
                     `;
                     chatHistory.appendChild(fileMessage);
                     scrollToBottom();
-                    
+
                     showNotification(`✅ 成功上傳 ${files.length} 個文件`);
-                    
+
                     // 重新載入文件樹
                     window.openHandsIntegration.loadFileSystem();
-                    
+
                 } catch (error) {
                     showNotification(`❌ 上傳失敗：${error.message}`);
                 }
             };
-            
+
             input.click();
         }
 
@@ -3578,12 +3842,12 @@ ${files.map(file => `// ${file.name} - ${file.type || 'unknown type'}`).join('\n
         async function saveCurrentFile() {
             const editor = document.getElementById('code-editor');
             const currentFileName = getCurrentFileName();
-            
+
             if (!editor || !currentFileName) {
                 showNotification('❌ 沒有可保存的文件');
                 return;
             }
-            
+
             try {
                 if (window.openHandsIntegration.currentMode === 'integrated') {
                     // 實際保存到OpenHands
@@ -3611,14 +3875,14 @@ ${files.map(file => `// ${file.name} - ${file.type || 'unknown type'}`).join('\n
         // 文件右鍵選單
         function showFileContextMenu(event, fileType) {
             event.preventDefault();
-            
+
             // 創建右鍵選單
             const menu = document.createElement('div');
             menu.className = 'context-menu';
             menu.style.display = 'block';
             menu.style.left = event.pageX + 'px';
             menu.style.top = event.pageY + 'px';
-            
+
             const menuItems = fileType === 'directory' ? [
                 { text: '📁 新建文件', action: () => createNewFile(event.target) },
                 { text: '📂 新建資料夾', action: () => createNewFolder(event.target) },
@@ -3629,13 +3893,13 @@ ${files.map(file => `// ${file.name} - ${file.type || 'unknown type'}`).join('\n
                 { text: '📋 複製路徑', action: () => copyToClipboard(event.target.textContent.trim()) },
                 { text: '🗑️ 刪除', action: () => deleteFile(event.target.textContent.trim()) }
             ];
-            
+
             menu.innerHTML = menuItems.map(item =>
                 `<div class="context-menu-item" onclick="${item.action.toString()}">${item.text}</div>`
             ).join('');
-            
+
             document.body.appendChild(menu);
-            
+
             // 點擊其他地方關閉選單
             setTimeout(() => {
                 document.addEventListener('click', function closeMenu() {
@@ -3679,19 +3943,19 @@ ${files.map(file => `// ${file.name} - ${file.type || 'unknown type'}`).join('\n
             if (event.key === 'Enter') {
                 const input = event.target;
                 const command = input.value.trim();
-                
+
                 if (!command) {
                     input.value = '';
                     return;
                 }
-                
+
                 // 使用整合層執行命令
                 window.openHandsIntegration.executeCommand(command);
-                
+
                 input.value = '';
             }
         }
-        
+
         // 更新clearTerminal函數
         function clearTerminal() {
             const output = document.getElementById('terminal-output');
@@ -3699,13 +3963,13 @@ ${files.map(file => `// ${file.name} - ${file.type || 'unknown type'}`).join('\n
                 output.innerHTML = '';
             }
         }
-        
+
         // 新增：新建終端標籤功能
         function newTerminalTab() {
             showNotification('新終端標籤已創建');
             // 這裡可以添加實際的新標籤邏輯
         }
-        
+
         // 新增：分割終端功能
         function splitTerminal() {
             showNotification('終端已分割');
@@ -3720,7 +3984,7 @@ ${files.map(file => `// ${file.name} - ${file.type || 'unknown type'}`).join('\n
         function runCell(button) {
             button.textContent = '⏳ Running...';
             button.disabled = true;
-            
+
             setTimeout(() => {
                 button.textContent = '▶️ Run';
                 button.disabled = false;
@@ -3733,10 +3997,10 @@ ${files.map(file => `// ${file.name} - ${file.type || 'unknown type'}`).join('\n
         }
 
         // 回車發送消息
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', function () {
             const userInput = document.getElementById('user-input');
             if (userInput) {
-                userInput.addEventListener('keydown', function(e) {
+                userInput.addEventListener('keydown', function (e) {
                     if (e.key === 'Enter' && !e.shiftKey) {
                         e.preventDefault();
                         sendMessage();
@@ -3746,13 +4010,13 @@ ${files.map(file => `// ${file.name} - ${file.type || 'unknown type'}`).join('\n
         });
 
         // 添加鍵盤快捷鍵支持
-        document.addEventListener('keydown', function(e) {
+        document.addEventListener('keydown', function (e) {
             // Ctrl+S 保存文件
             if (e.ctrlKey && e.key === 's') {
                 e.preventDefault();
                 saveCurrentFile();
             }
-            
+
             // Ctrl+` 切換到終端
             if (e.ctrlKey && e.key === '`') {
                 e.preventDefault();
@@ -3766,7 +4030,7 @@ ${files.map(file => `// ${file.name} - ${file.type || 'unknown type'}`).join('\n
 
         // 編輯器同步滾動
         document.getElementById('code-editor').addEventListener('input', updateLineNumbers);
-        document.getElementById('code-editor').addEventListener('scroll', function() {
+        document.getElementById('code-editor').addEventListener('scroll', function () {
             const lineNumbers = document.getElementById('line-numbers');
             if (lineNumbers) {
                 lineNumbers.scrollTop = this.scrollTop;
@@ -3800,16 +4064,16 @@ ${files.map(file => `// ${file.name} - ${file.type || 'unknown type'}`).join('\n
         }
 
         // OpenHands 整合設定處理函數
-        
+
         // 處理模式變更
         async function handleModeChange() {
             const selectedMode = document.querySelector('input[name="integration-mode"]:checked').value;
-            
+
             updateConnectionStatus('正在切換模式...');
-            
+
             try {
                 const success = await window.openHandsIntegration.switchMode(selectedMode);
-                
+
                 if (success) {
                     showNotification(`✅ 已切換到${selectedMode === 'integrated' ? '整合' : '演示'}模式`);
                     updateIntegrationStatus();
@@ -3824,31 +4088,31 @@ ${files.map(file => `// ${file.name} - ${file.type || 'unknown type'}`).join('\n
                 document.querySelector('input[value="demo"]').checked = true;
             }
         }
-        
+
         // 處理功能開關
         function handleFeatureToggle(feature, enabled) {
             window.openHandsConfig.updateSettings({ [feature]: enabled });
             showNotification(`${enabled ? '已啟用' : '已停用'} ${feature}`);
             updateIntegrationStatus();
         }
-        
+
         // 測試 OpenHands 連接
         async function testOpenHandsConnection() {
             updateConnectionStatus('測試中...');
-            
+
             try {
                 const isAvailable = await window.openHandsAPI.checkConnection();
-                
+
                 if (isAvailable) {
                     updateConnectionStatus('✅ 連接成功', '#10b981');
                     showNotification('✅ Opentaiwan 連接正常');
-                    
+
                     // 啟用整合模式選項
                     document.querySelector('input[value="integrated"]').disabled = false;
                 } else {
                     updateConnectionStatus('❌ 連接失敗', '#ef4444');
                     showNotification('❌ 無法連接到 Opentaiwan，請檢查服務是否運行');
-                    
+
                     // 禁用整合模式選項
                     document.querySelector('input[value="integrated"]').disabled = true;
                     document.querySelector('input[value="demo"]').checked = true;
@@ -3858,28 +4122,28 @@ ${files.map(file => `// ${file.name} - ${file.type || 'unknown type'}`).join('\n
                 showNotification('❌ 連接測試失敗：' + error.message);
             }
         }
-        
+
         // 切換整合模式（快捷按鈕）
         async function toggleIntegrationMode() {
             const currentMode = document.querySelector('input[name="integration-mode"]:checked').value;
             const newMode = currentMode === 'demo' ? 'integrated' : 'demo';
-            
+
             document.querySelector(`input[value="${newMode}"]`).checked = true;
             await handleModeChange();
         }
-        
+
         // 重置整合
         async function resetIntegration() {
             if (confirm('確定要重置 Opentaiwan 整合嗎？這將斷開所有連接並清除設定。')) {
                 try {
                     await window.openHandsIntegration.reset();
-                    
+
                     // 重置UI設定
                     document.querySelector('input[value="demo"]').checked = true;
                     document.getElementById('enable-websocket').checked = false;
                     document.getElementById('enable-filesync').checked = false;
                     document.getElementById('openhands-url').value = 'http://localhost:3000';
-                    
+
                     updateIntegrationStatus();
                     showNotification('🔄 整合已重置');
                 } catch (error) {
@@ -3887,49 +4151,49 @@ ${files.map(file => `// ${file.name} - ${file.type || 'unknown type'}`).join('\n
                 }
             }
         }
-        
+
         // 更新連接設定
         function updateConnectionSettings() {
             const newURL = document.getElementById('openhands-url').value;
-            
+
             if (newURL) {
                 window.openHandsConfig.updateSettings({
                     baseURL: newURL,
                     wsURL: newURL.replace('http', 'ws')
                 });
-                
+
                 // 重新初始化API客戶端
                 window.openHandsAPI = new OpenHandsAPIClient();
-                
+
                 showNotification('✅ 連接設定已更新');
             }
         }
-        
+
         // 更新連接狀態顯示
         function updateConnectionStatus(text, color = '#64748b') {
             const statusDot = document.getElementById('connection-status');
             const statusText = document.getElementById('connection-text');
-            
+
             if (statusDot) statusDot.style.background = color;
             if (statusText) statusText.textContent = text;
         }
-        
+
         // 更新整合狀態顯示
         function updateIntegrationStatus() {
             const status = window.openHandsIntegration.getStatus();
-            
+
             document.getElementById('status-mode').textContent = status.mode;
             document.getElementById('status-session').textContent = status.sessionId || '無';
             document.getElementById('status-ws').textContent = status.state.wsConnected ? '已連接' : '未連接';
             document.getElementById('status-files').textContent = status.state.filesLoaded ? '已載入' : '未載入';
         }
-        
+
         // 初始化整合設定
         function initializeIntegrationSettings() {
             // 檢查初始連接狀態
             updateConnectionStatus('檢查中...');
             updateIntegrationStatus();
-            
+
             // 如果整合層可用，進行初始化
             if (window.openHandsIntegration) {
                 window.openHandsIntegration.initialize().then(() => {
@@ -3942,7 +4206,7 @@ ${files.map(file => `// ${file.name} - ${file.type || 'unknown type'}`).join('\n
                 updateConnectionStatus('整合層未載入', 'error');
             }
         }
-        
+
         // 添加調試面板（可選）
         function addDebugPanel() {
             const debugPanel = document.createElement('div');
@@ -3963,7 +4227,7 @@ ${files.map(file => `// ${file.name} - ${file.type || 'unknown type'}`).join('\n
                 overflow-y: auto;
                 display: none;
             `;
-            
+
             debugPanel.innerHTML = `
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
                     <strong>🐛 Debug Panel</strong>
@@ -3980,9 +4244,9 @@ ${files.map(file => `// ${file.name} - ${file.type || 'unknown type'}`).join('\n
                     <button onclick="exportDebugInfo()" style="background: #10b981; color: white; border: none; padding: 4px 8px; border-radius: 4px; font-size: 11px; cursor: pointer; margin-left: 4px;">💾 Export</button>
                 </div>
             `;
-            
+
             document.body.appendChild(debugPanel);
-            
+
             // 添加快捷鍵 Ctrl+Shift+D 顯示/隱藏調試面板
             document.addEventListener('keydown', (e) => {
                 if (e.ctrlKey && e.shiftKey && e.key === 'D') {
@@ -3990,11 +4254,11 @@ ${files.map(file => `// ${file.name} - ${file.type || 'unknown type'}`).join('\n
                     toggleDebugPanel();
                 }
             });
-            
+
             // 定期更新調試信息
             setInterval(updateDebugInfo, 2000);
         }
-        
+
         // 調試面板控制函數
         function toggleDebugPanel() {
             const panel = document.getElementById('debug-panel');
@@ -4005,28 +4269,28 @@ ${files.map(file => `// ${file.name} - ${file.type || 'unknown type'}`).join('\n
                 }
             }
         }
-        
+
         function updateDebugInfo() {
             const status = window.openHandsIntegration.getStatus();
-            
+
             const elements = {
                 'debug-mode': status.mode,
                 'debug-session': status.sessionId || 'None',
                 'debug-ws': status.state.wsConnected ? 'Connected' : 'Disconnected',
                 'debug-files': status.state.filesLoaded ? 'Loaded' : 'Not loaded'
             };
-            
+
             Object.entries(elements).forEach(([id, value]) => {
                 const element = document.getElementById(id);
                 if (element) element.textContent = value;
             });
         }
-        
+
         function refreshDebugInfo() {
             updateDebugInfo();
             showNotification('🔄 調試信息已刷新');
         }
-        
+
         function exportDebugInfo() {
             const status = window.openHandsIntegration.getStatus();
             const debugData = {
@@ -4036,7 +4300,7 @@ ${files.map(file => `// ${file.name} - ${file.type || 'unknown type'}`).join('\n
                 userAgent: navigator.userAgent,
                 url: window.location.href
             };
-            
+
             const blob = new Blob([JSON.stringify(debugData, null, 2)], { type: 'application/json' });
             const url = URL.createObjectURL(blob);
             const a = document.createElement('a');
@@ -4044,24 +4308,24 @@ ${files.map(file => `// ${file.name} - ${file.type || 'unknown type'}`).join('\n
             a.download = `openhands-debug-${Date.now()}.json`;
             a.click();
             URL.revokeObjectURL(url);
-            
+
             showNotification('💾 調試信息已導出');
         }
-        
+
         // 添加一些有用的全局函數
         window.OpenHandsUtils = {
             // 快速切換模式
             switchMode: (mode) => window.openHandsIntegration.switchMode(mode),
-            
+
             // 獲取狀態
             getStatus: () => window.openHandsIntegration.getStatus(),
-            
+
             // 測試連接
             testConnection: () => window.openHandsAPI.checkConnection(),
-            
+
             // 重置整合
             reset: () => window.openHandsIntegration.reset(),
-            
+
             // 啟用調試
             enableDebug: () => {
                 window.openHandsConfig.updateSettings({ debugMode: true });
@@ -4070,30 +4334,30 @@ ${files.map(file => `// ${file.name} - ${file.type || 'unknown type'}`).join('\n
         };
 
         // 在頁面載入完成後初始化
-        document.addEventListener('DOMContentLoaded', async function() {
+        document.addEventListener('DOMContentLoaded', async function () {
             console.log('🚀 開始初始化 Opentaiwan 整合...');
-            
+
             try {
                 // 1. 初始化OpenHands整合（不自動連接）
                 const integrationReady = await window.openHandsIntegration.initialize(false);
                 console.log('✅ Opentaiwan 整合初始化完成:', integrationReady);
-                
+
                 // 2. 添加整合狀態監聽器
                 setupIntegrationListeners();
-                
+
                 // 3. 檢查URL參數是否要求啟用整合模式
                 checkURLParameters();
-                
+
                 // 4. 更新UI以顯示當前模式
                 updateModeIndicators();
-                
+
                 // 5. 添加調試信息（開發階段有用）
                 if (window.openHandsConfig.settings.debugMode) {
                     addDebugPanel();
                 }
-                
+
                 console.log('🎉 所有組件初始化完成！');
-                
+
                 // 控制台歡迎信息
                 console.log(`
 🚀 Opentaiwan 整合已載入！
@@ -4112,24 +4376,24 @@ ${files.map(file => `// ${file.name} - ${file.type || 'unknown type'}`).join('\n
 
 當前模式: ${window.openHandsIntegration?.currentMode || '初始化中...'}
 `);
-                
+
             } catch (error) {
                 console.error('❌ 初始化失敗:', error);
                 showNotification('⚠️ 部分功能可能無法正常工作');
             }
-            
+
             // 你原有的初始化代碼...
             if (!isLoggedIn) {
                 document.getElementById('welcome-screen').classList.remove('hidden');
             } else {
                 loadInitialChat();
             }
-            
+
             updateLineNumbers();
             // 延遲初始化，確保所有腳本都已載入
             setTimeout(initializeIntegrationSettings, 1000);
         });
-        
+
         // 設置整合監聽器
         function setupIntegrationListeners() {
             // 監聽模式變更
@@ -4137,18 +4401,18 @@ ${files.map(file => `// ${file.name} - ${file.type || 'unknown type'}`).join('\n
                 console.log('模式已變更:', event.detail);
                 updateModeIndicators();
             });
-            
+
             // 監聽連接狀態變更
             window.addEventListener('openhands-connection-changed', (event) => {
                 console.log('連接狀態變更:', event.detail);
                 updateConnectionIndicators(event.detail);
             });
         }
-        
+
         // 檢查URL參數
         function checkURLParameters() {
             const urlParams = new URLSearchParams(window.location.search);
-            
+
             // 如果URL包含 ?mode=integrated，自動切換到整合模式
             if (urlParams.get('mode') === 'integrated') {
                 console.log('🔗 URL要求整合模式，嘗試連接...');
@@ -4156,37 +4420,37 @@ ${files.map(file => `// ${file.name} - ${file.type || 'unknown type'}`).join('\n
                     window.openHandsIntegration.switchMode('integrated');
                 }, 1000);
             }
-            
+
             // 如果URL包含 ?debug=true，啟用調試模式
             if (urlParams.get('debug') === 'true') {
                 window.openHandsConfig.updateSettings({ debugMode: true });
                 console.log('🐛 調試模式已啟用');
             }
         }
-        
+
         // 更新模式指示器
         function updateModeIndicators() {
             const status = window.openHandsIntegration.getStatus();
-            
+
             // 更新標題欄
             const headerTitle = document.querySelector('.header h1');
             if (headerTitle) {
                 const modeColor = status.mode === 'integrated' ? '#10b981' : '#60a5fa';
                 const modeText = status.mode === 'integrated' ? '● INTEGRATED' : '● DEMO';
-                
+
                 headerTitle.innerHTML = `
                     🚀 Opentaiwan Dev Studio
                     <span style="color: ${modeColor}; font-size: 12px;">${modeText}</span>
                 `;
             }
-            
+
             // 更新設定頁面中的模式選擇
             const modeRadio = document.querySelector(`input[name="integration-mode"][value="${status.mode}"]`);
             if (modeRadio) {
                 modeRadio.checked = true;
             }
         }
-        
+
         // 更新連接指示器
         function updateConnectionIndicators(connectionStatus) {
             // 更新狀態指示器
@@ -4213,37 +4477,37 @@ ${files.map(file => `// ${file.name} - ${file.type || 'unknown type'}`).join('\n
         async function validateAndSetAPIKey() {
             const apiKeyInput = document.getElementById('api-key-input');
             const apiKey = apiKeyInput.value.trim();
-            
+
             if (!apiKey) {
                 showNotification('❌ 請輸入 API 密鑰');
                 return;
             }
-            
+
             if (!apiKey.startsWith('dt-')) {
                 if (!confirm('API 密鑰格式可能不正確（通常以 dt- 開頭）。確定要繼續嗎？')) {
                     return;
                 }
             }
-            
+
             try {
                 // 顯示驗證中
                 apiKeyInput.disabled = true;
                 apiKeyInput.value = '驗證中...';
-                
+
                 // 設置並測試 API 密鑰
                 if (!window.daytonaConfig) {
                     window.daytonaConfig = new DaytonaConfig();
                 }
-                
+
                 window.daytonaConfig.setAPIKey(apiKey);
-                
+
                 // 測試連接
                 const api = new DaytonaAPIClient(window.daytonaConfig.getAPIConfig());
                 const isValid = await api.checkConnection();
-                
+
                 if (isValid) {
                     showNotification('✅ API 密鑰驗證成功！');
-                    
+
                     // 觸發設置完成事件
                     window.dispatchEvent(new CustomEvent('daytona-api-key-set', {
                         detail: { apiKey: apiKey }
@@ -4251,7 +4515,7 @@ ${files.map(file => `// ${file.name} - ${file.type || 'unknown type'}`).join('\n
                 } else {
                     throw new Error('API 密鑰無效或網路連接問題');
                 }
-                
+
             } catch (error) {
                 console.error('❌ API 密鑰驗證失敗:', error);
                 apiKeyInput.disabled = false;
@@ -4278,29 +4542,29 @@ ${files.map(file => `// ${file.name} - ${file.type || 'unknown type'}`).join('\n
                 if (!window.daytonaIntegration) {
                     window.daytonaIntegration = new DaytonaIntegration();
                 }
-                
+
                 await window.daytonaIntegration.initialize();
-                
+
                 // 2. 切換到 Daytona 模式
                 await window.daytonaIntegration.switchMode('daytona');
-                
+
                 // 3. 創建初始沙盒
                 updateLaunchStep('創建開發環境...', '📦');
                 await window.daytonaIntegration.ensureSandbox();
-                
+
                 // 4. 載入用戶信息
                 updateLaunchStep('載入用戶資料...', '👤');
                 const userInfo = await window.daytonaIntegration.daytonaAPI.getUserInfo();
                 window.DaytonaLaunchState.userInfo = userInfo;
-                
+
                 // 5. 完成啟動
                 updateLaunchStep('啟動完成！', '🎉');
-                
+
                 // 延遲一下讓用戶看到成功信息
                 setTimeout(() => {
                     completeLaunchSequence();
                 }, 1500);
-                
+
             } catch (error) {
                 console.error('❌ 最終設置失敗:', error);
                 throw new Error('環境啟動失敗：' + error.message);
@@ -4317,18 +4581,18 @@ ${files.map(file => `// ${file.name} - ${file.type || 'unknown type'}`).join('\n
                     window.daytonaIntegration = new DaytonaIntegration();
                     await window.daytonaIntegration.initialize();
                 }
-                
+
                 // 2. 切換到 Daytona 模式
                 await window.daytonaIntegration.switchMode('daytona');
-                
+
                 // 3. 檢查現有沙盒或創建新的
                 updateLaunchStep('檢查開發環境...', '🔍');
-                
+
                 const existingSandboxes = await window.daytonaIntegration.daytonaAPI.getSandboxes();
-                const opentaiwanSandboxes = existingSandboxes.filter(sb => 
+                const opentaiwanSandboxes = existingSandboxes.filter(sb =>
                     sb.name && sb.name.includes('opentaiwan')
                 );
-                
+
                 if (opentaiwanSandboxes.length > 0) {
                     // 使用現有沙盒
                     updateLaunchStep('使用現有開發環境...', '♻️');
@@ -4338,13 +4602,13 @@ ${files.map(file => `// ${file.name} - ${file.type || 'unknown type'}`).join('\n
                     updateLaunchStep('創建新的開發環境...', '📦');
                     await window.daytonaIntegration.ensureSandbox();
                 }
-                
+
                 // 4. 完成啟動
                 updateLaunchStep('啟動完成！', '🎉');
                 setTimeout(() => {
                     completeLaunchSequence();
                 }, 1000);
-                
+
             } catch (error) {
                 console.error('❌ 現有配置啟動失敗:', error);
                 throw new Error('啟動失敗：' + error.message);
@@ -4358,17 +4622,17 @@ ${files.map(file => `// ${file.name} - ${file.type || 'unknown type'}`).join('\n
             try {
                 // 1. 確保有沙盒
                 await window.daytonaIntegration.ensureSandbox();
-                
+
                 // 2. 克隆倉庫（如果是真實的 Git 倉庫）
                 updateLaunchStep(`克隆倉庫 ${repo}...`, '📥');
-                
+
                 // 模擬克隆過程（在實際實現中，這裡會調用真實的 Git API）
                 const cloneCommand = `git clone https://github.com/${repo}.git && cd ${repo.split('/')[1]} && git checkout ${branch}`;
                 await window.daytonaIntegration.executeCommand(cloneCommand);
-                
+
                 // 3. 設置項目環境
                 updateLaunchStep('設置專案環境...', '⚙️');
-                
+
                 // 檢查項目類型並安裝依賴
                 const setupCommands = [
                     'ls -la',
@@ -4376,61 +4640,61 @@ ${files.map(file => `// ${file.name} - ${file.type || 'unknown type'}`).join('\n
                     'if [ -f requirements.txt ]; then pip install -r requirements.txt; fi',
                     'if [ -f Gemfile ]; then bundle install; fi'
                 ];
-                
+
                 for (const cmd of setupCommands) {
                     await window.daytonaIntegration.executeCommand(cmd);
                 }
-                
+
                 // 4. 完成專案設置
                 updateLaunchStep(`專案 ${repo} 準備完成！`, '🎉');
                 setTimeout(() => {
                     completeLaunchSequence(`已載入專案：${repo} (${branch})`);
                 }, 1000);
-                
+
             } catch (error) {
                 console.error('❌ 專案啟動失敗:', error);
                 throw new Error(`專案 ${repo} 啟動失敗：${error.message}`);
             }
         }
-        
+
         /**
          * 完成啟動序列
          */
         function completeLaunchSequence(message = '開發環境已準備就緒') {
             // 1. 隱藏歡迎頁面
             hideWelcomeScreen();
-            
+
             // 2. 隱藏啟動進度
             hideLaunchProgress();
-            
+
             // 3. 顯示成功通知
             showNotification(`🎉 ${message}`);
-            
+
             // 4. 重置啟動狀態
             window.DaytonaLaunchState.isLaunching = false;
-            
+
             // 5. 載入初始聊天（顯示歡迎信息）
             loadWelcomeMessage();
-            
+
             // 6. 更新 UI 指示器
             updateUIForDaytonaMode();
-            
+
             console.log('🎉 Daytona 無縫啟動完成！');
         }
-        
+
         /**
          * 載入歡迎信息
          */
         function loadWelcomeMessage() {
             const chatHistory = document.getElementById('chat-history');
             const userInfo = window.DaytonaLaunchState.userInfo;
-            
+
             let welcomeMessage = `🎉 歡迎使用 Opentaiwan Dev Studio！`;
-            
+
             if (userInfo) {
                 welcomeMessage += `\n\n👋 您好，${userInfo.name || '開發者'}！`;
             }
-            
+
             welcomeMessage += `
 
 🏗️ **您的 Daytona 雲端開發環境已準備就緒**
@@ -4445,7 +4709,7 @@ ${files.map(file => `// ${file.name} - ${file.type || 'unknown type'}`).join('\n
 "創建一個 React 待辦事項應用" 或 "幫我寫一個 Python 爬蟲"
 
 🚀 **開始您的雲端開發之旅吧！**`;
-            
+
             chatHistory.innerHTML = `
                 <div class="message assistant fade-in">
                     <div class="message-content">
@@ -4453,10 +4717,10 @@ ${files.map(file => `// ${file.name} - ${file.type || 'unknown type'}`).join('\n
                     </div>
                 </div>
             `;
-            
+
             scrollToBottom();
         }
-        
+
         /**
          * 更新 UI 為 Daytona 模式
          */
@@ -4469,7 +4733,7 @@ ${files.map(file => `// ${file.name} - ${file.type || 'unknown type'}`).join('\n
                     <span style="color: #10b981; font-size: 12px;">● DAYTONA MODE</span>
                 `;
             }
-            
+
             // 更新狀態指示器
             const statusIndicator = document.querySelector('.status-indicator');
             if (statusIndicator) {
@@ -4479,7 +4743,516 @@ ${files.map(file => `// ${file.name} - ${file.type || 'unknown type'}`).join('\n
                 `;
             }
         }
-        
+
+        // Daytona UI 支持函數
+
+        /**
+         * 設置 Daytona API 密鑰
+         */
+        async function setDaytonaAPIKey() {
+            const apiKeyInput = document.getElementById('daytona-api-key');
+            const apiKey = apiKeyInput.value.trim();
+
+            if (!apiKey) {
+                showNotification('❌ 請輸入 API 密鑰');
+                return;
+            }
+
+            try {
+                // 設置 API 密鑰
+                window.daytonaConfig.setAPIKey(apiKey);
+
+                // 清空輸入框
+                apiKeyInput.value = '';
+
+                // 測試連接
+                await testDaytonaConnection();
+
+                showNotification('✅ Daytona API 密鑰已設置');
+            } catch (error) {
+                showNotification('❌ API 密鑰設置失敗：' + error.message);
+            }
+        }
+
+        /**
+         * 測試 Daytona 連接
+         */
+        async function testDaytonaConnection() {
+            updateDaytonaConnectionStatus('測試中...', '#f59e0b');
+
+            try {
+                if (!window.daytonaIntegration) {
+                    window.daytonaIntegration = new DaytonaIntegration();
+                    await window.daytonaIntegration.initialize();
+                }
+
+                const api = new DaytonaAPIClient(window.daytonaConfig.getAPIConfig());
+                const isConnected = await api.checkConnection();
+
+                if (isConnected) {
+                    updateDaytonaConnectionStatus('✅ 連接成功', '#10b981');
+                    showNotification('✅ Daytona 連接正常');
+
+                    // 載入用戶信息
+                    await loadDaytonaUserInfo();
+
+                    // 啟用 Daytona 模式選項
+                    document.querySelector('input[value="daytona"]').disabled = false;
+                } else {
+                    updateDaytonaConnectionStatus('❌ 連接失敗', '#ef4444');
+                    showNotification('❌ 無法連接到 Daytona，請檢查 API 密鑰');
+                    document.querySelector('input[value="daytona"]').disabled = true;
+                }
+            } catch (error) {
+                updateDaytonaConnectionStatus('❌ 連接錯誤', '#ef4444');
+                showNotification('❌ 連接測試失敗：' + error.message);
+                document.querySelector('input[value="daytona"]').disabled = true;
+            }
+        }
+
+        /**
+         * 載入 Daytona 用戶信息
+         */
+        async function loadDaytonaUserInfo() {
+            try {
+                const api = new DaytonaAPIClient(window.daytonaConfig.getAPIConfig());
+                await api.initialize();
+
+                // 載入付費信息
+                if (window.daytonaConfig.get('enableBilling')) {
+                    const billingInfo = await api.getBillingInfo();
+                    if (billingInfo) {
+                        updateDaytonaBillingDisplay(billingInfo);
+                    }
+                }
+
+                console.log('✅ Daytona 用戶信息已載入');
+            } catch (error) {
+                console.error('❌ 載入用戶信息失敗:', error);
+            }
+        }
+
+        /**
+         * 處理開發模式變更
+         */
+        async function handleDevModeChange() {
+            const selectedMode = document.querySelector('input[name="dev-mode"]:checked').value;
+
+            updateDaytonaConnectionStatus('正在切換模式...', '#f59e0b');
+
+            try {
+                if (!window.daytonaIntegration) {
+                    window.daytonaIntegration = new DaytonaIntegration();
+                    await window.daytonaIntegration.initialize();
+                }
+
+                const success = await window.daytonaIntegration.switchMode(selectedMode);
+
+                if (success) {
+                    showNotification(`✅ 已切換到${getModeDisplayName(selectedMode)}模式`);
+                    updateDaytonaStatusDisplay();
+
+                    // 如果切換到 Daytona 模式，載入相關信息
+                    if (selectedMode === 'daytona') {
+                        await loadDaytonaUserInfo();
+                    }
+                } else {
+                    showNotification('❌ 模式切換失敗');
+                    // 重置為演示模式
+                    document.querySelector('input[value="demo"]').checked = true;
+                }
+            } catch (error) {
+                console.error('Mode switch failed:', error);
+                showNotification('❌ 模式切換發生錯誤');
+                document.querySelector('input[value="demo"]').checked = true;
+            }
+        }
+
+        /**
+         * 處理 Daytona 功能開關
+         */
+        function handleDaytonaFeatureToggle(feature, enabled) {
+            window.daytonaConfig.toggleFeature(feature);
+            showNotification(`${enabled ? '已啟用' : '已停用'} ${getFeatureDisplayName(feature)}`);
+            updateDaytonaStatusDisplay();
+        }
+
+        /**
+         * 更新 Daytona 沙盒配置
+         */
+        function updateDaytonaSandboxConfig() {
+            const language = document.getElementById('daytona-default-language').value;
+            const image = document.getElementById('daytona-default-image').value;
+            const autoCreate = document.getElementById('auto-create-sandbox').checked;
+
+            window.daytonaConfig.updateSettings({
+                defaultLanguage: language,
+                defaultImage: image,
+                autoCreateSandbox: autoCreate
+            });
+
+            showNotification('✅ 沙盒配置已更新');
+        }
+
+        /**
+         * 切換到 Daytona 模式
+         */
+        async function switchToDaytonaMode() {
+            if (!window.daytonaConfig.isConfigured()) {
+                showNotification('❌ 請先設置 Daytona API 密鑰');
+                return;
+            }
+
+            document.querySelector('input[value="daytona"]').checked = true;
+            await handleDevModeChange();
+        }
+        /**
+ * 開啟 Daytona 儀表板
+ */
+        function openDaytonaDashboard() {
+            window.open('https://app.daytona.io/dashboard', '_blank');
+        }
+
+        /**
+         * 開啟 Daytona 付費頁面
+         */
+        function openDaytonaBilling() {
+            window.open('https://app.daytona.io/dashboard/billing', '_blank');
+        }
+
+        /**
+         * 重置 Daytona 整合
+         */
+        async function resetDaytonaIntegration() {
+            if (confirm('確定要重置 Daytona 整合嗎？這將斷開所有連接並清除設定。')) {
+                try {
+                    if (window.daytonaIntegration) {
+                        await window.daytonaIntegration.reset();
+                    }
+
+                    // 重置 UI 設定
+                    document.querySelector('input[value="demo"]').checked = true;
+                    document.getElementById('enable-daytona-billing').checked = true;
+                    document.getElementById('enable-daytona-snapshots').checked = false;
+                    document.getElementById('enable-daytona-preview').checked = true;
+                    document.getElementById('enable-daytona-autosave').checked = true;
+                    document.getElementById('daytona-default-language').value = 'python';
+                    document.getElementById('daytona-default-image').value = 'python:3.11';
+                    document.getElementById('auto-create-sandbox').checked = true;
+
+                    // 重置配置（但保留 API 密鑰）
+                    const apiKey = window.daytonaConfig.get('apiKey');
+                    window.daytonaConfig.resetToDefaults();
+                    if (apiKey) {
+                        window.daytonaConfig.setAPIKey(apiKey);
+                    }
+
+                    updateDaytonaStatusDisplay();
+                    updateDaytonaConnectionStatus('未連接', '#64748b');
+
+                    showNotification('🔄 Daytona 整合已重置');
+                } catch (error) {
+                    showNotification('❌ 重置失敗：' + error.message);
+                }
+            }
+        }
+
+        /**
+         * 更新 Daytona 連接狀態顯示
+         */
+        function updateDaytonaConnectionStatus(text, color = '#64748b') {
+            const statusDot = document.getElementById('daytona-connection-status');
+            const statusText = document.getElementById('daytona-connection-text');
+
+            if (statusDot) statusDot.style.background = color;
+            if (statusText) statusText.textContent = text;
+        }
+
+        /**
+         * 更新 Daytona 狀態顯示
+         */
+        function updateDaytonaStatusDisplay() {
+            if (!window.daytonaIntegration) return;
+
+            const status = window.daytonaIntegration.getStatus();
+
+            // 更新狀態面板
+            const elements = {
+                'daytona-status-mode': getModeDisplayName(status.mode),
+                'daytona-status-sandbox': status.currentSandbox ? status.currentSandbox.id.substr(0, 8) + '...' : '無',
+                'daytona-status-connection': status.connectionStatus === 'connected' ? '已連接' : '未連接',
+                'daytona-status-billing': status.state.billingLoaded ? '已載入' : '未載入'
+            };
+
+            Object.entries(elements).forEach(([id, value]) => {
+                const element = document.getElementById(id);
+                if (element) element.textContent = value;
+            });
+        }
+
+        /**
+         * 更新 Daytona 付費信息顯示
+         */
+        function updateDaytonaBillingDisplay(billingInfo) {
+            const billingDiv = document.getElementById('daytona-billing-info');
+            const detailsDiv = document.getElementById('daytona-billing-details');
+
+            if (billingDiv && detailsDiv && billingInfo) {
+                billingDiv.style.display = 'block';
+
+                detailsDiv.innerHTML = `
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 8px;">
+                <div><strong>方案：</strong> ${billingInfo.plan || 'Free'}</div>
+                <div><strong>下次帳單：</strong> ${billingInfo.nextBillingDate || 'N/A'}</div>
+            </div>
+            <div style="margin-bottom: 8px;">
+                <strong>使用量：</strong> ${billingInfo.usage?.current || 0}/${billingInfo.limits?.monthly || '∞'}
+                <div style="width: 100%; height: 4px; background: #374151; border-radius: 2px; margin-top: 4px;">
+                    <div style="height: 100%; background: #10b981; border-radius: 2px; width: ${calculateUsagePercentage(billingInfo)}%;"></div>
+                </div>
+            </div>
+        `;
+
+                // 更新頭部配額顯示
+                const quotaDisplay = document.querySelector('.quota-display span');
+                if (quotaDisplay && billingInfo.usage && billingInfo.limits) {
+                    quotaDisplay.textContent = `${billingInfo.usage.current}/${billingInfo.limits.monthly}`;
+                }
+            }
+        }
+
+        /**
+         * 計算使用量百分比
+         */
+        function calculateUsagePercentage(billingInfo) {
+            if (!billingInfo.usage || !billingInfo.limits) return 0;
+
+            const percentage = (billingInfo.usage.current / billingInfo.limits.monthly) * 100;
+            return Math.min(percentage, 100);
+        }
+
+        /**
+         * 獲取模式顯示名稱
+         */
+        function getModeDisplayName(mode) {
+            const modeNames = {
+                'demo': '演示模式',
+                'daytona': 'Daytona 模式',
+                'openhands': 'OpenHands 模式'
+            };
+            return modeNames[mode] || mode;
+        }
+
+        /**
+         * 獲取功能顯示名稱
+         */
+        function getFeatureDisplayName(feature) {
+            const featureNames = {
+                'billing': '付費管理',
+                'snapshots': '快照功能',
+                'fileSync': '文件同步',
+                'terminal': '終端功能',
+                'preview': '預覽功能',
+                'autoSave': '自動保存'
+            };
+            return featureNames[feature] || feature;
+        }
+
+        /**
+         * 初始化 Daytona 設定
+         */
+        function initializeDaytonaSettings() {
+            // 載入保存的配置
+            if (window.daytonaConfig) {
+                const features = window.daytonaConfig.getFeatureStatus();
+
+                // 更新 UI 元素
+                document.getElementById('enable-daytona-billing').checked = features.billing;
+                document.getElementById('enable-daytona-snapshots').checked = features.snapshots;
+                document.getElementById('enable-daytona-preview').checked = features.preview;
+                document.getElementById('enable-daytona-autosave').checked = features.autoSave;
+
+                document.getElementById('daytona-default-language').value = window.daytonaConfig.get('defaultLanguage');
+                document.getElementById('daytona-default-image').value = window.daytonaConfig.get('defaultImage');
+                document.getElementById('auto-create-sandbox').checked = window.daytonaConfig.get('autoCreateSandbox');
+
+                // 如果已配置，測試連接
+                if (window.daytonaConfig.isConfigured()) {
+                    setTimeout(() => testDaytonaConnection(), 1000);
+                }
+            }
+        }
+
+        /**
+         * 監聽 Daytona 事件
+         */
+        function setupDaytonaEventListeners() {
+            // 監聽模式變更
+            window.addEventListener('daytona-mode-changed', (event) => {
+                console.log('Daytona 模式已變更:', event.detail);
+                updateDaytonaStatusDisplay();
+            });
+
+            // 監聽連接狀態變更
+            window.addEventListener('daytona-connection-changed', (event) => {
+                console.log('Daytona 連接狀態變更:', event.detail);
+                if (event.detail.connected) {
+                    updateDaytonaConnectionStatus('✅ 已連接', '#10b981');
+                } else {
+                    updateDaytonaConnectionStatus('❌ 已斷開', '#ef4444');
+                }
+            });
+
+            // 監聽配置更新
+            window.addEventListener('daytona-config-updated', (event) => {
+                console.log('Daytona 配置已更新:', event.detail);
+                updateDaytonaStatusDisplay();
+            });
+        }
+
+        // 在頁面載入完成後初始化 Daytona 設定
+        document.addEventListener('DOMContentLoaded', function () {
+            // 設置事件監聽器
+            setupDaytonaEventListeners();
+
+            // 延遲初始化，確保所有腳本都已載入
+            setTimeout(() => {
+                initializeDaytonaSettings();
+            }, 1500);
+        });
+
+        // 更新現有的 sendMessage 函數以支持 Daytona
+        async function sendMessage() {
+            const input = document.getElementById('user-input');
+            const message = input.value.trim();
+            if (!message) return;
+
+            const chatHistory = document.getElementById('chat-history');
+            const userMessage = document.createElement('div');
+            userMessage.className = 'message user fade-in';
+            userMessage.innerHTML = `<div class="message-content">${message}</div>`;
+            chatHistory.appendChild(userMessage);
+
+            scrollToBottom();
+            input.value = '';
+
+            // 顯示正在處理狀態
+            isExecuting = true;
+            document.getElementById('pause-btn').classList.add('show');
+
+            try {
+                let response;
+
+                // 使用 Daytona 整合發送消息
+                if (window.daytonaIntegration && window.daytonaIntegration.isInitialized) {
+                    response = await window.daytonaIntegration.sendMessage(message);
+                } else {
+                    // 回退到原有邏輯
+                    response = {
+                        content: generateDemoResponse(message),
+                        type: 'demo_response'
+                    };
+                }
+
+                // 創建 AI 回應
+                const aiMessage = document.createElement('div');
+                aiMessage.className = 'message assistant fade-in';
+                aiMessage.innerHTML = `<div class="message-content">${formatResponse(response.content)}</div>`;
+                chatHistory.appendChild(aiMessage);
+
+                scrollToBottom();
+
+                // 更新配額
+                quotaUsed++;
+                updateQuotaDisplay();
+
+            } catch (error) {
+                console.error('Message sending failed:', error);
+
+                const aiMessage = document.createElement('div');
+                aiMessage.className = 'message assistant fade-in';
+                aiMessage.innerHTML = `
+            <div class="message-content">
+                抱歉，發送失敗。請檢查網路連接或稍後再試。
+                <div style="margin-top: 8px; padding: 8px; background: rgba(239, 68, 68, 0.1); border-radius: 4px; font-size: 12px; color: #ef4444;">
+                    錯誤：${error.message}
+                </div>
+            </div>
+        `;
+                chatHistory.appendChild(aiMessage);
+                scrollToBottom();
+
+                showNotification('發送失敗，請檢查連接');
+            } finally {
+                isExecuting = false;
+                document.getElementById('pause-btn').classList.remove('show');
+            }
+        }
+
+        // 更新現有的 handleTerminalInput 函數以支持 Daytona
+        function handleTerminalInput(event) {
+            if (event.key === 'Enter') {
+                const input = event.target;
+                const command = input.value.trim();
+
+                if (!command) {
+                    input.value = '';
+                    return;
+                }
+
+                // 使用 Daytona 整合執行命令
+                if (window.daytonaIntegration && window.daytonaIntegration.isInitialized) {
+                    window.daytonaIntegration.executeCommand(command);
+                } else {
+                    // 回退到原有邏輯
+                    executeDemoCommand(command);
+                }
+
+                input.value = '';
+            }
+        }
+
+        // 格式化回應
+        function formatResponse(content) {
+            // 處理代碼塊
+            return content.replace(/```(\w+)?\n([\s\S]*?)```/g, (match, lang, code) => {
+                return `
+            <div class="code-block">
+                <div class="code-header">
+                    <span>📄 ${lang || 'Code'}</span>
+                    <div class="code-actions">
+                        <button class="action-btn" onclick="copyCode(this)">📋 Copy</button>
+                        <button class="action-btn apply" onclick="applyCode(this)">▶️ Apply</button>
+                        <button class="action-btn" onclick="saveCode(this)">💾 Save</button>
+                    </div>
+                </div>
+                <div class="code-content">
+                    <pre>${code.trim()}</pre>
+                </div>
+            </div>
+        `;
+            });
+        }
+
+        // 生成演示回應
+        function generateDemoResponse(message) {
+            return `基於您的需求「${message}」，我建議以下解決方案：
+
+\`\`\`python
+# 演示代碼 - 基於您的需求
+def handle_request():
+    print("處理用戶請求：${message}")
+    return "完成處理"
+
+result = handle_request()
+print(result)
+\`\`\`
+
+💡 這是演示模式的回應。要獲得真實的沙盒執行，請：
+1. 設置 Daytona API 密鑰
+2. 切換到 Daytona 模式
+3. 享受雲端開發環境！`;
+        }
         /**
          * 顯示啟動進度
          */
@@ -4491,7 +5264,7 @@ ${files.map(file => `// ${file.name} - ${file.type || 'unknown type'}`).join('\n
                 background: rgba(0, 0, 0, 0.9); z-index: 2500;
                 display: flex; align-items: center; justify-content: center;
             `;
-            
+
             progressModal.innerHTML = `
                 <div style="background: #1e293b; border-radius: 16px; padding: 40px; text-align: center; border: 1px solid #475569; min-width: 400px;">
                     <div id="launch-icon" style="font-size: 64px; margin-bottom: 20px;">🚀</div>
@@ -4504,10 +5277,10 @@ ${files.map(file => `// ${file.name} - ${file.type || 'unknown type'}`).join('\n
                     </div>
                 </div>
             `;
-            
+
             document.body.appendChild(progressModal);
         }
-        
+
         /**
          * 更新啟動步驟
          */
@@ -4515,15 +5288,15 @@ ${files.map(file => `// ${file.name} - ${file.type || 'unknown type'}`).join('\n
             const stepElement = document.getElementById('launch-step');
             const iconElement = document.getElementById('launch-icon');
             const progressBar = document.getElementById('launch-progress-bar');
-            
+
             if (stepElement) {
                 stepElement.textContent = step;
             }
-            
+
             if (iconElement) {
                 iconElement.textContent = icon;
             }
-            
+
             if (progressBar) {
                 // 根據步驟更新進度條
                 const stepProgress = {
@@ -4536,7 +5309,7 @@ ${files.map(file => `// ${file.name} - ${file.type || 'unknown type'}`).join('\n
                     '創建': 90,
                     '完成': 100
                 };
-                
+
                 for (const [keyword, progress] of Object.entries(stepProgress)) {
                     if (step.includes(keyword)) {
                         progressBar.style.width = progress + '%';
@@ -4544,38 +5317,38 @@ ${files.map(file => `// ${file.name} - ${file.type || 'unknown type'}`).join('\n
                     }
                 }
             }
-            
+
             console.log(`📱 啟動步驟: ${step}`);
         }
 
         /** 
          * 隱藏啟動進度 
-         */ 
-        function hideLaunchProgress() { 
-            const progressModal = document.getElementById('launch-progress-modal'); 
-            if (progressModal) { 
-                progressModal.style.opacity = '0'; 
-                progressModal.style.transition = 'opacity 0.5s ease'; 
-                setTimeout(() => { 
-                    document.body.removeChild(progressModal); 
-                }, 500); 
-            } 
-        } 
-         
+         */
+        function hideLaunchProgress() {
+            const progressModal = document.getElementById('launch-progress-modal');
+            if (progressModal) {
+                progressModal.style.opacity = '0';
+                progressModal.style.transition = 'opacity 0.5s ease';
+                setTimeout(() => {
+                    document.body.removeChild(progressModal);
+                }, 500);
+            }
+        }
+
         /** 
          * 顯示啟動錯誤 
-         */ 
-        function showLaunchError(errorMessage) { 
-            window.DaytonaLaunchState.isLaunching = false; 
-            hideLaunchProgress(); 
-             
-            const errorModal = document.createElement('div'); 
+         */
+        function showLaunchError(errorMessage) {
+            window.DaytonaLaunchState.isLaunching = false;
+            hideLaunchProgress();
+
+            const errorModal = document.createElement('div');
             errorModal.style.cssText = ` 
                 position: fixed; top: 0; left: 0; right: 0; bottom: 0; 
                 background: rgba(0, 0, 0, 0.8); z-index: 2500; 
                 display: flex; align-items: center; justify-content: center; 
-            `; 
-             
+            `;
+
             errorModal.innerHTML = ` 
                 <div style="background: #1e293b; border-radius: 16px; padding: 32px; text-align: center; border: 1px solid #ef4444; max-width: 500px; width: 90%;"> 
                     <div style="font-size: 48px; margin-bottom: 16px;">❌</div> 
@@ -4594,41 +5367,41 @@ ${files.map(file => `// ${file.name} - ${file.type || 'unknown type'}`).join('\n
                         </button> 
                     </div> 
                 </div> 
-            `; 
-             
-            document.body.appendChild(errorModal); 
-             
+            `;
+
+            document.body.appendChild(errorModal);
+
             // 全局函數 
-            window.retryLaunch = () => { 
-                document.body.removeChild(errorModal); 
-                launchFromScratch(); 
-            }; 
-             
-            window.useDemoMode = () => { 
-                document.body.removeChild(errorModal); 
-                hideWelcomeScreen(); 
-                showNotification('🎭 已切換到演示模式'); 
-                loadInitialChat(); 
-            }; 
-        } 
-         
+            window.retryLaunch = () => {
+                document.body.removeChild(errorModal);
+                launchFromScratch();
+            };
+
+            window.useDemoMode = () => {
+                document.body.removeChild(errorModal);
+                hideWelcomeScreen();
+                showNotification('🎭 已切換到演示模式');
+                loadInitialChat();
+            };
+        }
+
         // GitHub 整合資訊顯示 
-        
+
         /** 
          * 歡迎頁面支援函數 
-         */ 
-         
+         */
+
         /** 
          * 顯示 GitHub 整合信息 
-         */ 
-        function showGitHubIntegrationInfo() { 
-            const modal = document.createElement('div'); 
+         */
+        function showGitHubIntegrationInfo() {
+            const modal = document.createElement('div');
             modal.style.cssText = ` 
                 position: fixed; top: 0; left: 0; right: 0; bottom: 0; 
                 background: rgba(0, 0, 0, 0.8); z-index: 2000; 
                 display: flex; align-items: center; justify-content: center; 
-            `; 
-             
+            `;
+
             modal.innerHTML = ` 
                 <div style="background: #1e293b; border-radius: 16px; padding: 32px; max-width: 500px; width: 90%; border: 1px solid #475569;"> 
                     <div style="text-align: center; margin-bottom: 24px;"> 
@@ -4658,98 +5431,98 @@ ${files.map(file => `// ${file.name} - ${file.type || 'unknown type'}`).join('\n
                         </button> 
                     </div> 
                 </div> 
-            `; 
-             
-            document.body.appendChild(modal); 
-        } 
-         
+            `;
+
+            document.body.appendChild(modal);
+        }
+
         /** 
          * 設置 GitHub 整合 
-         */ 
-        function setupGitHubIntegration() { 
-            showNotification('📝 建議先完成 Daytona 設置，然後在儀表板中添加 GitHub 倉庫'); 
-             
+         */
+        function setupGitHubIntegration() {
+            showNotification('📝 建議先完成 Daytona 設置，然後在儀表板中添加 GitHub 倉庫');
+
             // 如果已經設置了 Daytona，直接開啟倉庫管理頁面 
-            if (window.daytonaConfig && window.daytonaConfig.isConfigured()) { 
-                if (confirm('要現在開啟 Daytona 儀表板來管理 GitHub 倉庫嗎？')) { 
-                    window.open('https://app.daytona.io/dashboard/repositories', '_blank'); 
-                } 
-            } else { 
-                if (confirm('需要先設置 Daytona 帳戶。要現在開始嗎？')) { 
-                    launchFromScratch(); 
-                } 
-            } 
-        } 
-         
+            if (window.daytonaConfig && window.daytonaConfig.isConfigured()) {
+                if (confirm('要現在開啟 Daytona 儀表板來管理 GitHub 倉庫嗎？')) {
+                    window.open('https://app.daytona.io/dashboard/repositories', '_blank');
+                }
+            } else {
+                if (confirm('需要先設置 Daytona 帳戶。要現在開始嗎？')) {
+                    launchFromScratch();
+                }
+            }
+        }
+
         /** 
          * 快速啟動 React 應用 
-         */ 
-        function quickStartReactApp() { 
-            console.log('🚀 快速啟動 React 應用'); 
-             
+         */
+        function quickStartReactApp() {
+            console.log('🚀 快速啟動 React 應用');
+
             // 設置特定的啟動參數 
-            window.DaytonaLaunchState.quickStartType = 'react'; 
-            window.DaytonaLaunchState.quickStartMessage = '我想創建一個現代化的 React 應用程序，包含路由、狀態管理和 UI 組件庫'; 
-             
-            launchFromScratch(); 
-        } 
-         
+            window.DaytonaLaunchState.quickStartType = 'react';
+            window.DaytonaLaunchState.quickStartMessage = '我想創建一個現代化的 React 應用程序，包含路由、狀態管理和 UI 組件庫';
+
+            launchFromScratch();
+        }
+
         /** 
          * 快速啟動 Python API 
-         */ 
-        function quickStartPythonAPI() { 
-            console.log('🚀 快速啟動 Python API'); 
-             
-            window.DaytonaLaunchState.quickStartType = 'python-api'; 
-            window.DaytonaLaunchState.quickStartMessage = '幫我建立一個 FastAPI 或 Flask 的 REST API，包含資料庫連接和基本的 CRUD 操作'; 
-             
-            launchFromScratch(); 
-        } 
-         
+         */
+        function quickStartPythonAPI() {
+            console.log('🚀 快速啟動 Python API');
+
+            window.DaytonaLaunchState.quickStartType = 'python-api';
+            window.DaytonaLaunchState.quickStartMessage = '幫我建立一個 FastAPI 或 Flask 的 REST API，包含資料庫連接和基本的 CRUD 操作';
+
+            launchFromScratch();
+        }
+
         /** 
          * 快速啟動 Node.js 應用 
-         */ 
-        function quickStartNodeApp() { 
-            console.log('🚀 快速啟動 Node.js 應用'); 
-             
-            window.DaytonaLaunchState.quickStartType = 'nodejs'; 
-            window.DaytonaLaunchState.quickStartMessage = '我想創建一個 Node.js Express 應用，包含身份驗證、API 路由和資料庫整合'; 
-             
-            launchFromScratch(); 
-        } 
-        
+         */
+        function quickStartNodeApp() {
+            console.log('🚀 快速啟動 Node.js 應用');
+
+            window.DaytonaLaunchState.quickStartType = 'nodejs';
+            window.DaytonaLaunchState.quickStartMessage = '我想創建一個 Node.js Express 應用，包含身份驗證、API 路由和資料庫整合';
+
+            launchFromScratch();
+        }
+
         /** 
          * 更新完成啟動序列以支援快速啟動 
-         */ 
-        function completeLaunchSequenceWithQuickStart(message = '開發環境已準備就緒') { 
+         */
+        function completeLaunchSequenceWithQuickStart(message = '開發環境已準備就緒') {
             // 原有的完成流程 
-            hideWelcomeScreen(); 
-            hideLaunchProgress(); 
-            
+            hideWelcomeScreen();
+            hideLaunchProgress();
+
             // 檢查是否有快速啟動類型 
-            if (window.DaytonaLaunchState.quickStartType) { 
-                const quickStartType = window.DaytonaLaunchState.quickStartType; 
-                const quickStartMessage = window.DaytonaLaunchState.quickStartMessage; 
-                
+            if (window.DaytonaLaunchState.quickStartType) {
+                const quickStartType = window.DaytonaLaunchState.quickStartType;
+                const quickStartMessage = window.DaytonaLaunchState.quickStartMessage;
+
                 // 載入特定的歡迎信息 
-                loadQuickStartWelcomeMessage(quickStartType, quickStartMessage); 
-                
+                loadQuickStartWelcomeMessage(quickStartType, quickStartMessage);
+
                 // 清除快速啟動狀態 
-                delete window.DaytonaLaunchState.quickStartType; 
-                delete window.DaytonaLaunchState.quickStartMessage; 
-                
-                showNotification(`🎉 ${getQuickStartDisplayName(quickStartType)} 環境已準備就緒`); 
-            } else { 
-                loadWelcomeMessage(); 
-                showNotification(`🎉 ${message}`); 
-            } 
-            
-            window.DaytonaLaunchState.isLaunching = false; 
-            updateUIForDaytonaMode(); 
-            
-            console.log('🎉 Daytona 無縫啟動完成！'); 
+                delete window.DaytonaLaunchState.quickStartType;
+                delete window.DaytonaLaunchState.quickStartMessage;
+
+                showNotification(`🎉 ${getQuickStartDisplayName(quickStartType)} 環境已準備就緒`);
+            } else {
+                loadWelcomeMessage();
+                showNotification(`🎉 ${message}`);
+            }
+
+            window.DaytonaLaunchState.isLaunching = false;
+            updateUIForDaytonaMode();
+
+            console.log('🎉 Daytona 無縫啟動完成！');
         }
-        
+
         /**
          * 載入快速啟動歡迎信息
          */
@@ -4771,17 +5544,17 @@ ${files.map(file => `// ${file.name} - ${file.type || 'unknown type'}`).join('\n
                     features: ['Express.js', 'TypeScript', 'Prisma', 'Jest', 'Docker']
                 }
             };
-            
+
             const config = welcomeMessages[quickStartType] || welcomeMessages['react'];
-            
+
             // 更新歡迎信息
             const welcomeTitle = document.querySelector('.welcome-title');
             const welcomeSubtitle = document.querySelector('.welcome-subtitle');
-            
+
             if (welcomeTitle) {
                 welcomeTitle.textContent = config.title;
             }
-            
+
             if (welcomeSubtitle) {
                 welcomeSubtitle.innerHTML = `
                     ${config.subtitle}<br>
@@ -4790,7 +5563,7 @@ ${files.map(file => `// ${file.name} - ${file.type || 'unknown type'}`).join('\n
                     </div>
                 `;
             }
-            
+
             // 自動發送快速啟動消息
             setTimeout(() => {
                 if (quickStartMessage && typeof sendMessage === 'function') {
@@ -4798,7 +5571,7 @@ ${files.map(file => `// ${file.name} - ${file.type || 'unknown type'}`).join('\n
                 }
             }, 1000);
         }
-        
+
         /**
          * 獲取快速啟動類型的顯示名稱
          */
@@ -4808,145 +5581,146 @@ ${files.map(file => `// ${file.name} - ${file.type || 'unknown type'}`).join('\n
                 'python-api': 'Python API',
                 'nodejs': 'Node.js 應用'
             };
-            
+
             return displayNames[quickStartType] || '開發環境';
-        } 
- 
+        }
+
         // 更新現有的歡迎頁面函數 
-        function addGithubRepos() { 
-            showNotification('📝 將引導您設置 GitHub 倉庫整合'); 
+        function addGithubRepos() {
+            showNotification('📝 將引導您設置 GitHub 倉庫整合');
             // 未來可以整合 GitHub OAuth 
-        } 
-         
-        function openLearning() { 
-            window.open('https://docs.opentaiwan.dev/tutorial', '_blank'); 
-        } 
-         
+        }
+
+        function openLearning() {
+            window.open('https://docs.opentaiwan.dev/tutorial', '_blank');
+        }
+
         // 確保腳本載入時註冊函數 
-        document.addEventListener('DOMContentLoaded', function() { 
-            console.log('🚀 Daytona 無縫啟動整合已載入'); 
-             
+        document.addEventListener('DOMContentLoaded', function () {
+            console.log('🚀 Daytona 無縫啟動整合已載入');
+
             // 檢查是否有 URL 參數要求自動啟動 
-            const urlParams = new URLSearchParams(window.location.search); 
-            if (urlParams.get('autolaunch') === 'true') { 
-                setTimeout(() => { 
-                    console.log('🔗 URL 要求自動啟動'); 
-                    launchFromScratch(); 
-                }, 1000); 
-            } 
+            const urlParams = new URLSearchParams(window.location.search);
+            if (urlParams.get('autolaunch') === 'true') {
+                setTimeout(() => {
+                    console.log('🔗 URL 要求自動啟動');
+                    launchFromScratch();
+                }, 1000);
+            }
         });
 
         /** 
          * 歡迎頁面動畫效果 
-         */ 
-        function addWelcomePageAnimations() { 
+         */
+        function addWelcomePageAnimations() {
             // 為歡迎按鈕添加懸停效果 
-            const welcomeBtns = document.querySelectorAll('.welcome-btn'); 
-            welcomeBtns.forEach(btn => { 
-                btn.addEventListener('mouseenter', function() { 
-                    this.style.transform = 'translateY(-2px) scale(1.02)'; 
-                    this.style.boxShadow = '0 8px 25px rgba(59, 130, 246, 0.3)'; 
-                }); 
-                
-                btn.addEventListener('mouseleave', function() { 
-                    this.style.transform = 'translateY(0) scale(1)'; 
-                    this.style.boxShadow = '0 4px 15px rgba(59, 130, 246, 0.2)'; 
-                }); 
-            }); 
-            
+            const welcomeBtns = document.querySelectorAll('.welcome-btn');
+            welcomeBtns.forEach(btn => {
+                btn.addEventListener('mouseenter', function () {
+                    this.style.transform = 'translateY(-2px) scale(1.02)';
+                    this.style.boxShadow = '0 8px 25px rgba(59, 130, 246, 0.3)';
+                });
+
+                btn.addEventListener('mouseleave', function () {
+                    this.style.transform = 'translateY(0) scale(1)';
+                    this.style.boxShadow = '0 4px 15px rgba(59, 130, 246, 0.2)';
+                });
+            });
+
             // 添加載入動畫 
-            const welcomeScreen = document.getElementById('welcome-screen'); 
-            if (welcomeScreen) { 
-                welcomeScreen.style.opacity = '0'; 
-                welcomeScreen.style.transform = 'scale(0.95)'; 
-                welcomeScreen.style.transition = 'all 0.5s ease'; 
-                
-                setTimeout(() => { 
-                    welcomeScreen.style.opacity = '1'; 
-                    welcomeScreen.style.transform = 'scale(1)'; 
-                }, 100); 
-            } 
-        } 
-        
+            const welcomeScreen = document.getElementById('welcome-screen');
+            if (welcomeScreen) {
+                welcomeScreen.style.opacity = '0';
+                welcomeScreen.style.transform = 'scale(0.95)';
+                welcomeScreen.style.transition = 'all 0.5s ease';
+
+                setTimeout(() => {
+                    welcomeScreen.style.opacity = '1';
+                    welcomeScreen.style.transform = 'scale(1)';
+                }, 100);
+            }
+        }
+
         /** 
          * 檢查系統需求和兼容性 
-         */ 
-        function checkSystemCompatibility() { 
-            const checks = { 
-                websocket: 'WebSocket' in window, 
-                localStorage: 'localStorage' in window, 
-                fetch: 'fetch' in window, 
-                promises: 'Promise' in window 
-            }; 
-            
-            const failedChecks = Object.entries(checks) 
-                .filter(([key, passed]) => !passed) 
-                .map(([key]) => key); 
-            
-            if (failedChecks.length > 0) { 
-                console.warn('⚠️ 系統兼容性警告:', failedChecks); 
-                
+         */
+        function checkSystemCompatibility() {
+            const checks = {
+                websocket: 'WebSocket' in window,
+                localStorage: 'localStorage' in window,
+                fetch: 'fetch' in window,
+                promises: 'Promise' in window
+            };
+
+            const failedChecks = Object.entries(checks)
+                .filter(([key, passed]) => !passed)
+                .map(([key]) => key);
+
+            if (failedChecks.length > 0) {
+                console.warn('⚠️ 系統兼容性警告:', failedChecks);
+
                 const warningMessage = ` 
                     您的瀏覽器可能不支援某些功能：${failedChecks.join(', ')} 
                     建議使用 Chrome、Firefox、Safari 或 Edge 的最新版本。 
-                `; 
-                
-                setTimeout(() => { 
-                    if (confirm(warningMessage + '\n\n要繼續使用嗎？')) { 
-                        console.log('✅ 用戶選擇繼續使用'); 
-                    } 
-                }, 2000); 
-            } else { 
-                console.log('✅ 系統兼容性檢查通過'); 
-            } 
-        } 
-        
+                `;
+
+                setTimeout(() => {
+                    if (confirm(warningMessage + '\n\n要繼續使用嗎？')) {
+                        console.log('✅ 用戶選擇繼續使用');
+                    }
+                }, 2000);
+            } else {
+                console.log('✅ 系統兼容性檢查通過');
+            }
+        }
+
         // 增強的歡迎頁面初始化 
-        document.addEventListener('DOMContentLoaded', function() { 
-            console.log('🎨 初始化歡迎頁面功能'); 
-            
+        document.addEventListener('DOMContentLoaded', function () {
+            console.log('🎨 初始化歡迎頁面功能');
+
             // 添加動畫效果 
-            setTimeout(() => { 
-                addWelcomePageAnimations(); 
-            }, 500); 
-            
+            setTimeout(() => {
+                addWelcomePageAnimations();
+            }, 500);
+
             // 檢查系統兼容性 
-            checkSystemCompatibility(); 
-            
+            checkSystemCompatibility();
+
             // 檢查 URL 參數 
-            const urlParams = new URLSearchParams(window.location.search); 
-            
+            const urlParams = new URLSearchParams(window.location.search);
+
             // 支援直接啟動特定類型 
-            const quickStart = urlParams.get('quickstart'); 
-            if (quickStart) { 
-                setTimeout(() => { 
-                    switch (quickStart) { 
-                        case 'react': 
-                            quickStartReactApp(); 
-                            break; 
-                        case 'python': 
-                            quickStartPythonAPI(); 
-                            break; 
-                        case 'nodejs': 
-                            quickStartNodeApp(); 
-                            break; 
-                        default: 
-                            launchFromScratch(); 
-                    } 
-                }, 1000); 
-            } 
-            
+            const quickStart = urlParams.get('quickstart');
+            if (quickStart) {
+                setTimeout(() => {
+                    switch (quickStart) {
+                        case 'react':
+                            quickStartReactApp();
+                            break;
+                        case 'python':
+                            quickStartPythonAPI();
+                            break;
+                        case 'nodejs':
+                            quickStartNodeApp();
+                            break;
+                        default:
+                            launchFromScratch();
+                    }
+                }, 1000);
+            }
+
             // 支援回流用戶（已有配置的情況） 
-            if (urlParams.get('returning') === 'true') { 
-                setTimeout(() => { 
-                    if (window.daytonaConfig && window.daytonaConfig.isConfigured()) { 
-                        if (confirm('檢測到您之前的 Daytona 配置，要自動啟動嗎？')) { 
-                            launchFromScratch(); 
-                        } 
-                    } 
-                }, 1500); 
-            } 
+            if (urlParams.get('returning') === 'true') {
+                setTimeout(() => {
+                    if (window.daytonaConfig && window.daytonaConfig.isConfigured()) {
+                        if (confirm('檢測到您之前的 Daytona 配置，要自動啟動嗎？')) {
+                            launchFromScratch();
+                        }
+                    }
+                }, 1500);
+            }
         });
     </script>
 </body>
+
 </html>
